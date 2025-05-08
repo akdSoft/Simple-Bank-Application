@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simple_Bank_Application.Models;
+using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Repositories;
 using Simple_Bank_Application.Services;
 
@@ -24,7 +25,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUserAsync(User user) => Ok(await _service.CreateUserAsync(user));
+    public async Task<IActionResult> CreateUserAsync(CreateUserDto dto) => Ok(await _service.CreateUserAsync(dto));
 
     [HttpPut]
     public async Task<IActionResult> UpdateUserAsync(User user)

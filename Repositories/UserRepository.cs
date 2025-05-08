@@ -10,7 +10,10 @@ public class UserRepository : IUserRepository
 
     public UserRepository(AppDbContext context) => _context = context;
 
-    public async Task<IEnumerable<User>> GetAllUsersAsync() => await _context.Users.ToListAsync();
+    public async Task<IEnumerable<User>> GetAllUsersAsync() =>
+        await _context.Users.Include(u => u.BankAccounts).ToListAsync();
+    
+    //public async Task<IEnumerable<User>> GetAllUsersAsync() => await _context.Users.ToListAsync();
 
     public async Task<User?> GetUserByIdAsync(int id) => await _context.Users.FindAsync(id);
 

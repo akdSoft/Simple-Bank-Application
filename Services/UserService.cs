@@ -1,4 +1,5 @@
 ﻿using Simple_Bank_Application.Models;
+using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Repositories;
 
 namespace Simple_Bank_Application.Services;
@@ -13,7 +14,16 @@ public class UserService : IUserService
 
     public async Task<User?> GetUserByIdAsync(int id) => await _repo.GetUserByIdAsync(id);
 
-    public async Task<User> CreateUserAsync(User user) => await _repo.CreateUserAsync(user);
+    public async Task<User> CreateUserAsync(CreateUserDto dto)
+    {
+        User user = new();
+        user.Name = dto.Name;
+        user.Surname = dto.Surname;
+        user.Username = dto.Username;
+        user.Email = dto.Email;
+
+        return await _repo.CreateUserAsync(user);
+    }
 
     public async Task<User?> UpdateUserAsync(User user) => await _repo.UpdateUserAsync(user);
 
