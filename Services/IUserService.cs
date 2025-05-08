@@ -1,8 +1,8 @@
 ﻿using Simple_Bank_Application.Models;
 
-namespace Simple_Bank_Application.Repositories;
+namespace Simple_Bank_Application.Services;
 
-public interface IUserRepository
+public interface IUserService
 {
     Task<IEnumerable<User>> GetAllUsersAsync();
     Task<User?> GetUserByIdAsync(int id);

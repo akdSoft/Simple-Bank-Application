@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simple_Bank_Application.Models;
 using Simple_Bank_Application.Repositories;
+using Simple_Bank_Application.Services;
 
 namespace Simple_Bank_Application.Controllers;
 
@@ -8,17 +9,34 @@ namespace Simple_Bank_Application.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IUserRepository _repo;
+    private readonly IUserService _service;
 
-    public UserController(IUserRepository repo)
+    public UserController(IUserService service) => _service = service;
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllUsersAsync() => Ok(await _service.GetAllUsersAsync());
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserByIdAsync(int id)
     {
-        _repo = repo;
+        var user = await _service.GetUserByIdAsync(id);
+        return (user is null) ? NotFound() : Ok(user);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUser(User user) => Ok(await _repo.CreateUserAsync(user));
+    public async Task<IActionResult> CreateUserAsync(User user) => Ok(await _service.CreateUserAsync(user));
 
-    [HttpGet]
-    public async Task<IActionResult> GetUser(int id) => Ok(await _repo.GetUserAsync(id));
-    
+    [HttpPut]
+    public async Task<IActionResult> UpdateUserAsync(User user)
+    {
+        var updatedUser = await _service.UpdateUserAsync(user);
+        return (updatedUser is null) ? NotFound() : Ok(user);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteUserAsync(int id)
+    {
+        var deleted = await _service.DeleteUserAsync(id);
+        return deleted ? NoContent() : NotFound();
+    }
 }

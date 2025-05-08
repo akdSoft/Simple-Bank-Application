@@ -3,28 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\controller\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:controller\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\repositories\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:repositories\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|c:\\users\\akdtu\\desktop\\simple-bank-application\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E28CA05-9C0B-B10F-C0AE-AD0FCBC5C2F3}|Simple-Bank-Application.csproj|solutionrelative:repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,45 +34,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAkAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-08T15:59:38.07Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "UserController.cs",
-              "DocumentMoniker": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Controller\\UserController.cs",
-              "RelativeDocumentMoniker": "Controller\\UserController.cs",
-              "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Controller\\UserController.cs",
-              "RelativeToolTip": "Controller\\UserController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Controllers\\UserController.cs",
+              "RelativeToolTip": "Controllers\\UserController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACcAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-07T18:53:17.601Z",
+              "WhenOpened": "2025-05-08T15:44:11.605Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Data\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
-              "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Data\\AppDbContext.cs",
-              "RelativeToolTip": "Data\\AppDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-07T18:49:35.057Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "UserRepository.cs",
               "DocumentMoniker": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Repositories\\UserRepository.cs",
               "RelativeDocumentMoniker": "Repositories\\UserRepository.cs",
               "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Repositories\\UserRepository.cs",
               "RelativeToolTip": "Repositories\\UserRepository.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBQAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAC8AAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-07T18:44:20.074Z",
+              "WhenOpened": "2025-05-08T15:18:03.289Z",
               "EditorCaption": ""
             },
             {
@@ -83,35 +83,56 @@
               "RelativeDocumentMoniker": "Repositories\\IUserRepository.cs",
               "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Repositories\\IUserRepository.cs",
               "RelativeToolTip": "Repositories\\IUserRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAuAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-07T18:38:38.46Z",
+              "WhenOpened": "2025-05-08T15:17:42.525Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "FloatingWindowState": {
+        "Id": "3206b0c8-31fa-42c4-a521-b5f64b2d1919",
+        "Display": 1,
+        "X": 318,
+        "Y": 147,
+        "Width": 1261,
+        "Height": 677,
+        "WindowState": 0
+      },
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Services\\UserService.cs",
+              "RelativeToolTip": "Services\\UserService.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBEAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-08T15:40:09.607Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-05-07T18:00:18.185Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAIwAkAAAAjAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Services\\IUserService.cs",
+              "RelativeDocumentMoniker": "Services\\IUserService.cs",
+              "ToolTip": "C:\\Users\\akdtu\\Desktop\\Simple-Bank-Application\\Services\\IUserService.cs",
+              "RelativeToolTip": "Services\\IUserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-07T16:58:04.123Z",
+              "WhenOpened": "2025-05-08T15:05:02.786Z",
               "EditorCaption": ""
             }
           ]
