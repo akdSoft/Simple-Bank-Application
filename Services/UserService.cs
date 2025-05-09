@@ -10,22 +10,13 @@ public class UserService : IUserService
 
     public UserService(IUserRepository repo) => _repo = repo;
 
-    public async Task<IEnumerable<User>> GetAllUsersAsync() => await _repo.GetAllUsersAsync();
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync() => await _repo.GetAllUsersAsync();
 
-    public async Task<User?> GetUserByIdAsync(int id) => await _repo.GetUserByIdAsync(id);
+    public async Task<UserDto?> GetUserByIdAsync(int id) => await _repo.GetUserByIdAsync(id);
 
-    public async Task<User> CreateUserAsync(CreateUserDto dto)
-    {
-        User user = new();
-        user.Name = dto.Name;
-        user.Surname = dto.Surname;
-        user.Username = dto.Username;
-        user.Email = dto.Email;
+    public async Task<UserDto> CreateUserAsync(CreateUserDto dto) => await _repo.CreateUserAsync(dto);
 
-        return await _repo.CreateUserAsync(user);
-    }
-
-    public async Task<User?> UpdateUserAsync(User user) => await _repo.UpdateUserAsync(user);
+    public async Task<UserDto?> UpdateUserAsync(CreateUserDto dto, int id) => await _repo.UpdateUserAsync(dto, id);
 
 
     public async Task<bool> DeleteUserAsync(int id) => await _repo.DeleteUserAsync(id);

@@ -5,9 +5,9 @@ namespace Simple_Bank_Application.Services;
 
 public interface IUserService
 {
-    Task<IEnumerable<User>> GetAllUsersAsync();
-    Task<User?> GetUserByIdAsync(int id);
-    Task<User> CreateUserAsync(CreateUserDto dto);
-    Task<User?> UpdateUserAsync(User user);
+    Task<IEnumerable<UserDto>> GetAllUsersAsync();
+    Task<UserDto?> GetUserByIdAsync(int id);
+    Task<UserDto> CreateUserAsync(CreateUserDto dto);
+    Task<UserDto?> UpdateUserAsync(CreateUserDto dto, int id);
     Task<bool> DeleteUserAsync(int id);
 }

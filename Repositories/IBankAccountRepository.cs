@@ -1,11 +1,12 @@
 ﻿using Simple_Bank_Application.Models;
+using Simple_Bank_Application.Models.DTOs;
 
 namespace Simple_Bank_Application.Repositories;
 
 public interface IBankAccountRepository
 {
-    public Task<IEnumerable<BankAccount>> GetAllBankAccountsAsync();
-    public Task<BankAccount?> GetBankAccountByIdAsync(int id);
-    public Task<BankAccount> CreateBankAccountAsync(BankAccount bankAccount);
+    public Task<IEnumerable<BankAccountDto>> GetAllBankAccountsAsync();
+    public Task<BankAccountDto?> GetBankAccountByIdAsync(int id);
+    public Task<BankAccountDto?> CreateBankAccountAsync(CreateBankAccountDto dto);
     public Task<bool> DeleteBankAccountAsync(int id);
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Simple_Bank_Application.Data;
 using Simple_Bank_Application.Models;
+using Simple_Bank_Application.Models.DTOs;
 
 namespace Simple_Bank_Application.Repositories;
 
@@ -11,15 +12,60 @@ public class BankAccountRepository : IBankAccountRepository
     public BankAccountRepository(AppDbContext context) => _context = context;
 
 
-    public async Task<IEnumerable<BankAccount>> GetAllBankAccountsAsync() => await _context.BankAccounts.ToListAsync();
-
-    public async Task<BankAccount?> GetBankAccountByIdAsync(int id) => await _context.BankAccounts.FindAsync(id);
-
-    public async Task<BankAccount> CreateBankAccountAsync(BankAccount bankAccount)
+    public async Task<IEnumerable<BankAccountDto>> GetAllBankAccountsAsync()
     {
+        return await _context.BankAccounts
+            .Include(acc => acc.User)
+            .Select(acc => new BankAccountDto
+            {
+                Id = acc.Id,
+                Balance = acc.Balance,
+                UserId = acc.UserId,
+                UserName = acc.User.Name,
+                UserSurname = acc.User.Surname
+            }).ToListAsync();
+
+    }
+
+    public async Task<BankAccountDto?> GetBankAccountByIdAsync(int id)
+    {
+        return await _context.BankAccounts
+            .Include(acc => acc.User)
+            .Where(acc => acc.Id == id)
+            .Select(acc => new BankAccountDto
+            {
+                Id = acc.Id,
+                Balance = acc.Balance,
+                UserId = acc.UserId,
+                UserName = acc.User.Name,
+                UserSurname = acc.User.Surname
+            }).FirstOrDefaultAsync();
+    }
+
+    public async Task<BankAccountDto?> CreateBankAccountAsync(CreateBankAccountDto dto)
+    {
+        var bankAccount = new BankAccount
+        {
+            UserId = dto.UserId,
+            Balance = 0
+        };
+
         _context.BankAccounts.Add(bankAccount);
         await _context.SaveChangesAsync();
-        return bankAccount;
+
+        var createdAccount = await _context.BankAccounts
+            .Include(acc => acc.User)
+            .Where(acc => acc.Id == bankAccount.Id)//??
+            .Select(acc => new BankAccountDto
+            {
+                Id = acc.Id,
+                Balance = acc.Balance,
+                UserId = acc.UserId,
+                UserName = acc.User.Name,
+                UserSurname = acc.User.Surname
+            }).FirstOrDefaultAsync(); //singleordefault async
+
+        return createdAccount;
     }
 
     public async Task<bool> DeleteBankAccountAsync(int id)

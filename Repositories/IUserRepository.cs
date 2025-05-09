@@ -1,12 +1,13 @@
 ﻿using Simple_Bank_Application.Models;
+using Simple_Bank_Application.Models.DTOs;
 
 namespace Simple_Bank_Application.Repositories;
 
 public interface IUserRepository
 {
-    Task<IEnumerable<User>> GetAllUsersAsync();
-    Task<User?> GetUserByIdAsync(int id);
-    Task<User> CreateUserAsync(User user);
-    Task<User?> UpdateUserAsync(User user);
+    Task<IEnumerable<UserDto>> GetAllUsersAsync();
+    Task<UserDto?> GetUserByIdAsync(int id);
+    Task<UserDto?> CreateUserAsync(CreateUserDto dto);
+    Task<UserDto?> UpdateUserAsync(CreateUserDto dto, int id);
     Task<bool> DeleteUserAsync(int id);
 }

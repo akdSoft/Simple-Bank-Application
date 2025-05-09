@@ -27,11 +27,11 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUserAsync(CreateUserDto dto) => Ok(await _service.CreateUserAsync(dto));
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateUserAsync(User user)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateUserAsync(CreateUserDto dto, int id)
     {
-        var updatedUser = await _service.UpdateUserAsync(user);
-        return (updatedUser is null) ? NotFound() : Ok(user);
+        var updatedUser = await _service.UpdateUserAsync(dto, id);
+        return (updatedUser is null) ? NotFound() : Ok(updatedUser);
     }
 
     [HttpDelete]

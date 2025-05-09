@@ -24,7 +24,7 @@ public class BankAccountController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateBankAccountAsync(BankAccount bankAccount) => Ok(await _service.CreateBankAccountAsync(bankAccount));
+    public async Task<IActionResult> CreateBankAccountAsync(CreateBankAccountDto dto) => Ok(await _service.CreateBankAccountAsync(dto));
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBankAccountAsync(int id)
