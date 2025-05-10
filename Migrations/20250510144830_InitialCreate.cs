@@ -23,6 +23,7 @@ namespace Simple_Bank_Application.Migrations
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     Surname = table.Column<string>(type: "longtext", nullable: false),
                     Username = table.Column<string>(type: "longtext", nullable: false),
+                    Password = table.Column<string>(type: "longtext", nullable: false),
                     Email = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>

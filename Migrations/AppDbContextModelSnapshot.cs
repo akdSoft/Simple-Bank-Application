@@ -51,6 +51,10 @@ namespace Simple_Bank_Application.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("longtext");

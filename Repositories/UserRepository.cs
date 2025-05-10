@@ -61,13 +61,14 @@ public class UserRepository : IUserRepository
     }
 
 
-    public async Task<UserDto?> CreateUserAsync(CreateUserDto dto)
+    public async Task<UserDto?> RegisterUserAsync(CreateUserDto dto)
     {
         var user = new User
         {
             Name = dto.Name,
             Surname = dto.Surname,
             Username = dto.Username,
+            Password = dto.Password,
             Email = dto.Email,
         };
 
@@ -108,6 +109,7 @@ public class UserRepository : IUserRepository
         updatedUser.Name = dto.Name;
         updatedUser.Surname = dto.Surname;
         updatedUser.Username = dto.Username;
+        updatedUser.Password = dto.Password;
         updatedUser.Email = dto.Email;
 
         _context.Users.Update(updatedUser);
@@ -144,5 +146,10 @@ public class UserRepository : IUserRepository
         _context.Users.Remove(deleted);
         await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<User?> GetUserByUsernameAsync(string username)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
     }
 }

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Simple_Bank_Application.Models;
 using Simple_Bank_Application.Models.DTOs;
-using Simple_Bank_Application.Repositories;
 using Simple_Bank_Application.Services;
+using Simple_Bank_Application.Middleware;
 
 namespace Simple_Bank_Application.Controllers;
 
@@ -24,8 +23,13 @@ public class UserController : ControllerBase
         return (user is null) ? NotFound() : Ok(user);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateUserAsync(CreateUserDto dto) => Ok(await _service.CreateUserAsync(dto));
+    [HttpGet("profile")]
+    [RequiresAuth]
+    public IActionResult GetProfile()
+    {
+        var username = HttpContext.Session.GetString("username");
+        return Ok($"Welcome, {username}");
+    }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUserAsync(CreateUserDto dto, int id)

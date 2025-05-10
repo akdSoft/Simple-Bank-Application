@@ -14,7 +14,7 @@ public class UserService : IUserService
 
     public async Task<UserDto?> GetUserByIdAsync(int id) => await _repo.GetUserByIdAsync(id);
 
-    public async Task<UserDto> CreateUserAsync(CreateUserDto dto) => await _repo.CreateUserAsync(dto);
+    public async Task<UserDto> CreateUserAsync(CreateUserDto dto) => await _repo.RegisterUserAsync(dto);
 
     public async Task<UserDto?> UpdateUserAsync(CreateUserDto dto, int id) => await _repo.UpdateUserAsync(dto, id);
 
