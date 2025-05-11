@@ -11,5 +11,5 @@ public class BankAccountDto
 
 public class CreateBankAccountDto
 {
-    public int UserId { get; set; }
+    //public int UserId { get; set; }
 }

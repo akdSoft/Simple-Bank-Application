@@ -7,6 +7,6 @@ public interface IBankAccountRepository
 {
     public Task<IEnumerable<BankAccountDto>> GetAllBankAccountsAsync();
     public Task<BankAccountDto?> GetBankAccountByIdAsync(int id);
-    public Task<BankAccountDto?> CreateBankAccountAsync(CreateBankAccountDto dto);
+    public Task<BankAccountDto?> CreateBankAccountAsync(int userId);
     public Task<bool> DeleteBankAccountAsync(int id);
 }

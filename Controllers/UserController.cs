@@ -14,9 +14,11 @@ public class UserController : ControllerBase
     public UserController(IUserService service) => _service = service;
 
     [HttpGet]
+    [AdminAuth]
     public async Task<IActionResult> GetAllUsersAsync() => Ok(await _service.GetAllUsersAsync());
 
     [HttpGet("{id}")]
+    [AdminAuth]
     public async Task<IActionResult> GetUserByIdAsync(int id)
     {
         var user = await _service.GetUserByIdAsync(id);
@@ -32,6 +34,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [RequiresAuth]
     public async Task<IActionResult> UpdateUserAsync(CreateUserDto dto, int id)
     {
         var updatedUser = await _service.UpdateUserAsync(dto, id);
@@ -39,6 +42,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete]
+    [AdminAuth]
     public async Task<IActionResult> DeleteUserAsync(int id)
     {
         var deleted = await _service.DeleteUserAsync(id);

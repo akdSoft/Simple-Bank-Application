@@ -19,10 +19,22 @@ public class AuthorizationMiddleware
         if (endpoint != null)
         {
             var requiresAuth = endpoint.Metadata.GetMetadata<RequiresAuthAttribute>();
+            var adminAuth = endpoint.Metadata.GetMetadata<AdminAuthAttribute>();
+
+            var username = context.Session.GetString("username");
+            var role = context.Session.GetString("role");
+
+            if(adminAuth != null)
+            {
+                if(string.IsNullOrEmpty(role) || role != "admin")
+                {
+                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    await context.Response.WriteAsync("Access Denied: Admin Only");
+                }
+            }
 
             if (requiresAuth != null)
             {
-                var username = context.Session.GetString("username");
 
                 if (string.IsNullOrEmpty(username))
                 {
@@ -37,6 +49,9 @@ public class AuthorizationMiddleware
     }
 }
 
-//[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Method)]
 public class RequiresAuthAttribute : Attribute { }
+
+[AttributeUsage(AttributeTargets.Method)]
+public class AdminAuthAttribute : Attribute { }
 

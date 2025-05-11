@@ -14,7 +14,7 @@ public class BankAccountService : IBankAccountService
 
     public async Task<BankAccountDto?> GetBankAccountByIdAsync(int id) => await _repo.GetBankAccountByIdAsync(id);
 
-    public async Task<BankAccountDto?> CreateBankAccountAsync(CreateBankAccountDto dto) => await _repo.CreateBankAccountAsync(dto);
+    public async Task<BankAccountDto?> CreateBankAccountAsync(int UserId)=> await _repo.CreateBankAccountAsync(UserId);
 
     public async Task<bool> DeleteBankAccountAsync(int id) => await _repo.DeleteBankAccountAsync(id);
 }

@@ -42,11 +42,11 @@ public class BankAccountRepository : IBankAccountRepository
             }).FirstOrDefaultAsync();
     }
 
-    public async Task<BankAccountDto?> CreateBankAccountAsync(CreateBankAccountDto dto)
+    public async Task<BankAccountDto?> CreateBankAccountAsync(int userId)
     {
         var bankAccount = new BankAccount
         {
-            UserId = dto.UserId,
+            UserId = userId,
             Balance = 0
         };
 

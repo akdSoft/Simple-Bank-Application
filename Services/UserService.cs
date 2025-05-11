@@ -20,4 +20,6 @@ public class UserService : IUserService
 
 
     public async Task<bool> DeleteUserAsync(int id) => await _repo.DeleteUserAsync(id);
+
+    public async Task<User?> GetUserByUsernameAsync(string username) => await _repo.GetUserByUsernameAsync(username);
 }

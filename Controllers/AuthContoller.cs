@@ -24,12 +24,21 @@ public class AuthContoller : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(string username, string password)
     {
+        
+        if(username == "admin" && password == "admin")
+        {
+            HttpContext.Session.SetString("username", username);
+            HttpContext.Session.SetString("role", "admin");
+            return Ok("Succesfully logged in as admin");
+        }
+
         var user = await _repo.GetUserByUsernameAsync(username);
 
         if (user == null || password != user.Password)
             return Unauthorized("Invalid credentials");
 
         HttpContext.Session.SetString("username", user.Username);
+        HttpContext.Session.SetString("role", "customer");
 
         return Ok("Succesfully logged in");
     }
@@ -37,7 +46,7 @@ public class AuthContoller : ControllerBase
     [HttpPost("logout")]
     public IActionResult Logout()
     {
-        HttpContext.Session.Remove("username");
+        HttpContext.Session.Clear();
         return Ok("Logged out");
     }
 
