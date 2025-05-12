@@ -2,6 +2,7 @@
 using Simple_Bank_Application.Data;
 using Simple_Bank_Application.Models;
 using Simple_Bank_Application.Models.DTOs;
+using Simple_Bank_Application.Repositories.Interfaces;
 
 namespace Simple_Bank_Application.Repositories;
 
@@ -63,7 +64,7 @@ public class BankAccountRepository : IBankAccountRepository
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
-            }).FirstOrDefaultAsync(); //singleordefault async
+            }).FirstOrDefaultAsync();
 
         return createdAccount;
     }
@@ -76,5 +77,26 @@ public class BankAccountRepository : IBankAccountRepository
         _context.BankAccounts.Remove(deleted);
         await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<BankAccountDto?> IncreaseOrDecreaseBalanceAsync(int accountId, decimal amount)
+    {
+        var account = await _context.BankAccounts.FindAsync(accountId);
+        account.Balance += amount;
+        await _context.SaveChangesAsync();
+
+        var accountDto = await _context.BankAccounts
+            .Include(acc => acc.User)
+            .Where(acc => acc.Id == accountId)
+            .Select(acc => new BankAccountDto
+            {
+                Id = acc.Id,
+                Balance = acc.Balance,
+                UserId = acc.UserId,
+                UserName = acc.User.Name,
+                UserSurname = acc.User.Surname
+            }).FirstOrDefaultAsync();
+
+        return accountDto;
     }
 }

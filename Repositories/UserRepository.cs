@@ -2,6 +2,7 @@
 using Simple_Bank_Application.Data;
 using Simple_Bank_Application.Models;
 using Simple_Bank_Application.Models.DTOs;
+using Simple_Bank_Application.Repositories.Interfaces;
 
 namespace Simple_Bank_Application.Repositories;
 

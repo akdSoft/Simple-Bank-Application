@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simple_Bank_Application.Models.DTOs;
-using Simple_Bank_Application.Repositories;
+using Simple_Bank_Application.Repositories.Interfaces;
 using System.Security.Cryptography;
 
 namespace Simple_Bank_Application.Controllers;

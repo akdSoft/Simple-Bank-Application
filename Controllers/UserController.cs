@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simple_Bank_Application.Models.DTOs;
-using Simple_Bank_Application.Services;
 using Simple_Bank_Application.Middleware;
+using Simple_Bank_Application.Services.Interfaces;
 
 namespace Simple_Bank_Application.Controllers;
 
@@ -17,13 +17,13 @@ public class UserController : ControllerBase
     [AdminAuth]
     public async Task<IActionResult> GetAllUsersAsync() => Ok(await _service.GetAllUsersAsync());
 
-    [HttpGet("{id}")]
-    [AdminAuth]
-    public async Task<IActionResult> GetUserByIdAsync(int id)
-    {
-        var user = await _service.GetUserByIdAsync(id);
-        return (user is null) ? NotFound() : Ok(user);
-    }
+    //[HttpGet("{id}")]
+    //[AdminAuth]
+    //public async Task<IActionResult> GetUserByIdAsync(int id)
+    //{
+    //    var user = await _service.GetUserByIdAsync(id);
+    //    return (user is null) ? NotFound() : Ok(user);
+    //}
 
     [HttpGet("profile")]
     [RequiresAuth]
