@@ -10,7 +10,7 @@ using Simple_Bank_Application.Data;
 namespace Simple_Bank_Application.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250512195158_InitialCreate")]
+    [Migration("20250513134123_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -61,6 +61,10 @@ namespace Simple_Bank_Application.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("RelatedAccountId");
+
                     b.ToTable("Transactions");
                 });
 
@@ -72,7 +76,7 @@ namespace Simple_Bank_Application.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -88,9 +92,15 @@ namespace Simple_Bank_Application.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -104,6 +114,21 @@ namespace Simple_Bank_Application.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Simple_Bank_Application.Models.Transaction", b =>
+                {
+                    b.HasOne("Simple_Bank_Application.Models.BankAccount", null)
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Simple_Bank_Application.Models.BankAccount", null)
+                        .WithMany()
+                        .HasForeignKey("RelatedAccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Simple_Bank_Application.Models.User", b =>

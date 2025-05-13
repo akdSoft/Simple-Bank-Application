@@ -21,15 +21,23 @@ public class TransactionRepository : ITransactionRepository
     public async Task<IEnumerable<Transaction>> GetAllTransactionsAsync() => 
         await _context.Transactions.ToListAsync();
 
-    public async Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int AccountId) =>
-        await _context.Transactions.Where(t => t.AccountId == AccountId).ToListAsync();
-
-    public async Task<IEnumerable<Transaction>> GetTransactionsByUserAsync(int UserId)
+    public async Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int accountId, int userId)
     {
-        var accounts = await _context.BankAccounts.Where(acc => acc.UserId == UserId).ToListAsync();
-        List<Transaction> transactions = new();
-        accounts.ForEach(async acc => transactions.AddRange(
-            await _context.Transactions.Where(t => t.AccountId == acc.Id).ToListAsync()));
+        return await _context.Transactions
+            .Where(t => t.AccountId == accountId &&
+                        _context.BankAccounts.Any(acc => acc.Id == accountId && acc.UserId == userId))
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Transaction>> GetTransactionsByUserAsync(int userId)
+    {
+        var transactions = await _context.Transactions
+            .Where(t => _context.BankAccounts
+                .Where(acc => acc.UserId == userId)
+                .Select(acc => acc.Id)
+                .Contains(t.AccountId))
+            .ToListAsync();
+
         return transactions;
     }
 }

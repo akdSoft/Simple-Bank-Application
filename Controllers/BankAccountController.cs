@@ -22,19 +22,19 @@ public class BankAccountController : ControllerBase
     [AdminAuth]
     public async Task<IActionResult> GetAllBankAccountsAsync() => Ok(await _bankAccountService.GetAllBankAccountsAsync());
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetBankAccountByIdAsync(int id)
-    {
-        var bankAccount = await _bankAccountService.GetBankAccountByIdAsync(id);
-        return (bankAccount is null) ? NotFound() : Ok(bankAccount);
-    }
+    //[HttpGet("{id}")]
+    //public async Task<IActionResult> GetBankAccountByIdAsync(int id)
+    //{
+    //    var bankAccount = await _bankAccountService.GetBankAccountByIdAsync(id);
+    //    return (bankAccount is null) ? NotFound() : Ok(bankAccount);
+    //}
 
     [HttpPost]
     [RequiresAuth]
     public async Task<IActionResult> CreateBankAccountAsync()
     {
         var currentUsername = HttpContext.Session.GetString("username");
-        var currentUser = _userService.GetUserByUsernameAsync(currentUsername);
+        var currentUser = await _userService.GetUserByUsernameAsync(currentUsername);
 
         return Ok(await _bankAccountService.CreateBankAccountAsync(currentUser.Id));
     }

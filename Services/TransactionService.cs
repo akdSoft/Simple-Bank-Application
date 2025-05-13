@@ -59,9 +59,9 @@ public class TransactionService : ITransactionService
     public async Task<IEnumerable<Transaction>> GetAllTransactionsAsync() => 
         await _transactionRepo.GetAllTransactionsAsync();
 
-    public async Task<IEnumerable<Transaction>> GetTransactionsByUserAsync(int UserId) =>
-        await _transactionRepo.GetTransactionsByUserAsync(UserId);
+    public async Task<IEnumerable<Transaction>> GetTransactionsByUserAsync(int userId) =>
+        await _transactionRepo.GetTransactionsByUserAsync(userId);
 
-    public async Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int AccountId) =>
-        await _transactionRepo.GetTransactionsByBankAccountAsync(AccountId);
+    public async Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int accountId, int userId) =>
+        await _transactionRepo.GetTransactionsByBankAccountAsync(accountId, userId);
 }

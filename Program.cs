@@ -8,16 +8,17 @@ using Simple_Bank_Application.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseMySQL(connectionString!), ServiceLifetime.Transient);
+
+//builder.Services.AddTransient<AppDbContext>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 builder.Services.AddScoped<IBankAccountService, BankAccountService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
-
-var connectionString = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseMySQL(connectionString!));
-
 
 builder.Services.AddCors(options =>
 {
