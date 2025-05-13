@@ -28,6 +28,8 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader());
 });
 
+builder.Services.AddRazorPages();
+
 builder.Services.AddControllers();
 builder.Services.AddDistributedMemoryCache(); //inmemory cache
 builder.Services.AddEndpointsApiExplorer();
@@ -42,14 +44,18 @@ var app = builder.Build();
 
 
 app.UseRouting();
+app.UseStaticFiles();
 app.UseSession();
 app.UseCors("AllowAll");
 
 app.UseMiddleware<AuthorizationMiddleware>();
 app.UseAuthorization();
 
+
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.MapControllers();
+app.MapRazorPages();
 app.Run();
