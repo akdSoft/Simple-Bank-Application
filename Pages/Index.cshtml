@@ -7,7 +7,9 @@
 <head>
     <title>Razor Pages - Home Page</title>
 </head>
-<body>
-    <h1>Home page with razor pages</h1>
-    <p>This is a sample page.</p>
-</body>
+
+<form method="post">
+    <button type="submit" name="action" value="login">Click to Login</button>
+    <button type="submit" name="action" value="register">Click to Register</button>
+    @Html.AntiForgeryToken()
+</form>

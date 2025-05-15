@@ -44,9 +44,10 @@ var app = builder.Build();
 
 
 app.UseRouting();
+app.UseCors("AllowAll");
 app.UseStaticFiles();
 app.UseSession();
-app.UseCors("AllowAll");
+
 
 app.UseMiddleware<AuthorizationMiddleware>();
 app.UseAuthorization();
@@ -56,6 +57,11 @@ app.UseAuthorization();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapControllers();
-app.MapRazorPages();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+    endpoints.MapControllers(); // API ile Razor Pages birlikte kullanýlacak
+});
+
 app.Run();

@@ -1,0 +1,29 @@
+﻿@page
+@model Simple_Bank_Application.Pages.LoginModel
+@{
+	ViewData["Title"] = "Login";
+}
+
+<h2>User Login</h2>
+
+<form method="post" asp-page="/Login">
+	<div>
+		<label for="usernameInput">Username:</label>
+		<input type="text" id="usernameInput" name="Username" />
+	</div>
+
+	<div>
+		<label for="passwordInput">Password:</label>
+		<input type="text" id="passwordInput" name="Password" />
+	</div>
+
+	<button type="submit">Login</button>
+	@Html.AntiForgeryToken()
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+	<p style="color: green;">@Model.Message</p>
+}
+
+
