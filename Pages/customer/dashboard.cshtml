@@ -7,8 +7,9 @@
 
 <h2>@ViewBag.Title</h2>
 
+<h2>@Model.SelectedId</h2>
 
-<form method="post" id="accountForm">
+<form asp-page-handler="Update" method="post" id="accountForm">
 	<div>
 		<h4>Current Account</h4>
 		<select asp-for="SelectedId" onchange="document.getElementById('accountForm').submit();">
@@ -19,34 +20,36 @@
 			}
 		</select>
 	</div>
-	<div>
-		<p>Balance of Current Account: @Model.CurrentBalance</p>
-		<p>Total Balance: @Model.TotalBalance</p>
-	</div>
+</form>
 
-	<button asp-page-handler="DeleteAccount" type="submit">Delete Selected Account</button>
+<div>
+	<p>Balance of Current Account: @Model.CurrentBalance</p>
+	<p>Total Balance: @Model.TotalBalance</p>
+</div>
+
+<form method="post">
+    <button asp-page-handler="DeleteAccount" asp-route-id="@Model.SelectedId" type="submit">Delete Selected Account</button>
 </form>
 
 
 
-
-<form method="post" asp-page="/customer/profile">
+<form method="get" asp-page="/customer/profile">
 	<button style="color:seagreen" type="submit">Profile</button>
 </form>
 
-<form method="post" asp-page="/customer/create-account">
+<form method="get" asp-page="/customer/create-account">
 	<button type="submit">Create Account</button>
 </form>
 
-<form method="post" asp-page="/customer/transfer-money">
+<form method="get" asp-page="/customer/transfer-money">
 	<button type="submit">Transfer Money</button>
 </form>
 
-<form method="post" asp-page="/customer/deposit-withdraw">
+<form method="get" asp-page="/customer/deposit-withdraw">
 	<button type="submit">Deposit/Withdraw</button>
 </form>
 
-<form method="post" asp-page="/customer/transaction-history">
+<form method="get" asp-page="/customer/transaction-history">
 	<button type="submit">Transaction History</button>
 </form>
 

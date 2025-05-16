@@ -15,6 +15,24 @@ namespace Simple_Bank_Application.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Type = table.Column<string>(type: "longtext", nullable: false),
+                    RelatedAccountId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -53,49 +71,10 @@ namespace Simple_Bank_Application.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "Transactions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    AccountId = table.Column<int>(type: "int", nullable: true),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Type = table.Column<string>(type: "longtext", nullable: false),
-                    RelatedAccountId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Transactions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Transactions_BankAccounts_AccountId",
-                        column: x => x.AccountId,
-                        principalTable: "BankAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_Transactions_BankAccounts_RelatedAccountId",
-                        column: x => x.RelatedAccountId,
-                        principalTable: "BankAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
             migrationBuilder.CreateIndex(
                 name: "IX_BankAccounts_UserId",
                 table: "BankAccounts",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_AccountId",
-                table: "Transactions",
-                column: "AccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_RelatedAccountId",
-                table: "Transactions",
-                column: "RelatedAccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -114,10 +93,10 @@ namespace Simple_Bank_Application.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Transactions");
+                name: "BankAccounts");
 
             migrationBuilder.DropTable(
-                name: "BankAccounts");
+                name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "Users");

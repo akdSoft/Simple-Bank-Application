@@ -32,10 +32,7 @@ public class TransactionRepository : ITransactionRepository
     public async Task<IEnumerable<Transaction>> GetTransactionsByUserAsync(int userId)
     {
         var transactions = await _context.Transactions
-            .Where(t => _context.BankAccounts
-                .Where(acc => acc.UserId == userId)
-                .Select(acc => acc.Id)
-                .Contains(t.AccountId.Value))
+            .Where(t => t.UserId == userId)
             .ToListAsync();
 
         return transactions;

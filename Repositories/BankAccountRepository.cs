@@ -72,7 +72,9 @@ public class BankAccountRepository : IBankAccountRepository
     public async Task<bool> DeleteBankAccountAsync(int id)
     {
         var deleted = await _context.BankAccounts.FindAsync(id);
-        if (deleted is null) return false;
+        if (deleted == null) return false;
+
+        
 
         _context.BankAccounts.Remove(deleted);
         await _context.SaveChangesAsync();

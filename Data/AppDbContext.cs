@@ -29,25 +29,25 @@ public class AppDbContext : DbContext
             .HasForeignKey(b => b.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Transaction>()
-            .HasOne<BankAccount>()
-            .WithMany()
-            .HasForeignKey(t => t.AccountId)
-            .OnDelete(DeleteBehavior.SetNull); //transactions won't be deleted
+        //modelBuilder.Entity<Transaction>()
+        //    .HasOne<BankAccount>()
+        //    .WithMany()
+        //    .HasForeignKey(t => t.AccountId)
+        //    .OnDelete(DeleteBehavior.Restrict); //transactions won't be deleted
 
-        modelBuilder.Entity<Transaction>()
-            .HasOne<BankAccount>()
-            .WithMany()
-            .HasForeignKey(t => t.RelatedAccountId)
-            .OnDelete(DeleteBehavior.Restrict); //transactions won't be deleted
+        //modelBuilder.Entity<Transaction>()
+        //    .HasOne<BankAccount>()
+        //    .WithMany()
+        //    .HasForeignKey(t => t.RelatedAccountId)
+        //    .OnDelete(DeleteBehavior.Restrict); //transactions won't be deleted
 
         modelBuilder.Entity<BankAccount>()
             .HasIndex(b => b.UserId);
 
-        modelBuilder.Entity<Transaction>()
-            .HasIndex(t => t.AccountId);
+        //modelBuilder.Entity<Transaction>()
+        //    .HasIndex(t => t.AccountId);
 
-        modelBuilder.Entity<Transaction>()
-            .HasIndex(t => t.RelatedAccountId);
+        //modelBuilder.Entity<Transaction>()
+        //    .HasIndex(t => t.RelatedAccountId);
     }
 }

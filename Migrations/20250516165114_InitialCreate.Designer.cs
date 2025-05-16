@@ -10,7 +10,7 @@ using Simple_Bank_Application.Data;
 namespace Simple_Bank_Application.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250516020520_InitialCreate")]
+    [Migration("20250516165114_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace Simple_Bank_Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("AccountId")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
@@ -59,11 +59,10 @@ namespace Simple_Bank_Application.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("RelatedAccountId");
 
                     b.ToTable("Transactions");
                 });
@@ -114,20 +113,6 @@ namespace Simple_Bank_Application.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Simple_Bank_Application.Models.Transaction", b =>
-                {
-                    b.HasOne("Simple_Bank_Application.Models.BankAccount", null)
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("Simple_Bank_Application.Models.BankAccount", null)
-                        .WithMany()
-                        .HasForeignKey("RelatedAccountId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Simple_Bank_Application.Models.User", b =>

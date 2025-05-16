@@ -2,10 +2,26 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model Simple_Bank_Application.Pages.customer.create_accountModel
 @{
-	ViewBag.Title = "Create User";
+	ViewBag.Title = "Create Account";
 }
 
 <h2>@ViewBag.Title</h2>
+
+<form method="post" id="accountForm">
+	<div>
+		<select>
+			<option>-Select an Account Type-</option>
+			<option>Savings Account</option>
+			<option>Checking Account</option>
+		</select>
+		<button asp-page-handler="CreateAccount" type="submit">Create Account</button>
+	</div>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+	<p style="color:green">Account Created Successfully</p>;
+}
 
 <form method="get" asp-page="/customer/dashboard">
 	<button type="submit">Return</button>

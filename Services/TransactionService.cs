@@ -16,9 +16,12 @@ public class TransactionService : ITransactionService
     }
     public async Task<Transaction> DepositAsync(int accountId, decimal amount)
     {
+        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(accountId);
+
         var transaction = new Transaction
         {
             AccountId = accountId,
+            UserId = acc.UserId,
             Amount = amount,
             Type = "Deposit",
             RelatedAccountId = accountId
@@ -29,9 +32,12 @@ public class TransactionService : ITransactionService
     }
     public async Task<Transaction> WithdrawAsync(int accountId, decimal amount)
     {
+        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(accountId);
+
         var transaction = new Transaction
         {
             AccountId = accountId,
+            UserId = acc.UserId,
             Amount = amount,
             Type = "Withdraw",
             RelatedAccountId = accountId
@@ -43,9 +49,12 @@ public class TransactionService : ITransactionService
 
     public async Task<Transaction> TransferMoneyAsync(int accountId, int targetAccountId, decimal amount)
     {
+        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(accountId);
+
         var transaction = new Transaction
         {
             AccountId = accountId,
+            UserId = acc.UserId,
             Amount = amount,
             Type = "Money Transfer",
             RelatedAccountId = targetAccountId
