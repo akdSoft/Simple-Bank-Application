@@ -24,7 +24,7 @@ namespace Simple_Bank_Application.Pages
 
             if (HttpContext.Session.GetString("username") != null)
             {
-                Message = "You are already logged in, log out first.";
+                Message = HttpContext.Session.GetString("username") + ", you are already logged in, log out first.";
                 return Page();
             }
 
@@ -34,20 +34,22 @@ namespace Simple_Bank_Application.Pages
                 HttpContext.Session.SetString("role", "admin");
                 HttpContext.Session.SetInt32("Id", 0);
                 Message = "Succesfully logged in as admin";
-                return Page();
+                return RedirectToPage("/admin/dashboard");
             }
 
             var user = await _service.GetUserByUsernameAsync(Username);
 
             if (user == null || Password != user.Password)
+            {
                 Message = "Invalid credentials";
+                return Page();
+            }
 
             HttpContext.Session.SetString("username", user.Username);
             HttpContext.Session.SetString("role", "customer");
             HttpContext.Session.SetInt32("Id", user.Id);
 
-            return Page();
-
+            return RedirectToPage("/customer/dashboard");
         }
     }
 }

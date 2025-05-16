@@ -43,7 +43,7 @@ namespace Simple_Bank_Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AccountId")
+                    b.Property<int?>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
@@ -118,8 +118,7 @@ namespace Simple_Bank_Application.Migrations
                     b.HasOne("Simple_Bank_Application.Models.BankAccount", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Simple_Bank_Application.Models.BankAccount", null)
                         .WithMany()

@@ -1,0 +1,33 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Simple_Bank_Application.Pages.Admin.DashboardModel
+@{
+	ViewBag.Title = "Admin Page";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="get" asp-page="/admin/list-all-users">
+	<button type="submit">List All Users</button>
+</form>
+
+<form method="get" asp-page="/admin/delete-user">
+	<button type="submit">Delete User</button>
+</form>
+
+<form method="get" asp-page="/admin/list-all-accounts">
+	<button type="submit">List All Accounts</button>
+</form>
+
+<form method="get" asp-page="/admin/delete-account">
+	<button type="submit">Delete Account</button>
+</form>
+
+<form method="get" asp-page="/admin/list-all-transactions">
+	<button type="submit">List All Transactions</button>
+</form>
+
+<form method="post">
+	<button type="submit">Log Out</button>
+</form>
+

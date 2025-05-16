@@ -1,0 +1,12 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Simple_Bank_Application.Pages.customer.create_accountModel
+@{
+	ViewBag.Title = "Create User";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="get" asp-page="/customer/dashboard">
+	<button type="submit">Return</button>
+</form>

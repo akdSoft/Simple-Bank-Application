@@ -4,9 +4,10 @@ namespace Simple_Bank_Application.Repositories.Interfaces;
 
 public interface IBankAccountRepository
 {
-    public Task<IEnumerable<BankAccountDto>> GetAllBankAccountsAsync();
-    public Task<BankAccountDto?> GetBankAccountByIdAsync(int id);
-    public Task<BankAccountDto?> CreateBankAccountAsync(int userId);
-    public Task<bool> DeleteBankAccountAsync(int id);
-    public Task<BankAccountDto?> IncreaseOrDecreaseBalanceAsync(int accountId, decimal amount);
+    Task<IEnumerable<BankAccountDto>> GetAllBankAccountsAsync();
+    Task<BankAccountDto?> GetBankAccountByIdAsync(int id);
+    Task<IEnumerable<BankAccountDto?>> GetBankAccountsByUserId(int userId);
+    Task<BankAccountDto?> CreateBankAccountAsync(int userId);
+    Task<bool> DeleteBankAccountAsync(int id);
+    Task<BankAccountDto?> IncreaseOrDecreaseBalanceAsync(int accountId, decimal amount);
 }

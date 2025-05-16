@@ -59,7 +59,7 @@ namespace Simple_Bank_Application.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Type = table.Column<string>(type: "longtext", nullable: false),
                     RelatedAccountId = table.Column<int>(type: "int", nullable: false)
@@ -72,7 +72,7 @@ namespace Simple_Bank_Application.Migrations
                         column: x => x.AccountId,
                         principalTable: "BankAccounts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Transactions_BankAccounts_RelatedAccountId",
                         column: x => x.RelatedAccountId,

@@ -99,4 +99,19 @@ public class BankAccountRepository : IBankAccountRepository
 
         return accountDto;
     }
+
+    public async Task<IEnumerable<BankAccountDto?>> GetBankAccountsByUserId(int userId)
+    {
+        return await _context.BankAccounts
+            .Include(acc => acc.User)
+            .Where(acc => acc.UserId == userId)
+            .Select(acc => new BankAccountDto
+            {
+                Id = acc.Id,
+                Balance = acc.Balance,
+                UserId = acc.UserId,
+                UserName = acc.User.Name,
+                UserSurname = acc.User.Surname
+            }).ToListAsync();
+    }
 }

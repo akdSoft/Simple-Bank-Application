@@ -1,4 +1,5 @@
 ﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model Simple_Bank_Application.Pages.IndexModel
 @{
     ViewData["Title"] = "Home Page";
@@ -8,8 +9,11 @@
     <title>Razor Pages - Home Page</title>
 </head>
 
-<form method="post">
-    <button type="submit" name="action" value="login">Click to Login</button>
-    <button type="submit" name="action" value="register">Click to Register</button>
-    @Html.AntiForgeryToken()
+
+<form method="get" asp-page="/Login">
+    <button type="submit">Go to Login Page</button>
+</form>
+
+<form method="get" asp-page="/Register">
+    <button type="submit">Go to Register Page</button>
 </form>

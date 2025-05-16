@@ -1,0 +1,40 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Simple_Bank_Application.Pages.admin.list_all_transactionsModel
+@{
+	ViewBag.Title = "List All Transactions";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Transactions != null && Model.Transactions.Any())
+{
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Account Id</th>
+			<th>Amount</th>
+			<th>Type</th>
+			<th>Related Account Id</th>
+		</tr>
+
+		@foreach (var t in Model.Transactions)
+		{
+			<tr>
+				<td>@t.Id</td>
+				<td>@t.AccountId</td>
+				<td>@t.Amount</td>
+				<td>@t.Type</td>
+				<td>@t.RelatedAccountId</td>
+			</tr>
+		}
+	</table>
+}
+
+<form method="post">
+	<button type="submit">Show Transaction List</button>
+</form>
+
+<form method="get" asp-page="/admin/dashboard">
+	<button type="submit">Return</button>
+</form>

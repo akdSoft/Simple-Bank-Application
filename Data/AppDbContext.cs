@@ -33,7 +33,7 @@ public class AppDbContext : DbContext
             .HasOne<BankAccount>()
             .WithMany()
             .HasForeignKey(t => t.AccountId)
-            .OnDelete(DeleteBehavior.Restrict); //transactions won't be deleted
+            .OnDelete(DeleteBehavior.SetNull); //transactions won't be deleted
 
         modelBuilder.Entity<Transaction>()
             .HasOne<BankAccount>()

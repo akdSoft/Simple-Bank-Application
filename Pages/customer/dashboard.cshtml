@@ -1,0 +1,55 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Simple_Bank_Application.Pages.customer.dashboardModel
+@{
+	ViewBag.Title = "Customer Page";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<form method="post" id="accountForm">
+	<div>
+		<h4>Current Account</h4>
+		<select asp-for="SelectedId" onchange="document.getElementById('accountForm').submit();">
+			<option value="">Select an account</option>
+			@foreach(var acc in Model.BankAccounts)
+			{
+				<option value="@acc.Value">@acc.Text</option>
+			}
+		</select>
+	</div>
+	<div>
+		<p>Balance of Current Account: @Model.CurrentBalance</p>
+		<p>Total Balance: @Model.TotalBalance</p>
+	</div>
+
+	<button asp-page-handler="DeleteAccount" type="submit">Delete Selected Account</button>
+</form>
+
+
+
+
+<form method="post" asp-page="/customer/profile">
+	<button style="color:seagreen" type="submit">Profile</button>
+</form>
+
+<form method="post" asp-page="/customer/create-account">
+	<button type="submit">Create Account</button>
+</form>
+
+<form method="post" asp-page="/customer/transfer-money">
+	<button type="submit">Transfer Money</button>
+</form>
+
+<form method="post" asp-page="/customer/deposit-withdraw">
+	<button type="submit">Deposit/Withdraw</button>
+</form>
+
+<form method="post" asp-page="/customer/transaction-history">
+	<button type="submit">Transaction History</button>
+</form>
+
+<form asp-page-handler="logout" method="post">
+	<button type="submit">Log out</button>
+</form>

@@ -1,0 +1,40 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Simple_Bank_Application.Pages.admin.list_all_usersModel
+@{
+	ViewBag.Title = "List All Users";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Users != null && Model.Users.Any())
+{
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Surname</th>
+			<th>Username</th>
+			<th>Email</th>
+		</tr>
+		@foreach (var u in Model.Users)
+		{
+			<tr>
+				<td>@u.Id</td>
+				<td>@u.Name</td>
+				<td>@u.Surname</td>
+				<td>@u.Username</td>
+				<td>@u.Email</td>
+			</tr>
+		}
+	</table>	
+}
+
+<form method="post">
+	<button type="submit">Show User List</button>
+</form>
+
+
+<form method="get" asp-page="/admin/dashboard">
+	<button type="submit">Return</button>
+</form>

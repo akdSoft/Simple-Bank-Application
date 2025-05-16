@@ -35,7 +35,7 @@ public class TransactionRepository : ITransactionRepository
             .Where(t => _context.BankAccounts
                 .Where(acc => acc.UserId == userId)
                 .Select(acc => acc.Id)
-                .Contains(t.AccountId))
+                .Contains(t.AccountId.Value))
             .ToListAsync();
 
         return transactions;

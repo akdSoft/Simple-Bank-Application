@@ -1,0 +1,31 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Simple_Bank_Application.Pages.admin.delete_accountModel
+@{
+	ViewBag.Title = "Delete Account";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="post">
+	<label for="deleteButton">Account ID:</label>
+	<input type="number" id="deleteButton" name="Id"/>
+
+	<button type="submit">Delete</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+	if (Model.Deleted)
+	{
+		<p style="color: green;">@Model.Message</p>
+	}
+	else
+	{
+		<p style="color: red;">@Model.Message</p>
+	}
+}
+
+<form method="get" asp-page="/admin/dashboard">
+	<button type="submit">Return</button>
+</form>
