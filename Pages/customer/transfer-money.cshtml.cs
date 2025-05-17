@@ -36,9 +36,10 @@ namespace Simple_Bank_Application.Pages.customer
             await UpdateAccounts();
         }
 
-        public async Task OnPostTransfer(int targetAccountId, int amount)
+        public async Task OnPostTransfer(int selectedAccountId, int targetAccountId, int amount)
         {
-            Console.WriteLine("target id: " + targetAccountId + "   amount: " + amount);
+            Console.WriteLine("selected account id: " + SelectedAccountId + "target id: " + targetAccountId + "   amount: " + amount);
+            await _transactionService.TransferMoneyAsync(selectedAccountId, targetAccountId, amount);
             await UpdateBalance();
             await UpdateAccounts();
         }

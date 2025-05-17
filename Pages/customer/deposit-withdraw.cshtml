@@ -6,6 +6,42 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<p>Selected Account Id: @Model.SelectedAccountId</p>
+
+<form asp-page-handler="Update" method="post" id="accountListForm">
+	<input type="hidden" asp-for="Amount" />
+	<select asp-for="SelectedAccountId" onchange="document.getElementById('accountListForm').submit();">
+		<option value="">Select an Account</option>
+		@foreach (var acc in Model.BankAccounts)
+		{
+			<option value="@acc.Value">@acc.Text</option>
+		}
+	</select>
+</form>
+
+<p>Balance: @Model.Balance</p>
+
+@* <p>amount: @Model.Amount</p> *@
+<form method="post" id="amountForm">
+	<label for="amountInput">Amount:</label>
+	<input type="hidden" asp-for="SelectedAccountId" />
+	<input type="number" id="amountInput" asp-for="Amount" onchange="document.getElementById('amountForm').submit();"/>
+</form>
+
+
+<form asp-page-handler="Deposit" asp-route-accountId="@Model.SelectedAccountId" asp-route-amount="@Model.Amount" method="post">
+	<input type="hidden" asp-for="SelectedAccountId" />
+	<input type="hidden" asp-for="Amount" />
+	<button type="submit">Deposit</button>
+</form>
+
+<form asp-page-handler="Withdraw" asp-route-accountId="@Model.SelectedAccountId" asp-route-amount="@Model.Amount" method="post">
+	<input type="hidden" asp-for="SelectedAccountId" />
+	<input type="hidden" asp-for="Amount" />
+	<button type="submit">Withdraw</button>
+</form>
+
+
 <form method="get" asp-page="/customer/dashboard">
 	<button type="submit">Return</button>
 </form>
