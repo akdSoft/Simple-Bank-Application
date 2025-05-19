@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+
+<style>
+    .flex-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 40px);
+    }
+
+    .center-flex-vertically {
+        width: 50%;
+        text-align: center;
+        /* padding: 20px; */
+        /* border: 1px solid #ccc; */
+    }
+</style>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Simple Banking App</title> 
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
+</head>
+
+
+<body class="flex-container gradient-custom">
+
+    <div class="center-flex-vertically">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+</body>
+</html>

@@ -3,38 +3,42 @@
 @model Simple_Bank_Application.Pages.admin.list_all_usersModel
 @{
 	ViewBag.Title = "List All Users";
+	Layout = "_Layout";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="d-flex justify-content-center align-items-center">
+	<div class="card bg-dark text-white p-5 text-center" style="border-radius: 1rem; width: 100%; max-width: 500px;">
+		<h2 class="fw-bold mb-2 text-uppercase">List All Users</h2>
 
-@if (Model.Users != null && Model.Users.Any())
-{
-	<table>
-		<tr>
-			<th>Id</th>
-			<th>Name</th>
-			<th>Surname</th>
-			<th>Username</th>
-			<th>Email</th>
-		</tr>
-		@foreach (var u in Model.Users)
+		@if (Model.Users != null && Model.Users.Any())
 		{
-			<tr>
-				<td>@u.Id</td>
-				<td>@u.Name</td>
-				<td>@u.Surname</td>
-				<td>@u.Username</td>
-				<td>@u.Email</td>
-			</tr>
+			<table>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Surname</th>
+					<th>Username</th>
+					<th>Email</th>
+				</tr>
+				@foreach (var u in Model.Users)
+				{
+					<tr>
+						<td>@u.Id</td>
+						<td>@u.Name</td>
+						<td>@u.Surname</td>
+						<td>@u.Username</td>
+						<td>@u.Email</td>
+					</tr>
+				}
+			</table>
 		}
-	</table>	
-}
+		
+		<form method="post" class="mt-3">
+			<button class="btn btn-outline-light btn-lg fs-6" type="submit">Show User List</button>
+		</form>
 
-<form method="post">
-	<button type="submit">Show User List</button>
-</form>
-
-
-<form method="get" asp-page="/admin/dashboard">
-	<button type="submit">Return</button>
-</form>
+		<form method="get" asp-page="/admin/dashboard" class="mt-3">
+			<button class="btn btn-outline-light btn-lg fs-6" type="submit">Return</button>
+		</form>
+	</div>
+</div>
