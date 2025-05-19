@@ -7,6 +7,38 @@
 
 <h2>@ViewBag.Title</h2>
 
+@if (Model.Transactions != null && Model.Transactions.Any())
+{
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Account ID</th>
+			<th>User ID</th>
+			<th>Amount</th>
+			<th>Type</th>
+			<th>Related Account ID</th>
+		</tr>
+
+		@foreach (var t in Model.Transactions)
+		{
+			<tr>
+				<td>@t.Id</td>
+				<td>@t.AccountId</td>
+				<td>@t.UserId</td>
+				<td>@t.Amount</td>
+				<td>@t.Type</td>
+				<td>@t.RelatedAccountId</td>
+			</tr>
+		}
+
+	</table>
+}
+
+
+<form method="post">
+	<button type="submit">Show Transaction History</button>
+</form>
+
 <form method="get" asp-page="/customer/dashboard">
 	<button type="submit">Return</button>
 </form>

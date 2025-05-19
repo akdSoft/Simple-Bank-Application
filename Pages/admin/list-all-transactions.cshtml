@@ -11,11 +11,12 @@
 {
 	<table>
 		<tr>
-			<th>Id</th>
-			<th>Account Id</th>
+			<th>ID</th>
+			<th>Account ID</th>
+			<th>User ID</th>
 			<th>Amount</th>
 			<th>Type</th>
-			<th>Related Account Id</th>
+			<th>Related Account ID</th>
 		</tr>
 
 		@foreach (var t in Model.Transactions)
@@ -23,6 +24,7 @@
 			<tr>
 				<td>@t.Id</td>
 				<td>@t.AccountId</td>
+				<td>@t.UserId</td>
 				<td>@t.Amount</td>
 				<td>@t.Type</td>
 				<td>@t.RelatedAccountId</td>
