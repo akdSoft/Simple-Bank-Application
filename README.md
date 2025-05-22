@@ -6,7 +6,7 @@ This project is a basic replication of a banking application, designed with two 
 
 🛠️ Technologies Used
 
-Back-end: ASP.NET Core
+Back-end: ASP.NET Core, Entity Framework Core
 
 Interface: Razor Pages
 
