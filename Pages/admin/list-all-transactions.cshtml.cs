@@ -12,6 +12,15 @@ namespace Simple_Bank_Application.Pages.admin
         public list_all_transactionsModel(ITransactionService service) => _service = service;
 
         public List<Transaction> Transactions { get; set; }
+
+        public IActionResult OnGet()
+        {
+            if (HttpContext.Session.GetString("role") != "admin")
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
+        }
         public async Task OnPost()
         {
             Transactions = (List<Transaction>) await _service.GetAllTransactionsAsync();

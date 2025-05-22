@@ -11,8 +11,13 @@ namespace Simple_Bank_Application.Pages.customer
         public create_accountModel(IBankAccountService service) => _service = service;
 
         public string Message { get; set; } = string.Empty;
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (HttpContext.Session.GetString("role") != "customer")
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
         }
         public async Task OnPostCreateAccount()
         {

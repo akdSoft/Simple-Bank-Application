@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Simple_Bank_Application.Models.DTOs;
@@ -15,6 +16,7 @@ namespace Simple_Bank_Application.Pages
         public string Username { get; set; } = string.Empty;
 
         [BindProperty]
+        //[PasswordPropertyText]
         public string Password { get; set; } = string.Empty;
 
         public string Message { get; set; } = string.Empty;

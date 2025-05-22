@@ -12,12 +12,12 @@ public class TransactionController : ControllerBase
     public TransactionController(ITransactionService service) => _service = service;
 
     [HttpGet]
-    [AdminAuth]
+    //[AdminAuth]
     public async Task<IActionResult> GetAllTransactionsAsync() =>
         Ok(await _service.GetAllTransactionsAsync());
 
     [HttpGet("user")]
-    [RequiresAuth]
+    //[RequiresAuth]
     public async Task<IActionResult> GetTransactionsByUserAsync()
     {
         var transactions = await _service.GetTransactionsByUserAsync((int) HttpContext.Session.GetInt32("Id"));
@@ -25,7 +25,7 @@ public class TransactionController : ControllerBase
     }
 
     [HttpGet("account/{accountId}")]
-    [RequiresAuth]
+    //[RequiresAuth]
     public async Task<IActionResult> GetTransactionsByBankAccountAsync(int accountId)
     {
         var transactions = await _service.GetTransactionsByBankAccountAsync(accountId, (int)HttpContext.Session.GetInt32("Id"));
@@ -33,17 +33,17 @@ public class TransactionController : ControllerBase
     }
 
     [HttpPost("deposit")]
-    [RequiresAuth]
+    //[RequiresAuth]
     public async Task<IActionResult> DepositAsync(int accountId, decimal amount) => 
         Ok(await _service.DepositAsync(accountId, amount));
 
     [HttpPost("withdraw")]
-    [RequiresAuth]
+    //[RequiresAuth]
     public async Task<IActionResult> WithdrawAsync(int accountId, decimal amount) => 
         Ok(await _service.WithdrawAsync(accountId, amount));
 
     [HttpPost("transfer")]
-    [RequiresAuth]
+    //[RequiresAuth]
     public async Task<IActionResult> TransferMoneyAsync(int accountId, int targetAccountId, decimal amount) =>
         Ok(await _service.TransferMoneyAsync(accountId, targetAccountId, amount));
 }

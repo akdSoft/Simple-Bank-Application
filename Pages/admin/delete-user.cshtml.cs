@@ -15,6 +15,14 @@ namespace Simple_Bank_Application.Pages.admin
         public bool Deleted { get; set; } = true;
         public string Message { get; set; }
 
+        public IActionResult OnGet()
+        {
+            if (HttpContext.Session.GetString("role") != "admin")
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
+        }
         public async Task OnPost()
         {
             Deleted = await _service.DeleteUserAsync(Id);

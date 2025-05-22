@@ -21,10 +21,16 @@ namespace Simple_Bank_Application.Pages.customer
         [BindProperty]
         public decimal? Amount { get; set; }
         public List<SelectListItem> BankAccounts { get; set; } = new List<SelectListItem>();
-        public async Task OnGet()
+
+        public async Task<IActionResult> OnGet()
         {
+            if (HttpContext.Session.GetString("role") != "customer")
+            {
+                return RedirectToPage("/Index");
+            }
             await UpdateBalance();
             await UpdateAccounts();
+            return Page();
         }
         public async Task OnPostUpdate()
         {

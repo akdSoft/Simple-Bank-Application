@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simple_Bank_Application.Models.DTOs;
-using Simple_Bank_Application.Middleware;
+//using Simple_Bank_Application.Middleware;
 using Simple_Bank_Application.Services.Interfaces;
 
 namespace Simple_Bank_Application.Controllers;
@@ -14,7 +14,7 @@ public class UserController : ControllerBase
     public UserController(IUserService service) => _service = service;
 
     [HttpGet]
-    [AdminAuth]
+    //[AdminAuth]
     public async Task<IActionResult> GetAllUsersAsync() => Ok(await _service.GetAllUsersAsync());
 
     //[HttpGet("{id}")]
@@ -26,7 +26,7 @@ public class UserController : ControllerBase
     //}
 
     [HttpGet("profile")]
-    [RequiresAuth]
+    //[RequiresAuth]
     public IActionResult GetProfile()
     {
         var username = HttpContext.Session.GetString("username");
@@ -34,7 +34,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [RequiresAuth]
+    //[RequiresAuth]
     public async Task<IActionResult> UpdateUserAsync(CreateUserDto dto, int id)
     {
         var updatedUser = await _service.UpdateUserAsync(dto, id);
@@ -42,7 +42,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete]
-    [AdminAuth]
+    //[AdminAuth]
     public async Task<IActionResult> DeleteUserAsync(int id)
     {
         var deleted = await _service.DeleteUserAsync(id);

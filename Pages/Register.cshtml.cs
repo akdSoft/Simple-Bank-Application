@@ -1,6 +1,9 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Simple_Bank_Application.Models.DTOs;
+using Simple_Bank_Application.Services;
 using Simple_Bank_Application.Services.Interfaces;
 
 namespace Simple_Bank_Application.Pages;
@@ -8,8 +11,13 @@ namespace Simple_Bank_Application.Pages;
 public class RegisterModel : PageModel
 {
     private readonly IUserService _service;
+    private readonly ValidatorService _validatorService;
 
-    public RegisterModel(IUserService service) => _service = service;
+    public RegisterModel(IUserService service, ValidatorService validatorService)
+    {
+        _service = service;
+        _validatorService = validatorService;
+    }
 
     [BindProperty]
     public string Name { get; set; } = string.Empty;
@@ -35,6 +43,22 @@ public class RegisterModel : PageModel
 
     public async Task<IActionResult> OnPost()
     {
+        if (!_validatorService.IsUsernameValid(Username))
+        {
+            Message = "Username exists!";
+            return Page();
+        }
+        if (!_validatorService.IsEmailValid(Email))
+        {
+            Message = "Email is invalid or exists!";
+            return Page();
+        }
+        if (!_validatorService.IsPasswordValid(Password))
+        {
+            Message = "Password must be at least 8 characters";
+            return Page();
+        }
+
         var userDto = new CreateUserDto
         {
             Name = Name,

@@ -27,9 +27,14 @@ public class profileModel : PageModel
     //public string Phone { get; set; }
     public int UserId { get; set; }
 
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
+        if (HttpContext.Session.GetString("role") != "customer")
+        {
+            return RedirectToPage("/Index");
+        }
         await UpdateInformation();
+        return Page();
     }
     public async Task OnPostUpdate(string name, string surname, string username, string password, string email)
     {

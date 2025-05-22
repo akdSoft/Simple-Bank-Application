@@ -13,9 +13,14 @@ public class transaction_historyModel : PageModel
     public transaction_historyModel(ITransactionService service) => _service = service;
 
     public List<Transaction> Transactions { get; set; }
-    public async Task OnGet()
+
+    public async Task<IActionResult> OnGet()
     {
-        
+        if (HttpContext.Session.GetString("role") != "customer")
+        {
+            return RedirectToPage("/Index");
+        }
+        return Page();
     }
 
     public async Task OnPost()

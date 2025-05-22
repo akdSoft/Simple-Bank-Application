@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Simple_Bank_Application.Services.Interfaces;
@@ -16,9 +17,15 @@ namespace Simple_Bank_Application.Pages.customer
         public decimal TotalBalance { get; set; } = 0.00m;
         public decimal CurrentBalance { get; set; } = 0.00m;
         public List<SelectListItem> BankAccounts { get; set; } = new List<SelectListItem>();
-        public async Task OnGet()
+
+        public async Task<IActionResult> OnGet()
         {
+            if (HttpContext.Session.GetString("role") != "customer")
+            {
+                return RedirectToPage("/Index");
+            }
             await UpdateAll();
+            return Page();
         }
 
         public async Task OnPostUpdate()

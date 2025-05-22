@@ -13,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseMySQL(connectionString
 
 //builder.Services.AddTransient<AppDbContext>();
 
+builder.Services.AddScoped<ValidatorService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBankAccountRepository, BankAccountRepository>();

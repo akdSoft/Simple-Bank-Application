@@ -19,7 +19,7 @@ public class BankAccountController : ControllerBase
     }
 
     [HttpGet]
-    [AdminAuth]
+    //[AdminAuth]
     public async Task<IActionResult> GetAllBankAccountsAsync() => Ok(await _bankAccountService.GetAllBankAccountsAsync());
 
     //[HttpGet("{id}")]
@@ -30,7 +30,7 @@ public class BankAccountController : ControllerBase
     //}
 
     [HttpPost]
-    [RequiresAuth]
+    //[RequiresAuth]
     public async Task<IActionResult> CreateBankAccountAsync()
     {
         var currentUsername = HttpContext.Session.GetString("username");

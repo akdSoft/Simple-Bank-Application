@@ -13,6 +13,15 @@ namespace Simple_Bank_Application.Pages.admin
 
         public List<UserDto> Users { get; set; }
 
+        public IActionResult OnGet()
+        {
+            if (HttpContext.Session.GetString("role") != "admin")
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
+        }
+
         public async Task OnPost()
         {
             Users = (List<UserDto>)await _service.GetAllUsersAsync();
