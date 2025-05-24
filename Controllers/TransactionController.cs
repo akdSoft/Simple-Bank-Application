@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Services.Interfaces;
 
 namespace Simple_Bank_Application.Controllers;
@@ -41,16 +42,16 @@ public class TransactionController : ControllerBase
 
     [HttpPost("deposit")]
     //[RequiresAuth]
-    public async Task<IActionResult> DepositAsync(int accountId, decimal amount) => 
-        Ok(await _service.DepositAsync(accountId, amount));
+    public async Task<IActionResult> DepositAsync(DepositWithdrawDto dto) => 
+        Ok(await _service.DepositAsync(dto));
 
     [HttpPost("withdraw")]
     //[RequiresAuth]
-    public async Task<IActionResult> WithdrawAsync(int accountId, decimal amount) => 
-        Ok(await _service.WithdrawAsync(accountId, amount));
+    public async Task<IActionResult> WithdrawAsync(DepositWithdrawDto dto) => 
+        Ok(await _service.WithdrawAsync(dto));
 
     [HttpPost("transfer")]
     //[RequiresAuth]
-    public async Task<IActionResult> TransferMoneyAsync(int accountId, int targetAccountId, decimal amount) =>
-        Ok(await _service.TransferMoneyAsync(accountId, targetAccountId, amount));
+    public async Task<IActionResult> TransferMoneyAsync(TransferMoneyDto dto) =>
+        Ok(await _service.TransferMoneyAsync(dto));
 }

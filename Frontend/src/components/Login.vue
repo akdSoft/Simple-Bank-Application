@@ -23,11 +23,9 @@ export default{
         const response = await axios.post('http://localhost:5280/api/Auth/login', payload, {withCredentials: true})
         if(response.status === 200){
           if(response.data === 'logged in as admin'){
-            // alert('Successfully logged in as admin!')
             this.$router.push('/admin/dashboard')
           }
           else{
-            // alert(`Successfully logged in as ${this.username}!`)
             this.$router.push('/customer/dashboard')
           }
         }
@@ -50,10 +48,10 @@ export default{
 
       <form @submit.prevent="login" style="display: flex; flex-direction: column">
         <label>Username:</label>
-        <input type="text" v-model="username" required>
+        <input class="input" type="text" v-model="username" required>
 
         <label>Password:</label>
-        <input type="text" v-model="password" required>
+        <input  class="input" type="text" v-model="password" required>
 
         <button class="dashboard-button" type="submit">Login</button>
 

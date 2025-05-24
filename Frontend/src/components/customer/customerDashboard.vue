@@ -22,14 +22,17 @@ const totalBalance = computed(() => {
 })
 
 onMounted(async () => {
+  await  loadAccounts();
+})
+
+async function loadAccounts(){
   try{
     const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true},)
     accounts.value = response.data
   } catch (err) {
     alert(err.message)
   }
-})
-
+}
 
 async function logOut(){
   try{
@@ -45,6 +48,22 @@ async function logOut(){
   }
 }
 
+async function deleteAccount(){
+  try {
+    const response = await axios.delete(`http://localhost:5280/api/BankAccount/${selectedAccountId.value}`, {withCredentials: true})
+    if (response.status === 204) {
+      alert('successfully deleted')
+    }
+    else if (response.status === 404) {
+      alert('select a valid account')
+    }
+    else {
+      alert('unexpected situation')
+    }
+  } catch (err) {
+  alert(err.message)
+  }
+}
 </script>
 
 <template>
@@ -59,13 +78,16 @@ async function logOut(){
         </option>
       </select>
 
-      <div style="display: flex; flex-direction: column">
+      <div style="display: flex; flex-direction: column; margin-bottom: 30px">
         <label>Balance of Selected Account</label>
         <input :value="selectedAccount.balance" readonly>
 
         <label>Total Balance</label>
         <input :value="totalBalance" readonly>
+
+        <button class="dashboard-button" @click="deleteAccount">Delete Selected Account</button>
       </div>
+
 
       <router-link to="/customer/profile">
         <button class="dashboard-button">Profile</button>

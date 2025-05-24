@@ -7,7 +7,6 @@ export default {
       try{
         const response = await axios.post('http://localhost:5280/api/Auth/logout', {},{withCredentials: true})
         if(response.data === 'logged out'){
-          alert('Successfully logged out')
           this.$router.push('/')
         }
         else{

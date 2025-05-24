@@ -46,19 +46,19 @@ export default {
 
       <form @submit.prevent="register" style="display: flex; flex-direction: column">
         <label >Name:</label>
-        <input type="text" v-model="name" required>
+        <input class="input" type="text" v-model="name" required>
 
         <label>Surname:</label>
-        <input type="text" v-model="surname" required>
+        <input class="input" type="text" v-model="surname" required>
 
         <label>Username:</label>
-        <input type="text" v-model="username" required>
+        <input class="input" type="text" v-model="username" required>
 
         <label>Password:</label>
-        <input type="text" v-model="password" required>
+        <input class="input" type="text" v-model="password" required>
 
         <label>Email:</label>
-        <input type="text" v-model="email" required>
+        <input class="input" type="text" v-model="email" required>
 
         <button class="dashboard-button" type="submit">Register</button>
       </form>
@@ -71,7 +71,9 @@ export default {
         <button class="dashboard-button">Return</button>
       </router-link>
     </div>
+
   </div>
+
 </template>
 
 <style scoped>

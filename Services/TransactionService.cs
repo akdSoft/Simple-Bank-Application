@@ -1,4 +1,6 @@
-﻿using Simple_Bank_Application.Models;
+﻿using Microsoft.JSInterop.Infrastructure;
+using Simple_Bank_Application.Models;
+using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Repositories.Interfaces;
 using Simple_Bank_Application.Services.Interfaces;
 
@@ -14,54 +16,54 @@ public class TransactionService : ITransactionService
         _transactionRepo = transactionRepo;
         _bankAccountRepo = bankAccountRepo;
     }
-    public async Task<Transaction> DepositAsync(int accountId, decimal amount)
+    public async Task<Transaction> DepositAsync(DepositWithdrawDto dto)
     {
-        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(accountId);
+        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.AccountId);
 
         var transaction = new Transaction
         {
-            AccountId = accountId,
+            AccountId = dto.AccountId,
             UserId = acc.UserId,
-            Amount = amount,
+            Amount = dto.Amount,
             Type = "Deposit",
-            RelatedAccountId = accountId
+            RelatedAccountId = dto.AccountId
         };
         await _transactionRepo.CreateTransactionAsync(transaction);
-        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(accountId, amount);
+        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(dto.AccountId, dto.Amount);
         return transaction;
     }
-    public async Task<Transaction> WithdrawAsync(int accountId, decimal amount)
+    public async Task<Transaction> WithdrawAsync(DepositWithdrawDto dto)
     {
-        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(accountId);
+        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.AccountId);
 
         var transaction = new Transaction
         {
-            AccountId = accountId,
+            AccountId = dto.AccountId,
             UserId = acc.UserId,
-            Amount = amount,
+            Amount = dto.Amount,
             Type = "Withdraw",
-            RelatedAccountId = accountId
+            RelatedAccountId = dto.AccountId
         };
         await _transactionRepo.CreateTransactionAsync(transaction);
-        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(accountId, -amount);
+        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(dto.AccountId, -dto.Amount);
         return transaction;
     }
 
-    public async Task<Transaction> TransferMoneyAsync(int accountId, int targetAccountId, decimal amount)
+    public async Task<Transaction> TransferMoneyAsync(TransferMoneyDto dto)
     {
-        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(accountId);
+        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.FromAccountId);
 
         var transaction = new Transaction
         {
-            AccountId = accountId,
+            AccountId = dto.FromAccountId,
             UserId = acc.UserId,
-            Amount = amount,
+            Amount = dto.Amount,
             Type = "Money Transfer",
-            RelatedAccountId = targetAccountId
+            RelatedAccountId = dto.TargetAccountId
         };
         await _transactionRepo.CreateTransactionAsync(transaction);
-        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(accountId, -amount);
-        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(targetAccountId, amount);
+        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(dto.FromAccountId, -dto.Amount);
+        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(dto.TargetAccountId, dto.Amount);
         return transaction;
     }
 

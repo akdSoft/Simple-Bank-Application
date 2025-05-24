@@ -1,6 +1,9 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import axios from "axios";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 
 const user = ref({
   name: '',
@@ -10,8 +13,6 @@ const user = ref({
   email: '',
   id: 0
 })
-
-
 
 async function updateUser(){
   const payload = {
@@ -25,7 +26,6 @@ async function updateUser(){
     const response = await axios.put('http://localhost:5280/api/User', payload, {withCredentials: true})
     if(response.status === 200){
       alert('user updated')
-      this.$router.push('/')
     }
     else{
       alert('unexpected situation')
@@ -40,6 +40,7 @@ async function deleteUser(){
     const response = await axios.delete('http://localhost:5280/api/User', {withCredentials: true})
     if(response.status === 204){
       alert('user deleted')
+      router.push('/')
     }
     else{
       alert('unexpected situation')
@@ -60,7 +61,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <h3>name {{user.name}}</h3>
 <div class="dashboard-wrapper">
   <div class="dashboard-card">
     <h2 class="dashboard-title">Profile</h2>

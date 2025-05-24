@@ -1,4 +1,5 @@
 ﻿using Simple_Bank_Application.Models;
+using Simple_Bank_Application.Models.DTOs;
 
 namespace Simple_Bank_Application.Services.Interfaces;
 
@@ -7,7 +8,7 @@ public interface ITransactionService
     public Task<IEnumerable<Transaction>> GetAllTransactionsAsync();
     public Task<IEnumerable<Transaction>> GetTransactionsByUserAsync(int UserId);
     public Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int AccountId, int userId);
-    public Task<Transaction> DepositAsync(int accountId, decimal amount);
-    public Task<Transaction> WithdrawAsync(int accountId, decimal amount);
-    public Task<Transaction> TransferMoneyAsync(int accountId, int targetAccountId, decimal amount);
+    public Task<Transaction> DepositAsync(DepositWithdrawDto dto);
+    public Task<Transaction> WithdrawAsync(DepositWithdrawDto dto);
+    public Task<Transaction> TransferMoneyAsync(TransferMoneyDto dto);
 }
