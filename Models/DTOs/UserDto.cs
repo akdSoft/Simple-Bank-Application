@@ -35,3 +35,9 @@ public class CreateUserDto
     [StringLength(50)]
     public string Email { get; set; } = null!;
 }
+
+public class LoginDto
+{
+    public string Username { get; set; } = null!;
+    public string Password { get; set; } = null!;
+}

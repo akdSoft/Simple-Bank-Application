@@ -29,6 +29,13 @@ public class BankAccountController : ControllerBase
     //    return (bankAccount is null) ? NotFound() : Ok(bankAccount);
     //}
 
+    [HttpGet("user")]
+    public async Task<IActionResult> GetBankAccountsByCurrentUser()
+    {
+        var userId = HttpContext.Session.GetInt32("Id");
+        return (userId != null) ? Ok(await _bankAccountService.GetBankAccountsByUserId(userId.Value)) : BadRequest();
+    }
+
     [HttpPost]
     //[RequiresAuth]
     public async Task<IActionResult> CreateBankAccountAsync()

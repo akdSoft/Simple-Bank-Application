@@ -6,11 +6,11 @@ namespace Simple_Bank_Application.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthContoller : ControllerBase
+public class AuthController : ControllerBase
 {
     private readonly IUserRepository _repo;
 
-    public AuthContoller(IUserRepository repo) => _repo = repo;
+    public AuthController(IUserRepository repo) => _repo = repo;
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(CreateUserDto dto)
@@ -21,24 +21,24 @@ public class AuthContoller : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(string username, string password)
+    public async Task<IActionResult> Login(LoginDto dto)
     {
         if(HttpContext.Session.GetString("username") != null)
         {
             return BadRequest("You are already logged in, log out first.");
         }
 
-        if(username == "admin" && password == "admin")
+        if(dto.Username == "admin" && dto.Password == "admin")
         {
-            HttpContext.Session.SetString("username", username);
+            HttpContext.Session.SetString("username", dto.Username);
             HttpContext.Session.SetString("role", "admin");
             HttpContext.Session.SetInt32("Id", 0);
-            return Ok("Succesfully logged in as admin");
+            return Ok("logged in as admin");
         }
 
-        var user = await _repo.GetUserByUsernameAsync(username);
+        var user = await _repo.GetUserByUsernameAsync(dto.Username);
 
-        if (user == null || password != user.Password)
+        if (user == null || dto.Password != user.Password)
             return Unauthorized("Invalid credentials");
 
         HttpContext.Session.SetString("username", user.Username);
@@ -52,7 +52,7 @@ public class AuthContoller : ControllerBase
     public IActionResult Logout()
     {
         HttpContext.Session.Clear();
-        return Ok("Logged out");
+        return Ok("logged out");
     }
 
 }

@@ -23,10 +23,11 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader());
+    options.AddPolicy("AllowFrontend", builder =>
+        builder.WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
 });
 
 builder.Services.AddRazorPages();
@@ -45,7 +46,7 @@ var app = builder.Build();
 
 
 app.UseRouting();
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontend");
 app.UseStaticFiles();
 app.UseSession();
 

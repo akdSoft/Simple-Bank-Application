@@ -32,6 +32,13 @@ public class TransactionController : ControllerBase
         return transactions.Any() ? Ok(transactions) : NotFound();
     }
 
+    [HttpGet("user/{id}")]
+    public async Task<IActionResult> GetTransactionsByUserId(int userId)
+    {
+        var transactions = await _service.GetTransactionsByUserAsync(userId);
+        return transactions.Any() ? Ok(transactions) : NotFound();
+    }
+
     [HttpPost("deposit")]
     //[RequiresAuth]
     public async Task<IActionResult> DepositAsync(int accountId, decimal amount) => 

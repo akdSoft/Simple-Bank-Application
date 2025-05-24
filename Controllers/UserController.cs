@@ -17,13 +17,13 @@ public class UserController : ControllerBase
     //[AdminAuth]
     public async Task<IActionResult> GetAllUsersAsync() => Ok(await _service.GetAllUsersAsync());
 
-    //[HttpGet("{id}")]
+    [HttpGet("me")]
     //[AdminAuth]
-    //public async Task<IActionResult> GetUserByIdAsync(int id)
-    //{
-    //    var user = await _service.GetUserByIdAsync(id);
-    //    return (user is null) ? NotFound() : Ok(user);
-    //}
+    public async Task<IActionResult> GetCurrentUserAsync()
+    {
+        var user = await _service.GetUserWithPasswordByIdAsync((int)HttpContext.Session.GetInt32("Id"));
+        return (user is null) ? NotFound() : Ok(user);
+    }
 
     [HttpGet("profile")]
     //[RequiresAuth]
@@ -33,19 +33,37 @@ public class UserController : ControllerBase
         return Ok($"Welcome, {username}");
     }
 
-    [HttpPut("{id}")]
+    [HttpPut()]
     //[RequiresAuth]
-    public async Task<IActionResult> UpdateUserAsync(CreateUserDto dto, int id)
+    public async Task<IActionResult> UpdateUserAsync(CreateUserDto dto)
     {
-        var updatedUser = await _service.UpdateUserAsync(dto, id);
+        var updatedUser = await _service.UpdateUserAsync(dto, (int)HttpContext.Session.GetInt32("Id"));
         return (updatedUser is null) ? NotFound() : Ok(updatedUser);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     //[AdminAuth]
-    public async Task<IActionResult> DeleteUserAsync(int id)
+    public async Task<IActionResult> DeleteUserByIdAsync(int id)
     {
         var deleted = await _service.DeleteUserAsync(id);
         return deleted ? NoContent() : NotFound();
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteCurrentUserAsync()
+    {
+        var userId = HttpContext.Session.GetInt32("Id");
+        if (userId == null) return BadRequest();
+
+        var deleted = await _service.DeleteUserAsync(userId.Value);
+        if (deleted)
+        {
+            HttpContext.Session.Clear();
+            return NoContent();
+        }
+        else
+        {
+            return NotFound();
+        }
     }
 }
