@@ -8,7 +8,7 @@ This project is a basic replication of a banking application, designed with two 
 
 Back-end: ASP.NET Core, Entity Framework Core
 
-Interface: Razor Pages
+Interface: Vue.js
 
 Database: MySQL
 
