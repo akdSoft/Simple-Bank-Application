@@ -28,13 +28,7 @@ Viewing transaction history
 
 Currently, the project is built with two parts:
 
-• A Razor Pages-based web interface
+• A RESTful API developed with ASP.NET Core
 
-• A basic API structure
-
-In the near future, the architecture will evolve into a fully decoupled system, where:
-
-• The back-end will be structured entirely as a RESTful API
-
-• The front-end will be built using a modern JavaScript framework (such as React or Angular)
+• A modern front-end built with Vue.js
 
