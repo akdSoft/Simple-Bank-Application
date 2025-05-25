@@ -55,9 +55,9 @@ async function loadAccounts(){
       <div style="display: flex; flex-direction: column">
         <label>Select An Account</label>
 
-        <select v-model="selectedAccountId">
-          <option>--Select an Account--</option>
-          <option v-for="account in accounts" :key="account.id">
+        <select class="select" v-model="selectedAccountId">
+          <option class="select-items" >--Select an Account--</option>
+          <option class="select-items" v-for="account in accounts" :key="account.id">
             {{account.id}}
           </option>
         </select>

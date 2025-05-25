@@ -22,6 +22,7 @@ async function showUserList(){
     <h2 class="dashboard-title">List All Users</h2>
 
     <table v-if="users.length > 0">
+      <tbody>
       <tr>
         <th>Id</th>
         <th>Name</th>
@@ -37,6 +38,7 @@ async function showUserList(){
         <td>{{user.username}}</td>
         <td>{{user.email}}</td>
       </tr>
+      </tbody>
     </table>
 
     <button class="dashboard-button" @click="showUserList">Show User List</button>

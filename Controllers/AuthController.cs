@@ -16,7 +16,6 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register(CreateUserDto dto)
     {
         var user = await _repo.RegisterUserAsync(dto);
-        //HttpContext.Session.SetString("username", user.Username);
         return Ok(new { user.Id, user.Username });
     }
 
@@ -28,6 +27,7 @@ public class AuthController : ControllerBase
             return BadRequest("You are already logged in, log out first.");
         }
 
+        //Admin bilgileri girildiyse mevcut kullanıcı tipini admin'e eşitliyoruz.
         if(dto.Username == "admin" && dto.Password == "admin")
         {
             HttpContext.Session.SetString("username", dto.Username);
@@ -36,11 +36,12 @@ public class AuthController : ControllerBase
             return Ok("logged in as admin");
         }
 
+        //Username ve Password doğrulaması yapıyoruz
         var user = await _repo.GetUserByUsernameAsync(dto.Username);
-
         if (user == null || dto.Password != user.Password)
             return Unauthorized("Invalid credentials");
 
+        //Tüm şartlar sağlandıysa customer olarak giriş yapıyoruz
         HttpContext.Session.SetString("username", user.Username);
         HttpContext.Session.SetString("role", "customer");
         HttpContext.Session.SetInt32("Id", user.Id);
@@ -54,5 +55,4 @@ public class AuthController : ControllerBase
         HttpContext.Session.Clear();
         return Ok("logged out");
     }
-
 }

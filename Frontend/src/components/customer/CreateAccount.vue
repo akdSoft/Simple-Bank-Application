@@ -3,7 +3,7 @@ import axios from "axios";
 
 async function createAccount(){
   try{
-    const response = await  axios.post('http://localhost:5280/api/BankAccount', {}, {withCredentials: true})
+    const response = await axios.post('http://localhost:5280/api/BankAccount', {}, {withCredentials: true})
     if (response.status === 200){
       alert("account created")
     }
@@ -25,10 +25,10 @@ async function createAccount(){
     <div style="display: flex; flex-direction: column">
       <label>Account Type</label>
 
-      <select>
-        <option value="">--Select an Account Type--</option>
-        <option>Savings Account</option>
-        <option>Checking Account</option>
+      <select class="select">
+        <option class="select-items" value="">--Select an Account Type--</option>
+        <option class="select-items">Savings Account</option>
+        <option class="select-items">Checking Account</option>
       </select>
     </div>
 

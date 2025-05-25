@@ -19,16 +19,9 @@ public class BankAccountController : ControllerBase
     }
 
     [HttpGet]
-    //[AdminAuth]
     public async Task<IActionResult> GetAllBankAccountsAsync() => Ok(await _bankAccountService.GetAllBankAccountsAsync());
 
-    //[HttpGet("{id}")]
-    //public async Task<IActionResult> GetBankAccountByIdAsync(int id)
-    //{
-    //    var bankAccount = await _bankAccountService.GetBankAccountByIdAsync(id);
-    //    return (bankAccount is null) ? NotFound() : Ok(bankAccount);
-    //}
-
+    //Mevcut kullanıcının banka hesaplarını çekiyoruz
     [HttpGet("user")]
     public async Task<IActionResult> GetBankAccountsByCurrentUser()
     {
@@ -36,8 +29,8 @@ public class BankAccountController : ControllerBase
         return (userId != null) ? Ok(await _bankAccountService.GetBankAccountsByUserId(userId.Value)) : BadRequest();
     }
 
+    //Mevcut kullanıcıya ait banka hesabı oluşturuyoruz
     [HttpPost]
-    //[RequiresAuth]
     public async Task<IActionResult> CreateBankAccountAsync()
     {
         var currentUsername = HttpContext.Session.GetString("username");
@@ -46,6 +39,7 @@ public class BankAccountController : ControllerBase
         return Ok(await _bankAccountService.CreateBankAccountAsync(currentUser.Id));
     }
 
+    //Belirtilen Id'ye sahip banka hesabını siliyoruz
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBankAccountAsync(int id)
     {

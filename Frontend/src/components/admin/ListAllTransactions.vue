@@ -22,6 +22,7 @@ async function showTransactionList(){
       <h2 class="dashboard-title">List All Transactions</h2>
 
       <table v-if="transactions.length > 0">
+        <tbody>
         <tr>
           <th>Id</th>
           <th>Account Id</th>
@@ -39,6 +40,7 @@ async function showTransactionList(){
           <td>{{transaction.type}}</td>
           <td>{{transaction.relatedAccountId}}</td>
         </tr>
+        </tbody>
       </table>
 
       <button class="dashboard-button" @click="showTransactionList">Show Transaction List</button>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Transactions;
+using Microsoft.AspNetCore.Mvc;
 using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Services.Interfaces;
 
@@ -12,46 +13,38 @@ public class TransactionController : ControllerBase
 
     public TransactionController(ITransactionService service) => _service = service;
 
+    //Tüm kullanıcılara bağlı bütün banka hesaplarının Transaction'larının listesini çekiyoruz
     [HttpGet]
-    //[AdminAuth]
     public async Task<IActionResult> GetAllTransactionsAsync() =>
         Ok(await _service.GetAllTransactionsAsync());
 
-    [HttpGet("user")]
-    //[RequiresAuth]
-    public async Task<IActionResult> GetTransactionsByUserAsync()
-    {
-        var transactions = await _service.GetTransactionsByUserAsync((int) HttpContext.Session.GetInt32("Id"));
-        return transactions.Any() ? Ok(transactions) : NotFound();
-    }
-
+    //Belirtilen Id'ye sahip banka hesabının bütün Transaction'larının listesini çekiyoruz
     [HttpGet("account/{accountId}")]
-    //[RequiresAuth]
     public async Task<IActionResult> GetTransactionsByBankAccountAsync(int accountId)
     {
-        var transactions = await _service.GetTransactionsByBankAccountAsync(accountId, (int)HttpContext.Session.GetInt32("Id"));
-        return transactions.Any() ? Ok(transactions) : NotFound();
-    }
-
-    [HttpGet("user/{id}")]
-    public async Task<IActionResult> GetTransactionsByUserId(int userId)
-    {
-        var transactions = await _service.GetTransactionsByUserAsync(userId);
-        return transactions.Any() ? Ok(transactions) : NotFound();
+        if(accountId == 0)
+        {
+            var transactions = await _service.GetTransactionsByUserAsync((int)HttpContext.Session.GetInt32("Id"));
+            return transactions.Any() ? Ok(transactions) : NotFound();
+        }
+        else
+        {
+            var transactions = await _service.GetTransactionsByBankAccountAsync(accountId, (int)HttpContext.Session.GetInt32("Id"));
+            return transactions.Any() ? Ok(transactions) : NotFound();
+        }
+        
     }
 
     [HttpPost("deposit")]
-    //[RequiresAuth]
     public async Task<IActionResult> DepositAsync(DepositWithdrawDto dto) => 
         Ok(await _service.DepositAsync(dto));
 
     [HttpPost("withdraw")]
-    //[RequiresAuth]
     public async Task<IActionResult> WithdrawAsync(DepositWithdrawDto dto) => 
         Ok(await _service.WithdrawAsync(dto));
 
+    //Gönderen hesap, alıcı hesap, tutar gibi bilgileri girdiğimiz dto ile para transferi gerçekleştiriyoruz
     [HttpPost("transfer")]
-    //[RequiresAuth]
     public async Task<IActionResult> TransferMoneyAsync(TransferMoneyDto dto) =>
         Ok(await _service.TransferMoneyAsync(dto));
 }

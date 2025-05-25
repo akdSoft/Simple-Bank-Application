@@ -38,28 +38,6 @@ public class UserRepository : IUserRepository
     }
     
 
-    public async Task<UserDto?> GetUserByIdAsync(int id)
-    {
-        return await _context.Users
-            .Include(user => user.BankAccounts)
-            .Where(user => user.Id == id)
-            .Select(user => new UserDto
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                Username = user.Username,
-                Email = user.Email,
-                BankAccounts = user.BankAccounts.Select(acc => new BankAccountDto
-                {
-                    Id = acc.Id,
-                    Balance = acc.Balance,
-                    UserId = acc.UserId,
-                    UserName = acc.User.Name,
-                    UserSurname = acc.User.Surname
-                }).ToList()
-            }).FirstOrDefaultAsync();
-    }
 
 
     public async Task<UserDto?> RegisterUserAsync(CreateUserDto dto)

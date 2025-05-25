@@ -71,9 +71,9 @@ async function deleteAccount(){
     <div class="dashboard-card">
       <h2 class="dashboard-title">customer page</h2>
 
-      <select id="account" v-model="selectedAccountId">
-        <option value="">--Choose an Account--</option>
-        <option v-for="account in accounts" :key="account.id" :value="account.id">
+      <select class="select" id="account" v-model="selectedAccountId">
+        <option class="select-items" value="">--Choose an Account--</option>
+        <option class="select-items" v-for="account in accounts" :key="account.id" :value="account.id">
           {{account.id}}
         </option>
       </select>
@@ -103,6 +103,10 @@ async function deleteAccount(){
 
       <router-link to="/customer/deposit-withdraw">
         <button class="dashboard-button">Deposit/Withdraw</button>
+      </router-link>
+
+      <router-link to="/customer/transaction-history">
+        <button class="dashboard-button">Transaction History</button>
       </router-link>
 
       <button class="dashboard-button" @click="logOut">Log Out</button>

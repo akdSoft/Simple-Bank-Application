@@ -13,7 +13,6 @@ public class BankAccountService : IBankAccountService
 
     public async Task<IEnumerable<BankAccountDto>> GetAllBankAccountsAsync() => await _repo.GetAllBankAccountsAsync();
 
-    public async Task<BankAccountDto?> GetBankAccountByIdAsync(int id) => await _repo.GetBankAccountByIdAsync(id);
 
     public async Task<BankAccountDto?> CreateBankAccountAsync(int UserId)=> await _repo.CreateBankAccountAsync(UserId);
 

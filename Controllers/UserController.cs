@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simple_Bank_Application.Models.DTOs;
-//using Simple_Bank_Application.Middleware;
 using Simple_Bank_Application.Services.Interfaces;
 
 namespace Simple_Bank_Application.Controllers;
@@ -14,41 +13,25 @@ public class UserController : ControllerBase
     public UserController(IUserService service) => _service = service;
 
     [HttpGet]
-    //[AdminAuth]
     public async Task<IActionResult> GetAllUsersAsync() => Ok(await _service.GetAllUsersAsync());
 
+    //Mevcut kullanıcıyı, session'dan aldığımız Id bilgisiyle çekiyoruz
     [HttpGet("me")]
-    //[AdminAuth]
     public async Task<IActionResult> GetCurrentUserAsync()
     {
         var user = await _service.GetUserWithPasswordByIdAsync((int)HttpContext.Session.GetInt32("Id"));
         return (user is null) ? NotFound() : Ok(user);
     }
 
-    [HttpGet("profile")]
-    //[RequiresAuth]
-    public IActionResult GetProfile()
-    {
-        var username = HttpContext.Session.GetString("username");
-        return Ok($"Welcome, {username}");
-    }
-
-    [HttpPut()]
-    //[RequiresAuth]
+    //Mevcut kullanıcının bilgilerini gönderdiğimiz dto ile Id hariç güncelliyoruz
+    [HttpPut]
     public async Task<IActionResult> UpdateUserAsync(CreateUserDto dto)
     {
         var updatedUser = await _service.UpdateUserAsync(dto, (int)HttpContext.Session.GetInt32("Id"));
         return (updatedUser is null) ? NotFound() : Ok(updatedUser);
     }
 
-    [HttpDelete("{id}")]
-    //[AdminAuth]
-    public async Task<IActionResult> DeleteUserByIdAsync(int id)
-    {
-        var deleted = await _service.DeleteUserAsync(id);
-        return deleted ? NoContent() : NotFound();
-    }
-
+    //Mevcut kullanıcıyı siliyoruz
     [HttpDelete]
     public async Task<IActionResult> DeleteCurrentUserAsync()
     {
