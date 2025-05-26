@@ -8,7 +8,7 @@ public interface ITransactionService
     public Task<IEnumerable<Transaction>> GetAllTransactionsAsync();
     public Task<IEnumerable<Transaction>> GetTransactionsByUserAsync(int UserId);
     public Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int AccountId, int userId);
-    public Task<Transaction> DepositAsync(DepositWithdrawDto dto);
-    public Task<Transaction> WithdrawAsync(DepositWithdrawDto dto);
+    public Task<Transaction?> DepositAsync(DepositWithdrawDto dto);
+    public Task<Transaction?> WithdrawAsync(DepositWithdrawDto dto);
     public Task<Transaction> TransferMoneyAsync(TransferMoneyDto dto);
 }

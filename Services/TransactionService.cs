@@ -16,9 +16,14 @@ public class TransactionService : ITransactionService
         _transactionRepo = transactionRepo;
         _bankAccountRepo = bankAccountRepo;
     }
-    public async Task<Transaction> DepositAsync(DepositWithdrawDto dto)
+    public async Task<Transaction?> DepositAsync(DepositWithdrawDto dto)
     {
         var acc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.AccountId);
+
+        if (dto.Amount <= 0)
+        {
+            return null;
+        }
 
         var transaction = new Transaction
         {
@@ -32,9 +37,14 @@ public class TransactionService : ITransactionService
         await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(dto.AccountId, dto.Amount);
         return transaction;
     }
-    public async Task<Transaction> WithdrawAsync(DepositWithdrawDto dto)
+    public async Task<Transaction?> WithdrawAsync(DepositWithdrawDto dto)
     {
         var acc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.AccountId);
+
+        if (dto.Amount <= 0 || dto.Amount > acc.Balance)
+        {
+            return null;
+        }
 
         var transaction = new Transaction
         {

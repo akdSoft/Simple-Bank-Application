@@ -12,10 +12,10 @@ public class BankAccountRepository : IBankAccountRepository
 
     public BankAccountRepository(AppDbContext context) => _context = context;
 
-
     public async Task<IEnumerable<BankAccountDto>> GetAllBankAccountsAsync()
     {
         return await _context.BankAccounts
+            //Banka hesaplarını, bağlı oldukları User ile çekiyoruz
             .Include(acc => acc.User)
             .Select(acc => new BankAccountDto
             {
@@ -27,7 +27,6 @@ public class BankAccountRepository : IBankAccountRepository
             }).ToListAsync();
 
     }
-
     public async Task<BankAccountDto?> GetBankAccountByIdAsync(int id)
     {
         return await _context.BankAccounts
@@ -42,7 +41,6 @@ public class BankAccountRepository : IBankAccountRepository
                 UserSurname = acc.User.Surname
             }).FirstOrDefaultAsync();
     }
-
     public async Task<BankAccountDto?> CreateBankAccountAsync(int userId)
     {
         var bankAccount = new BankAccount
@@ -68,19 +66,15 @@ public class BankAccountRepository : IBankAccountRepository
 
         return createdAccount;
     }
-
     public async Task<bool> DeleteBankAccountAsync(int id)
     {
         var deleted = await _context.BankAccounts.FindAsync(id);
         if (deleted == null) return false;
 
-        
-
         _context.BankAccounts.Remove(deleted);
         await _context.SaveChangesAsync();
         return true;
     }
-
     public async Task<BankAccountDto?> IncreaseOrDecreaseBalanceAsync(int accountId, decimal amount)
     {
         var account = await _context.BankAccounts.FindAsync(accountId);
@@ -101,7 +95,6 @@ public class BankAccountRepository : IBankAccountRepository
 
         return accountDto;
     }
-
     public async Task<IEnumerable<BankAccountDto?>> GetBankAccountsByUserId(int userId)
     {
         return await _context.BankAccounts

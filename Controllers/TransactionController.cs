@@ -36,12 +36,18 @@ public class TransactionController : ControllerBase
     }
 
     [HttpPost("deposit")]
-    public async Task<IActionResult> DepositAsync(DepositWithdrawDto dto) => 
-        Ok(await _service.DepositAsync(dto));
+    public async Task<IActionResult> DepositAsync(DepositWithdrawDto dto)
+    {
+        var transaction = await _service.DepositAsync(dto);
+        return (transaction == null) ? BadRequest() : Ok(dto);
+    }
 
     [HttpPost("withdraw")]
-    public async Task<IActionResult> WithdrawAsync(DepositWithdrawDto dto) => 
-        Ok(await _service.WithdrawAsync(dto));
+    public async Task<IActionResult> WithdrawAsync(DepositWithdrawDto dto)
+    {
+        var transaction = await _service.WithdrawAsync(dto);
+        return (transaction == null) ? BadRequest() : Ok(dto);
+    }
 
     //Gönderen hesap, alıcı hesap, tutar gibi bilgileri girdiğimiz dto ile para transferi gerçekleştiriyoruz
     [HttpPost("transfer")]

@@ -23,8 +23,15 @@ async function deposit(){
       await loadAccounts()
       alert("successfully deposited")
     }
+
   } catch (err) {
-    alert(err.message)
+    if (err.status === 400){
+      alert("invalid amount");
+    }
+    else{
+      alert(err.message)
+
+    }
   }
 }
 
@@ -40,7 +47,13 @@ async function withdraw(){
       alert("successfully withdrew")
     }
   } catch (err) {
-    alert(err.message)
+    if (err.status === 400){
+      alert("invalid amount");
+    }
+    else{
+      alert(err.message)
+
+    }
   }
 }
 
