@@ -6,4 +6,11 @@
         public int TargetAccountId { get; set; }
         public decimal Amount { get; set; }
     }
+
+    public class VirtualCardTransferMoneyDto
+    {
+        public int FromAccountOrCardId { get; set; }
+        public int TargetAccountOrCardId { get; set; }
+        public decimal Amount { get; set; }
+    }
 }

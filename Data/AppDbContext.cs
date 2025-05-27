@@ -10,6 +10,8 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<BankAccount> BankAccounts { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<DebitCard> DebitCards { get; set; }
+    public DbSet<VirtualCard> VirtualCards { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,25 +31,14 @@ public class AppDbContext : DbContext
             .HasForeignKey(b => b.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        //modelBuilder.Entity<Transaction>()
-        //    .HasOne<BankAccount>()
-        //    .WithMany()
-        //    .HasForeignKey(t => t.AccountId)
-        //    .OnDelete(DeleteBehavior.Restrict); //transactions won't be deleted
-
-        //modelBuilder.Entity<Transaction>()
-        //    .HasOne<BankAccount>()
-        //    .WithMany()
-        //    .HasForeignKey(t => t.RelatedAccountId)
-        //    .OnDelete(DeleteBehavior.Restrict); //transactions won't be deleted
-
         modelBuilder.Entity<BankAccount>()
             .HasIndex(b => b.UserId);
 
-        //modelBuilder.Entity<Transaction>()
-        //    .HasIndex(t => t.AccountId);
+        modelBuilder.Entity<DebitCard>()
+            .HasOne(d => d.LinkedAccount)
+            .WithOne()
+            .HasForeignKey<DebitCard>(b => b.LinkedAccountId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        //modelBuilder.Entity<Transaction>()
-        //    .HasIndex(t => t.RelatedAccountId);
     }
 }
