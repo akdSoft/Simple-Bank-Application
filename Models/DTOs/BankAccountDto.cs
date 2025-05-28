@@ -7,7 +7,6 @@ public class BankAccountDto
     public int UserId { get; set; }
     public string UserName { get; set; } = null!;
     public string UserSurname { get; set; } = null!;
-    public object Result { get; internal set; }
 }
 
 public class CreateBankAccountDto

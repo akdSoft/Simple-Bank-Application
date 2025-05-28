@@ -1,4 +1,5 @@
-﻿using Simple_Bank_Application.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Simple_Bank_Application.Models;
 using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Repositories.Interfaces;
 using Simple_Bank_Application.Services.Interfaces;
@@ -7,30 +8,95 @@ namespace Simple_Bank_Application.Services;
 
 public class CardService : ICardService
 {
-    private readonly ICardRepository _repo;
+    private readonly ICardRepository _cardRepo;
+    private readonly IUserRepository _userRepo;
 
-    public CardService(ICardRepository repo) => _repo = repo;
-    public async Task<DebitCard> CreateDebitCardAsync(CreateDebitCardDto dto, int userId) =>
-        await _repo.CreateDebitCardAsync(dto, userId);
+    public CardService(ICardRepository cardRepo, IUserRepository userRepo)
+    {
+        _cardRepo = cardRepo;
+        _userRepo = userRepo;
+    }
+    public async Task<DebitCard> CreateDebitCardAsync(CreateDebitCardDto dto, int userId)
+    {
+        var (cardNumber, cvv) = GenerateCardNumberAndCvv();
 
-    public async Task<VirtualCard> CreateVirtualCardAsync(CreateVirtualCardDto dto, int userId) =>
-        await _repo.CreateVirtualCardAsync(dto, userId);
+        //Banka kartınu oluşturuyoruz
+        var user = await _userRepo.GetUserWithPasswordByIdAsync(userId);
+        var debitCard = new DebitCard
+        {
+            UserId = user.Id,
+            Type = "Debit Card",
+            CardNumber = cardNumber,
+            ExpirationDate = DateTime.Now.AddYears(10),
+            CVV = cvv,
+            CardholderNameAndSurname = user.Name + " " + user.Surname,
+            OnlineShopping = dto.OnlineShopping,
+            Password = dto.Password,
+            LinkedAccountId = dto.LinkedAccountId,
+
+        };
+
+        return await _cardRepo.CreateDebitCardAsync(debitCard);
+    }
+
+    public async Task<VirtualCard> CreateVirtualCardAsync(CreateVirtualCardDto dto, int userId)
+    {
+        var (cardNumber, cvv) = GenerateCardNumberAndCvv();
+
+        //Sanal kartı oluşturuyoruz
+        var user = await _userRepo.GetUserWithPasswordByIdAsync(userId);
+        var virtualCard = new VirtualCard
+        {
+            UserId = user.Id,
+            Type = "Debit Card",
+            CardNumber = cardNumber,
+            ExpirationDate = DateTime.Now.AddYears(10),
+            CVV = cvv,
+            CardholderNameAndSurname = user.Name + " " + user.Surname,
+            OnlineShopping = dto.OnlineShopping,
+            AvailableLimit = 0
+        };
+
+        return await _cardRepo.CreateVirtualCardAsync(virtualCard);
+    }
 
     public async Task<IEnumerable<DebitCard>> GetAllDebitCardsAsync() =>
-        await _repo.GetAllDebitCardsAsync();
+        await _cardRepo.GetAllDebitCardsAsync();
 
     public async Task<IEnumerable<DebitCard>> GetAllDebitCardsAsync(int userId) =>
-        await _repo.GetAllDebitCardsAsync(userId);
+        await _cardRepo.GetAllDebitCardsAsync(userId);
 
     public async Task<IEnumerable<VirtualCard>> GetAllVirtualCardsAsync() =>
-        await _repo.GetAllVirtualCardsAsync();
+        await _cardRepo.GetAllVirtualCardsAsync();
 
     public async Task<IEnumerable<VirtualCard>> GetAllVirtualCardsAsync(int userId) =>
-        await _repo.GetAllVirtualCardsAsync(userId);
+        await _cardRepo.GetAllVirtualCardsAsync(userId);
 
     public async Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto) =>
-        await _repo.TransferFromAccountToVirtualCardAsync(dto);
+        await _cardRepo.TransferFromAccountToVirtualCardAsync(dto);
 
     public async Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto) =>
-        await _repo.TransferFromVirtualCardToAccountAsync(dto);
+        await _cardRepo.TransferFromVirtualCardToAccountAsync(dto);
+
+    //Çift değer döndürmek için Tuple data tipini kullandık
+    static (string CardNumber, string Cvv) GenerateCardNumberAndCvv()
+    {
+        //16 haneli kart numarasını oluşturuyoruz
+        string cardNumber = "";
+        Random rnd = new Random();
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                cardNumber += Convert.ToString(rnd.Next(0, 10));
+            }
+            cardNumber += " ";
+        }
+
+        //CVV kodunu oluşturuyoruz
+        string cvv = Convert.ToString(rnd.Next(100, 1000));
+
+        return (cardNumber, cvv);
+    }
 }

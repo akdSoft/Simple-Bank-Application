@@ -93,6 +93,10 @@ async function deleteAccount(){
         <button class="dashboard-button">Profile</button>
       </router-link>
 
+      <router-link to="/customer/cards">
+        <button class="dashboard-button">Cards</button>
+      </router-link>
+
       <router-link to="/customer/create-account">
         <button class="dashboard-button">Create Account</button>
       </router-link>
@@ -110,8 +114,12 @@ async function deleteAccount(){
       </router-link>
 
       <button class="dashboard-button" @click="logOut">Log Out</button>
+
+<!--      <Card card-number=""></Card>-->
+
     </div>
   </div>
+
 </template>
 
 <style scoped>

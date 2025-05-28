@@ -64,8 +64,7 @@ namespace Simple_Bank_Application.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_DebitCards_LinkedAccountId",
                 table: "DebitCards",
-                column: "LinkedAccountId",
-                unique: true);
+                column: "LinkedAccountId");
         }
 
         /// <inheritdoc />

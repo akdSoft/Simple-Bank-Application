@@ -11,51 +11,19 @@ public class CardRepository : ICardRepository
     private readonly AppDbContext _context;
 
     public CardRepository(AppDbContext context) => _context = context;
-    public async Task<DebitCard> CreateDebitCardAsync(CreateDebitCardDto dto, int userId)
+    public async Task<DebitCard> CreateDebitCardAsync(DebitCard card)
     {
-        var user = await _context.Users.FindAsync(userId);
-
-        var debitCard = new DebitCard
-        {
-            UserId = user.Id,
-            Type = dto.Type,
-            CardNumber = "0000 0000 0000 0000",
-            ExpirationDate = DateTime.Now.AddYears(10),
-            CVV = "000",
-            CardholderNameAndSurname = user.Name + " " + user.Surname,
-            OnlineShopping = dto.OnlineShopping,
-            Password = dto.Password,
-            LinkedAccountId = dto.LinkedAccountId,
-
-        };
-
-        _context.DebitCards.Add(debitCard);
+        _context.DebitCards.Add(card);
         await _context.SaveChangesAsync();
-        return debitCard;
+        return card;
     }
 
-    public async Task<VirtualCard> CreateVirtualCardAsync(CreateVirtualCardDto dto, int userId)
+    public async Task<VirtualCard> CreateVirtualCardAsync(VirtualCard card)
     {
-        var user = await _context.Users.FindAsync(userId);
-
-        var virtualCard = new VirtualCard
-        {
-            UserId = user.Id,
-            Type = dto.Type,
-            CardNumber = "0000 0000 0000 0000",
-            ExpirationDate = DateTime.Now.AddYears(10),
-            CVV = "000",
-            CardholderNameAndSurname = user.Name + " " + user.Surname,
-            OnlineShopping = dto.OnlineShopping,
-            AvailableLimit = 0
-
-        };
-
-        _context.VirtualCards.Add(virtualCard);
+        _context.VirtualCards.Add(card);
         await _context.SaveChangesAsync();
-        return virtualCard;
+        return card;
     }
-
 
     public async Task<IEnumerable<DebitCard>> GetAllDebitCardsAsync()
     {

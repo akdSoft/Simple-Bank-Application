@@ -16,7 +16,6 @@ public class DebitCard : Card
 {
     public string Password { get; set; } = null!;
     public int LinkedAccountId { get; set; }
-    public BankAccount LinkedAccount { get; set; } = null!;
 }
 
 public class VirtualCard : Card

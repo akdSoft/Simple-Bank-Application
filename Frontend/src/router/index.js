@@ -1,36 +1,38 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Login from '../components/Login.vue';
-import Register from '../components/Register.vue';
+import LoginPage from '../components/LoginPage.vue';
+import RegisterPage from '../components/RegisterPage.vue';
 import HomePage from "../components/HomePage.vue";
-import adminDashboard from "../components/admin/adminDashboard.vue";
-import DeleteAccount from "../components/admin/DeleteAccount.vue";
-import DeleteUser from "../components/admin/DeleteUser.vue";
-import ListAllAccounts from "../components/admin/ListAllAccounts.vue";
-import ListAllTransactions from "../components/admin/ListAllTransactions.vue";
-import ListAllUsers from "../components/admin/ListAllUsers.vue";
-import customerDashboard from "../components/customer/customerDashboard.vue";
-import Profile from "../components/customer/Profile.vue";
-import CreateAccount from "../components/customer/CreateAccount.vue";
-import TransferMoney from "../components/customer/TransferMoney.vue";
-import DepositWithdraw from "../components/customer/DepositWithdraw.vue";
-import TransactionHistory from "../components/customer/TransactionHistory.vue";
+import AdminDashboardPage from "../components/admin/adminDashboardPage.vue";
+import DeleteAccountPage from "../components/admin/DeleteAccountPage.vue";
+import DeleteUserPage from "../components/admin/DeleteUserPage.vue";
+import ListAllAccountsPage from "../components/admin/ListAllAccountsPage.vue";
+import ListAllTransactionsPage from "../components/admin/ListAllTransactionsPage.vue";
+import ListAllUsersPage from "../components/admin/ListAllUsersPage.vue";
+import CustomerDashboardPage from "../components/customer/customerDashboardPage.vue";
+import ProfilePage from "../components/customer/ProfilePage.vue";
+import CreateAccountPage from "../components/customer/CreateAccountPage.vue";
+import TransferMoneyPage from "../components/customer/TransferMoneyPage.vue";
+import DepositWithdrawPage from "../components/customer/DepositWithdrawPage.vue";
+import TransactionHistoryPage from "../components/customer/TransactionHistoryPage.vue";
+import CardsPage from "../components/customer/CardsPage.vue";
 
 const routes = [
     {path: '/', component: HomePage},
-    {path: '/login', component: Login},
-    {path: '/register', component: Register},
-    {path: '/admin/dashboard', component: adminDashboard},
-    {path: '/admin/delete-account', component: DeleteAccount},
-    {path: '/admin/delete-user', component: DeleteUser},
-    {path: '/admin/list-all-accounts', component: ListAllAccounts},
-    {path: '/admin/list-all-transactions', component: ListAllTransactions},
-    {path: '/admin/list-all-users', component: ListAllUsers},
-    {path: '/customer/dashboard', component: customerDashboard},
-    {path: '/customer/profile', component: Profile},
-    {path: '/customer/create-account', component: CreateAccount},
-    {path: '/customer/transfer-money', component: TransferMoney},
-    {path: '/customer/deposit-withdraw', component: DepositWithdraw},
-    {path: '/customer/transaction-history', component: TransactionHistory}
+    {path: '/login', component: LoginPage},
+    {path: '/register', component: RegisterPage},
+    {path: '/admin/dashboard', component: AdminDashboardPage},
+    {path: '/admin/delete-account', component: DeleteAccountPage},
+    {path: '/admin/delete-user', component: DeleteUserPage},
+    {path: '/admin/list-all-accounts', component: ListAllAccountsPage},
+    {path: '/admin/list-all-transactions', component: ListAllTransactionsPage},
+    {path: '/admin/list-all-users', component: ListAllUsersPage},
+    {path: '/customer/dashboard', component: CustomerDashboardPage},
+    {path: '/customer/profile', component: ProfilePage},
+    {path: '/customer/cards', component: CardsPage},
+    {path: '/customer/create-account', component: CreateAccountPage},
+    {path: '/customer/transfer-money', component: TransferMoneyPage},
+    {path: '/customer/deposit-withdraw', component: DepositWithdrawPage},
+    {path: '/customer/transaction-history', component: TransactionHistoryPage}
 ]
 
 const router = createRouter({

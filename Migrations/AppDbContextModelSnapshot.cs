@@ -78,8 +78,7 @@ namespace Simple_Bank_Application.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LinkedAccountId")
-                        .IsUnique();
+                    b.HasIndex("LinkedAccountId");
 
                     b.ToTable("DebitCards");
                 });
@@ -200,13 +199,11 @@ namespace Simple_Bank_Application.Migrations
 
             modelBuilder.Entity("Simple_Bank_Application.Models.DebitCard", b =>
                 {
-                    b.HasOne("Simple_Bank_Application.Models.BankAccount", "LinkedAccount")
-                        .WithOne()
-                        .HasForeignKey("Simple_Bank_Application.Models.DebitCard", "LinkedAccountId")
+                    b.HasOne("Simple_Bank_Application.Models.BankAccount", null)
+                        .WithMany()
+                        .HasForeignKey("LinkedAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LinkedAccount");
                 });
 
             modelBuilder.Entity("Simple_Bank_Application.Models.User", b =>
