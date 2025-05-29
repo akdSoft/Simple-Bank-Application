@@ -1,11 +1,17 @@
 <script setup>
-import Card from "./Card.vue";
+import Card from "./ModalsAndComponents/Card.vue";
 import {onMounted, ref} from "vue";
 import axios from "axios";
-import CreateDebitCardModal from "./CreateDebitCardModal.vue";
+import CreateDebitCardModal from "./ModalsAndComponents/CreateDebitCardModal.vue";
+import CreateVirtualCardModal from "./ModalsAndComponents/CreateVirtualCardModal.vue";
+import VirtualCardMoneyTransferModal from "./ModalsAndComponents/VirtualCardMoneyTransferModal.vue";
 
 const debitCards = ref([])
 const virtualCards = ref([])
+
+const showCreateDebitCardModal = ref(false)
+const showCreateVirtualCardModal = ref(false)
+const showVirtualCardMoneyTransferModal = ref(false)
 
 onMounted(async () => {
   await  loadCards();
@@ -41,6 +47,9 @@ async function loadCards(){
           </Card>
         </div>
 
+        <button class="dashboard-button" @click="showCreateDebitCardModal = true">Create Debit Card</button>
+        <CreateDebitCardModal v-if="showCreateDebitCardModal" @close="loadCards(); showCreateDebitCardModal = false"></CreateDebitCardModal>
+
         <h3 v-if="virtualCards.length > 0">Virtual Cards</h3>
 
         <div style="display: flex; overflow-x: auto; gap: 1rem;">
@@ -49,10 +58,16 @@ async function loadCards(){
                 :expiration-date="virtualcard.expirationDate.split('T')[0]"
                 :cvv="virtualcard.cvv"
                 :card-type="virtualcard.type"
-                :cardholder-name="virtualcard.cardholderNameAndSurname">
+                :cardholder-name="virtualcard.cardholderNameAndSurname"
+                :available-limit="virtualcard.availableLimit">
           </Card>
         </div>
 
+        <button class="dashboard-button" @click="showCreateVirtualCardModal = true">Create Virtual Card</button>
+        <CreateVirtualCardModal v-if="showCreateVirtualCardModal" @close="loadCards(); showCreateVirtualCardModal = false"></CreateVirtualCardModal>
+
+        <button class="dashboard-button" @click="showVirtualCardMoneyTransferModal = true">Virtual Card - Money Transfer</button>
+        <VirtualCardMoneyTransferModal v-if="showVirtualCardMoneyTransferModal" @close="loadCards(); showVirtualCardMoneyTransferModal = false"></VirtualCardMoneyTransferModal>
 
         <router-link to="/customer/dashboard">
           <button class="dashboard-button">Return</button>

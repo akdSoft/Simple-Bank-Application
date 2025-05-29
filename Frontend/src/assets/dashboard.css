@@ -78,9 +78,8 @@
     color: white;
     padding: 2rem;
     border-radius: 1rem;
+    max-height: 120px;
     min-width: 250px;
-    width: 200px;
-    max-width: 500px;
     text-align: center;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     margin: 0 auto;
@@ -132,7 +131,7 @@
 }
 
 .modal-content {
-    background: white;
+    background-color: #6c6868;
     padding: 2rem;
     border-radius: 1rem;
     max-width: 500px;

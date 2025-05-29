@@ -4,7 +4,8 @@ const props = defineProps({
   expirationDate: Date,
   cvv: String,
   cardholderName: String,
-  cardType: String
+  cardType: String,
+  availableLimit: Number
 })
 </script>
 
@@ -19,6 +20,7 @@ const props = defineProps({
 
     <div class="debit-or-virtual-card-type">{{ cardType }}</div>
     <div class="debit-or-virtual-card-name">{{ cardholderName }}</div>
+    <div v-if="cardType == 'Virtual Card'">Available limit: {{availableLimit}}</div>
   </div>
 </template>
 

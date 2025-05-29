@@ -49,6 +49,9 @@ public class CardRepository : ICardRepository
         return cards;
     }
 
+    public async Task<VirtualCard> GetVirtualCardByIdAsync(int virtualCardId) =>
+        await _context.VirtualCards.FindAsync(virtualCardId);
+
     public async Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto)
     {
         var account = await _context.BankAccounts.FindAsync(dto.FromAccountOrCardId);
@@ -66,8 +69,9 @@ public class CardRepository : ICardRepository
 
     public async Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
     {
-        var account = await _context.BankAccounts.FindAsync(dto.FromAccountOrCardId);
-        var card = await _context.VirtualCards.FindAsync(dto.TargetAccountOrCardId);
+
+        var account = await _context.BankAccounts.FindAsync(dto.TargetAccountOrCardId);
+        var card = await _context.VirtualCards.FindAsync(dto.FromAccountOrCardId);
 
         if (account == null || card == null)
             return false;

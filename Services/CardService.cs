@@ -10,11 +10,13 @@ public class CardService : ICardService
 {
     private readonly ICardRepository _cardRepo;
     private readonly IUserRepository _userRepo;
+    private readonly IBankAccountRepository _bankAccountRepo;
 
-    public CardService(ICardRepository cardRepo, IUserRepository userRepo)
+    public CardService(ICardRepository cardRepo, IUserRepository userRepo, IBankAccountRepository bankAccountRepo)
     {
         _cardRepo = cardRepo;
         _userRepo = userRepo;
+        _bankAccountRepo = bankAccountRepo;
     }
     public async Task<DebitCard> CreateDebitCardAsync(CreateDebitCardDto dto, int userId)
     {
@@ -48,7 +50,7 @@ public class CardService : ICardService
         var virtualCard = new VirtualCard
         {
             UserId = user.Id,
-            Type = "Debit Card",
+            Type = "Virtual Card",
             CardNumber = cardNumber,
             ExpirationDate = DateTime.Now.AddYears(10),
             CVV = cvv,
@@ -72,11 +74,25 @@ public class CardService : ICardService
     public async Task<IEnumerable<VirtualCard>> GetAllVirtualCardsAsync(int userId) =>
         await _cardRepo.GetAllVirtualCardsAsync(userId);
 
-    public async Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto) =>
-        await _cardRepo.TransferFromAccountToVirtualCardAsync(dto);
+    public async Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto)
+    {
+        var account = await _bankAccountRepo.GetBankAccountByIdAsync(dto.FromAccountOrCardId);
 
-    public async Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto) =>
-        await _cardRepo.TransferFromVirtualCardToAccountAsync(dto);
+        if (dto.Amount <= 0 || dto.Amount > account.Balance)
+            return false;
+
+        return await _cardRepo.TransferFromAccountToVirtualCardAsync(dto);
+    }
+
+    public async Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
+    {
+        var card = await _cardRepo.GetVirtualCardByIdAsync(dto.FromAccountOrCardId);
+
+        if (dto.Amount <= 0 || dto.Amount > card.AvailableLimit)
+            return false;
+
+        return await _cardRepo.TransferFromVirtualCardToAccountAsync(dto);
+    }
 
     //Çift değer döndürmek için Tuple data tipini kullandık
     static (string CardNumber, string Cvv) GenerateCardNumberAndCvv()
