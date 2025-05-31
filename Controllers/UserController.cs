@@ -19,7 +19,11 @@ public class UserController : ControllerBase
     [HttpGet("me")]
     public async Task<IActionResult> GetCurrentUserAsync()
     {
-        var user = await _service.GetUserWithPasswordByIdAsync((int)HttpContext.Session.GetInt32("Id"));
+        var userId = HttpContext.Session.GetInt32("Id");
+
+        if (userId == null) return Unauthorized();
+
+        var user = await _service.GetUserWithPasswordByIdAsync(userId.Value);
         return (user is null) ? NotFound() : Ok(user);
     }
 
@@ -27,7 +31,11 @@ public class UserController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateUserAsync(CreateUserDto dto)
     {
-        var updatedUser = await _service.UpdateUserAsync(dto, (int)HttpContext.Session.GetInt32("Id"));
+        var userId = HttpContext.Session.GetInt32("Id");
+
+        if (userId == null) return Unauthorized();
+
+        var updatedUser = await _service.UpdateUserAsync(dto, userId.Value);
         return (updatedUser is null) ? NotFound() : Ok(updatedUser);
     }
 
@@ -36,6 +44,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> DeleteCurrentUserAsync()
     {
         var userId = HttpContext.Session.GetInt32("Id");
+
         if (userId == null) return BadRequest();
 
         var deleted = await _service.DeleteUserAsync(userId.Value);

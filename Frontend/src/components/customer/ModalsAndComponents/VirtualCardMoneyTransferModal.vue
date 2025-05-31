@@ -1,12 +1,23 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 
 const amount = ref('')
 const accounts = ref([])
+
 const selectedAccountId = ref('')
+const selectedAccount = computed(() => {
+  if(!selectedAccountId.value) return 0
+  return accounts.value.find(acc => acc.id === parseInt(selectedAccountId.value))
+})
+
 const virtualCards = ref([])
+
 const selectedCardId = ref('')
+const selectedCard = computed(() => {
+  if(!selectedCardId.value) return 0
+  return virtualCards.value.find(acc => acc.id === parseInt(selectedCardId.value))
+})
 
 const transferType = ref('')
 
@@ -105,6 +116,11 @@ async function transferFromCardToAccount(){
         </option>
       </select>
 
+      <div>
+        <label style="margin-right: 10px">Balance:</label>
+        <input class="input" type="number" :value="selectedAccount.balance" readonly>
+      </div>
+
       <label>Choose a virtual card</label>
 
       <select class="select"  id="card" v-model="selectedCardId">
@@ -113,6 +129,11 @@ async function transferFromCardToAccount(){
           {{card.cardNumber}}
         </option>
       </select>
+
+      <div>
+        <label style="margin-right: 10px">Available Limit:</label>
+        <input class="input" type="number" :value="selectedCard.availableLimit" readonly>
+      </div>
 
       <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 100px">
         <label>Enter amount:</label>

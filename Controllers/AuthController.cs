@@ -16,7 +16,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register(CreateUserDto dto)
     {
         var user = await _repo.RegisterUserAsync(dto);
-        return Ok(new { user.Id, user.Username });
+        return (user == null) ? BadRequest() : Ok(new { user.Id, user.Username });
     }
 
     [HttpPost("login")]

@@ -49,8 +49,13 @@ public class CardRepository : ICardRepository
         return cards;
     }
 
-    public async Task<VirtualCard> GetVirtualCardByIdAsync(int virtualCardId) =>
-        await _context.VirtualCards.FindAsync(virtualCardId);
+    public async Task<VirtualCard?> GetVirtualCardByIdAsync(int virtualCardId)
+    {
+        var card = await _context.VirtualCards.FindAsync(virtualCardId);
+        if (card == null) return null;
+
+        return card;
+    }
 
     public async Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto)
     {

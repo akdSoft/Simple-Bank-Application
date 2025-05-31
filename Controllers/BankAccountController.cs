@@ -34,7 +34,11 @@ public class BankAccountController : ControllerBase
     public async Task<IActionResult> CreateBankAccountAsync()
     {
         var currentUsername = HttpContext.Session.GetString("username");
+        if (currentUsername == null) return BadRequest();
+
         var currentUser = await _userService.GetUserByUsernameAsync(currentUsername);
+        if (currentUser == null) return BadRequest();
+
 
         return Ok(await _bankAccountService.CreateBankAccountAsync(currentUser.Id));
     }

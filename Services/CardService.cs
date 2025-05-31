@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Simple_Bank_Application.Models;
+﻿using Simple_Bank_Application.Models;
 using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Repositories.Interfaces;
 using Simple_Bank_Application.Services.Interfaces;
@@ -18,12 +17,16 @@ public class CardService : ICardService
         _userRepo = userRepo;
         _bankAccountRepo = bankAccountRepo;
     }
-    public async Task<DebitCard> CreateDebitCardAsync(CreateDebitCardDto dto, int userId)
+    public async Task<DebitCard?> CreateDebitCardAsync(CreateDebitCardDto dto, int userId)
     {
         var (cardNumber, cvv) = GenerateCardNumberAndCvv();
 
         //Banka kartınu oluşturuyoruz
         var user = await _userRepo.GetUserWithPasswordByIdAsync(userId);
+
+        if (user == null)
+            return null;
+
         var debitCard = new DebitCard
         {
             UserId = user.Id,
@@ -41,12 +44,16 @@ public class CardService : ICardService
         return await _cardRepo.CreateDebitCardAsync(debitCard);
     }
 
-    public async Task<VirtualCard> CreateVirtualCardAsync(CreateVirtualCardDto dto, int userId)
+    public async Task<VirtualCard?> CreateVirtualCardAsync(CreateVirtualCardDto dto, int userId)
     {
         var (cardNumber, cvv) = GenerateCardNumberAndCvv();
 
         //Sanal kartı oluşturuyoruz
         var user = await _userRepo.GetUserWithPasswordByIdAsync(userId);
+
+        if (user == null)
+            return null;
+
         var virtualCard = new VirtualCard
         {
             UserId = user.Id,
@@ -78,7 +85,7 @@ public class CardService : ICardService
     {
         var account = await _bankAccountRepo.GetBankAccountByIdAsync(dto.FromAccountOrCardId);
 
-        if (dto.Amount <= 0 || dto.Amount > account.Balance)
+        if (account == null || dto.Amount <= 0 || dto.Amount > account.Balance)
             return false;
 
         return await _cardRepo.TransferFromAccountToVirtualCardAsync(dto);
@@ -88,7 +95,7 @@ public class CardService : ICardService
     {
         var card = await _cardRepo.GetVirtualCardByIdAsync(dto.FromAccountOrCardId);
 
-        if (dto.Amount <= 0 || dto.Amount > card.AvailableLimit)
+        if (card == null || dto.Amount <= 0 || dto.Amount > card.AvailableLimit)
             return false;
 
         return await _cardRepo.TransferFromVirtualCardToAccountAsync(dto);

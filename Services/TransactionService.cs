@@ -20,7 +20,7 @@ public class TransactionService : ITransactionService
     {
         var acc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.AccountId);
 
-        if (dto.Amount <= 0)
+        if (acc == null || dto.Amount <= 0)
         {
             return null;
         }
@@ -41,7 +41,7 @@ public class TransactionService : ITransactionService
     {
         var acc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.AccountId);
 
-        if (dto.Amount <= 0 || dto.Amount > acc.Balance)
+        if (acc == null || dto.Amount <= 0 || dto.Amount > acc.Balance)
         {
             return null;
         }
@@ -59,9 +59,12 @@ public class TransactionService : ITransactionService
         return transaction;
     }
 
-    public async Task<Transaction> TransferMoneyAsync(TransferMoneyDto dto)
+    public async Task<Transaction?> TransferMoneyAsync(TransferMoneyDto dto)
     {
         var acc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.FromAccountId);
+
+        if (acc == null || dto.Amount <= 0 || dto.Amount > acc.Balance || dto.FromAccountId == dto.TargetAccountId)
+            return null;
 
         var transaction = new Transaction
         {

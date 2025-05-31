@@ -78,6 +78,8 @@ public class BankAccountRepository : IBankAccountRepository
     public async Task<BankAccountDto?> IncreaseOrDecreaseBalanceAsync(int accountId, decimal amount)
     {
         var account = await _context.BankAccounts.FindAsync(accountId);
+        if (account == null) return null;
+
         account.Balance += amount;
         await _context.SaveChangesAsync();
 

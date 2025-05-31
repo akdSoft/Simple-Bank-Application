@@ -14,18 +14,20 @@ public class CardController : ControllerBase
     [HttpPost("debit-card")]
     public async Task<IActionResult> CreateDebitCardAsync(CreateDebitCardDto dto)
     {
-        var userId = (int)HttpContext.Session.GetInt32("Id");
+        var userId = HttpContext.Session.GetInt32("Id");
+        if (userId == null) return Unauthorized();
 
-        var card = await _service.CreateDebitCardAsync(dto, userId);
+        var card = await _service.CreateDebitCardAsync(dto, userId.Value);
         return Ok(card);
     }
 
     [HttpPost("virtual-card")]
     public async Task<IActionResult> CreateVirtualCardAsync(CreateVirtualCardDto dto)
     {
-        var userId = (int)HttpContext.Session.GetInt32("Id");
+        var userId = HttpContext.Session.GetInt32("Id");
+        if (userId == null) return Unauthorized();
 
-        var card = await _service.CreateVirtualCardAsync(dto, userId);
+        var card = await _service.CreateVirtualCardAsync(dto, userId.Value);
         return Ok(card);
     }
 
@@ -41,18 +43,20 @@ public class CardController : ControllerBase
     [HttpGet("debit-cards/user")]
     public async Task<IActionResult> GetDebitCardsByCurrentUser()
     {
-        var userId = (int)HttpContext.Session.GetInt32("Id");
+        var userId = HttpContext.Session.GetInt32("Id");
+        if (userId == null) return Unauthorized();
 
-        var cards = await _service.GetAllDebitCardsAsync(userId);
+        var cards = await _service.GetAllDebitCardsAsync(userId.Value);
         return Ok(cards);
     }
 
     [HttpGet("virtual-cards/user")]
     public async Task<IActionResult> GetVirtualCardsByCurrentUser()
     {
-        var userId = (int)HttpContext.Session.GetInt32("Id");
+        var userId = HttpContext.Session.GetInt32("Id");
+        if (userId == null) return Unauthorized();
 
-        var cards = await _service.GetAllVirtualCardsAsync(userId);
+        var cards = await _service.GetAllVirtualCardsAsync(userId.Value);
         return Ok(cards);
     }
 

@@ -22,14 +22,17 @@ public class TransactionController : ControllerBase
     [HttpGet("account/{accountId}")]
     public async Task<IActionResult> GetTransactionsByBankAccountAsync(int accountId)
     {
-        if(accountId == 0)
+        var userId = HttpContext.Session.GetInt32("Id");
+        if (userId == null) return Unauthorized();
+
+        if (accountId == 0)
         {
-            var transactions = await _service.GetTransactionsByUserAsync((int)HttpContext.Session.GetInt32("Id"));
+            var transactions = await _service.GetTransactionsByUserAsync(userId.Value);
             return transactions.Any() ? Ok(transactions) : NotFound();
         }
         else
         {
-            var transactions = await _service.GetTransactionsByBankAccountAsync(accountId, (int)HttpContext.Session.GetInt32("Id"));
+            var transactions = await _service.GetTransactionsByBankAccountAsync(accountId, userId.Value);
             return transactions.Any() ? Ok(transactions) : NotFound();
         }
         
@@ -51,6 +54,9 @@ public class TransactionController : ControllerBase
 
     //Gönderen hesap, alıcı hesap, tutar gibi bilgileri girdiğimiz dto ile para transferi gerçekleştiriyoruz
     [HttpPost("transfer")]
-    public async Task<IActionResult> TransferMoneyAsync(TransferMoneyDto dto) =>
-        Ok(await _service.TransferMoneyAsync(dto));
+    public async Task<IActionResult> TransferMoneyAsync(TransferMoneyDto dto)
+    {
+        var transaction = await _service.TransferMoneyAsync(dto);
+        return (transaction == null) ? BadRequest() : Ok(dto);
+    }
 }

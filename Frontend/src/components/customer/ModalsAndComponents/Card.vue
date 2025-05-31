@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps({
   cardNumber: String,
-  expirationDate: Date,
+  expirationDate: [String, Date],
   cvv: String,
   cardholderName: String,
   cardType: String,
