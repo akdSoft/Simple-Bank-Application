@@ -81,26 +81,6 @@ public class CardService : ICardService
     public async Task<IEnumerable<VirtualCard>> GetAllVirtualCardsAsync(int userId) =>
         await _cardRepo.GetAllVirtualCardsAsync(userId);
 
-    public async Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto)
-    {
-        var account = await _bankAccountRepo.GetBankAccountByIdAsync(dto.FromAccountOrCardId);
-
-        if (account == null || dto.Amount <= 0 || dto.Amount > account.Balance)
-            return false;
-
-        return await _cardRepo.TransferFromAccountToVirtualCardAsync(dto);
-    }
-
-    public async Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
-    {
-        var card = await _cardRepo.GetVirtualCardByIdAsync(dto.FromAccountOrCardId);
-
-        if (card == null || dto.Amount <= 0 || dto.Amount > card.AvailableLimit)
-            return false;
-
-        return await _cardRepo.TransferFromVirtualCardToAccountAsync(dto);
-    }
-
     //Çift değer döndürmek için Tuple data tipini kullandık
     static (string CardNumber, string Cvv) GenerateCardNumberAndCvv()
     {

@@ -24,7 +24,8 @@ public class TransactionRepository : ITransactionRepository
     public async Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int accountId, int userId)
     {
         return await _context.Transactions
-            .Where(t => t.AccountId == accountId &&
+            .Where(t => t.SourceType == TransactionEntityType.Account.ToString() &&
+                        t.SourceId == accountId &&
                         _context.BankAccounts.Any(acc => acc.Id == accountId && acc.UserId == userId))
             .ToListAsync();
     }

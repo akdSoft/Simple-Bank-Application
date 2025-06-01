@@ -59,18 +59,4 @@ public class CardController : ControllerBase
         var cards = await _service.GetAllVirtualCardsAsync(userId.Value);
         return Ok(cards);
     }
-
-    [HttpPost("virtual-card/transfer-from-account")]
-    public async Task<IActionResult> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto)
-    {
-        var transaction = await _service.TransferFromAccountToVirtualCardAsync(dto);
-        return Ok(transaction);
-    }
-
-    [HttpPost("virtual-card/transfer-from-card")]
-    public async Task<IActionResult> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
-    {
-        var transaction = await _service.TransferFromVirtualCardToAccountAsync(dto);
-        return Ok(transaction);
-    }
 }

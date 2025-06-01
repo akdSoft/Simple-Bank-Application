@@ -137,3 +137,16 @@
     max-width: 500px;
     width: 90%;
 }
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    text-align: center;
+    font-size: 14px;
+}
+
+.custom-table-h {
+    border: 1px solid #ccc;
+    padding: 8px;
+}

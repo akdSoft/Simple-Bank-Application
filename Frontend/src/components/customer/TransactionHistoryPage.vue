@@ -37,27 +37,33 @@ async function loadAccounts(){
 
 <template>
 <div class="dashboard-wrapper">
-  <div class="dashboard-card">
+  <div class="dashboard-card" style="max-width: max-content">
     <h2 class="dashboard-title">Transaction History</h2>
 
-    <table v-if="transactions.length > 0">
+    <table class="custom-table" v-if="transactions.length > 0">
       <tbody>
       <tr>
-        <th>Id</th>
-        <th>Account Id</th>
-        <th>User Id</th>
-        <th>Amount</th>
-        <th>Type</th>
-        <th>Related Account ID</th>
+        <th class="custom-table-h">Id</th>
+        <th class="custom-table-h">Source Type</th>
+        <th class="custom-table-h">Source Id</th>
+        <th class="custom-table-h">Target Type</th>
+        <th class="custom-table-h">Target Id</th>
+        <th class="custom-table-h">Amount</th>
+        <th class="custom-table-h">User Id</th>
+        <th class="custom-table-h">Type</th>
+        <th class="custom-table-h">Timestamp</th>
       </tr>
 
       <tr v-for="transaction in transactions" :key="transaction.id">
-        <td>{{transaction.id}}</td>
-        <td>{{transaction.accountId}}</td>
-        <td>{{transaction.userId}}</td>
-        <td>{{transaction.amount}}</td>
-        <td>{{transaction.type}}</td>
-        <td>{{transaction.relatedAccountId}}</td>
+        <td class="custom-table-h">{{transaction.id}}</td>
+        <td class="custom-table-h">{{transaction.sourceType}}</td>
+        <td class="custom-table-h">{{transaction.sourceId}}</td>
+        <td class="custom-table-h">{{transaction.targetType}}</td>
+        <td class="custom-table-h">{{transaction.targetId}}</td>
+        <td class="custom-table-h">{{transaction.amount}}</td>
+        <td class="custom-table-h">{{transaction.userId}}</td>
+        <td class="custom-table-h">{{transaction.type}}</td>
+        <td class="custom-table-h">{{transaction.timestamp}}</td>
       </tr>
       </tbody>
     </table>

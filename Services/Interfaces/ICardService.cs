@@ -11,6 +11,4 @@ public interface ICardService
     Task<IEnumerable<VirtualCard>> GetAllVirtualCardsAsync(int userId);
     Task<IEnumerable<DebitCard>> GetAllDebitCardsAsync();
     Task<IEnumerable<DebitCard>> GetAllDebitCardsAsync(int userId);
-    Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto);
-    Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto);
 }

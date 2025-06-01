@@ -10,5 +10,7 @@ public interface ITransactionService
     public Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int AccountId, int userId);
     public Task<Transaction?> DepositAsync(DepositWithdrawDto dto);
     public Task<Transaction?> WithdrawAsync(DepositWithdrawDto dto);
-    public Task<Transaction?> TransferMoneyAsync(TransferMoneyDto dto);
+    public Task<Transaction?> AccountToAccountTransferAsync(TransferMoneyDto dto);
+    Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto);
+    Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto);
 }

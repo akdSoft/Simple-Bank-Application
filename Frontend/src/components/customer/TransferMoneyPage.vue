@@ -20,7 +20,7 @@ async function transfer(){
     amount: amount.value
   }
   try {
-    const response = await axios.post('http://localhost:5280/api/Transaction/transfer', payload, {withCredentials: true})
+    const response = await axios.post('http://localhost:5280/api/Transaction/transfer/account-to-account', payload, {withCredentials: true})
     if (response.status === 200){
       alert('successfully transferred')
       await loadAccounts()
@@ -53,6 +53,7 @@ async function loadAccounts(){
       <h2 class="dashboard-title">Transfer Money</h2>
 
       <div style="display: flex; flex-direction: column">
+
         <label>Select An Account</label>
 
         <select class="select" v-model="selectedAccountId">

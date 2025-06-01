@@ -52,7 +52,7 @@ async function transferFromAccountToCard(){
     amount: amount.value
   }
   try{
-    const response = await axios.post('http://localhost:5280/api/Card/virtual-card/transfer-from-account', payload, {withCredentials: true})
+    const response = await axios.post('http://localhost:5280/api/transaction/transfer/account-to-virtualcard', payload, {withCredentials: true})
 
     selectedAccountId.value = '';
     selectedCardId.value = '';
@@ -75,7 +75,7 @@ async function transferFromCardToAccount(){
     amount: amount.value
   }
   try{
-    const response2 = await axios.post('http://localhost:5280/api/Card/virtual-card/transfer-from-card', payload2, {withCredentials: true})
+    const response2 = await axios.post('http://localhost:5280/api/transaction/transfer/virtualcard-to-account', payload2, {withCredentials: true})
 
     selectedAccountId.value = '';
     selectedCardId.value = '';

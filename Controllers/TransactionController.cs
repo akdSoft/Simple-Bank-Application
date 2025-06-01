@@ -53,10 +53,24 @@ public class TransactionController : ControllerBase
     }
 
     //Gönderen hesap, alıcı hesap, tutar gibi bilgileri girdiğimiz dto ile para transferi gerçekleştiriyoruz
-    [HttpPost("transfer")]
-    public async Task<IActionResult> TransferMoneyAsync(TransferMoneyDto dto)
+    [HttpPost("transfer/account-to-account")]
+    public async Task<IActionResult> AccountToAccountTransferAsync(TransferMoneyDto dto)
     {
-        var transaction = await _service.TransferMoneyAsync(dto);
+        var transaction = await _service.AccountToAccountTransferAsync(dto);
         return (transaction == null) ? BadRequest() : Ok(dto);
+    }
+
+    [HttpPost("transfer/account-to-virtualcard")]
+    public async Task<IActionResult> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto)
+    {
+        var transaction = await _service.TransferFromAccountToVirtualCardAsync(dto);
+        return Ok(transaction);
+    }
+
+    [HttpPost("transfer/virtualcard-to-account")]
+    public async Task<IActionResult> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
+    {
+        var transaction = await _service.TransferFromVirtualCardToAccountAsync(dto);
+        return Ok(transaction);
     }
 }
