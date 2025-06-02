@@ -8,7 +8,7 @@ This project is a basic replication of a banking application, designed with two 
 
 Back-end: ASP.NET Core, Entity Framework Core
 
-Interface: Vue.js
+Front-end: Vue.js
 
 Database: MySQL
 
@@ -32,3 +32,10 @@ Currently, the project is built with two parts:
 
 • A modern front-end built with Vue.js
 
+
+👨‍💼Admin Access
+
+To log in as Admin, use the following credentials:
+
+• Username: admin
+• Password: admin
