@@ -21,6 +21,7 @@ public class BankAccountRepository : IBankAccountRepository
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
+                AccountType = acc.AccountType,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
@@ -36,17 +37,19 @@ public class BankAccountRepository : IBankAccountRepository
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
+                AccountType = acc.AccountType,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
             }).FirstOrDefaultAsync();
     }
-    public async Task<BankAccountDto?> CreateBankAccountAsync(int userId)
+    public async Task<BankAccountDto?> CreateBankAccountAsync(int userId, CreateBankAccountDto dto)
     {
         var bankAccount = new BankAccount
         {
             UserId = userId,
-            Balance = 0
+            Balance = 0,
+            AccountType = dto.AccountType
         };
 
         _context.BankAccounts.Add(bankAccount);
@@ -59,6 +62,7 @@ public class BankAccountRepository : IBankAccountRepository
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
+                AccountType = acc.AccountType,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
@@ -90,6 +94,7 @@ public class BankAccountRepository : IBankAccountRepository
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
+                AccountType = acc.AccountType,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
@@ -106,6 +111,7 @@ public class BankAccountRepository : IBankAccountRepository
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
+                AccountType = acc.AccountType,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname

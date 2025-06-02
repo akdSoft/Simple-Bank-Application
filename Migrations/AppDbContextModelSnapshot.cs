@@ -25,6 +25,10 @@ namespace Simple_Bank_Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("AccountType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
 

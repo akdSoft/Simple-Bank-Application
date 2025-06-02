@@ -31,7 +31,7 @@ public class BankAccountController : ControllerBase
 
     //Mevcut kullanıcıya ait banka hesabı oluşturuyoruz
     [HttpPost]
-    public async Task<IActionResult> CreateBankAccountAsync()
+    public async Task<IActionResult> CreateBankAccountAsync(CreateBankAccountDto dto)
     {
         var currentUsername = HttpContext.Session.GetString("username");
         if (currentUsername == null) return BadRequest();
@@ -40,7 +40,7 @@ public class BankAccountController : ControllerBase
         if (currentUser == null) return BadRequest();
 
 
-        return Ok(await _bankAccountService.CreateBankAccountAsync(currentUser.Id));
+        return Ok(await _bankAccountService.CreateBankAccountAsync(currentUser.Id, dto));
     }
 
     //Belirtilen Id'ye sahip banka hesabını siliyoruz

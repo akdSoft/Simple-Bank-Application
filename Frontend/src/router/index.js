@@ -15,6 +15,7 @@ import TransferMoneyPage from "../components/customer/TransferMoneyPage.vue";
 import DepositWithdrawPage from "../components/customer/DepositWithdrawPage.vue";
 import TransactionHistoryPage from "../components/customer/TransactionHistoryPage.vue";
 import CardsPage from "../components/customer/CardsPage.vue";
+import ListAllCardsPage from "../components/admin/ListAllCardsPage.vue";
 
 const routes = [
     {path: '/', component: HomePage},
@@ -24,6 +25,7 @@ const routes = [
     {path: '/admin/delete-account', component: DeleteAccountPage},
     {path: '/admin/delete-user', component: DeleteUserPage},
     {path: '/admin/list-all-accounts', component: ListAllAccountsPage},
+    {path: '/admin/list-all-cards', component: ListAllCardsPage},
     {path: '/admin/list-all-transactions', component: ListAllTransactionsPage},
     {path: '/admin/list-all-users', component: ListAllUsersPage},
     {path: '/customer/dashboard', component: CustomerDashboardPage},

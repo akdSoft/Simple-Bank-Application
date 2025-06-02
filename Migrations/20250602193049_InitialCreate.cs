@@ -82,6 +82,7 @@ namespace Simple_Bank_Application.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AccountType = table.Column<string>(type: "longtext", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

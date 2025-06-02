@@ -37,6 +37,10 @@ export default {
         <button class="dashboard-button">List All Accounts</button>
       </router-link>
 
+      <router-link to="/admin/list-all-cards">
+        <button class="dashboard-button">List All Cards</button>
+      </router-link>
+
       <router-link to="/admin/delete-account">
         <button class="dashboard-button">Delete Account</button>
       </router-link>

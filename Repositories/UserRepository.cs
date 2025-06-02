@@ -28,6 +28,7 @@ public class UserRepository : IUserRepository
                     {
                         Id = acc.Id,
                         Balance = acc.Balance,
+                        AccountType = acc.AccountType,
                         UserId = acc.UserId,
                         UserName = acc.User.Name,
                         UserSurname = acc.User.Surname
@@ -70,6 +71,7 @@ public class UserRepository : IUserRepository
                 {
                     Id = acc.Id,
                     Balance = acc.Balance,
+                    AccountType = acc.AccountType,
                     UserId = acc.UserId,
                     UserName = acc.User.Name,
                     UserSurname = acc.User.Surname
@@ -108,6 +110,7 @@ public class UserRepository : IUserRepository
                 {
                     Id = acc.Id,
                     Balance = acc.Balance,
+                    AccountType = acc.AccountType,
                     UserId = acc.UserId,
                     UserName = acc.User.Name,
                     UserSurname = acc.User.Surname

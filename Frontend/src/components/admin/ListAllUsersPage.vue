@@ -21,22 +21,22 @@ async function showUserList(){
   <div class="dashboard-card">
     <h2 class="dashboard-title">List All Users</h2>
 
-    <table v-if="users.length > 0">
+    <table class="custom-table" v-if="users.length > 0">
       <tbody>
       <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Username</th>
-        <th>Email</th>
+        <th class="custom-table-h">Id</th>
+        <th class="custom-table-h">Name</th>
+        <th class="custom-table-h">Surname</th>
+        <th class="custom-table-h">Username</th>
+        <th class="custom-table-h">Email</th>
       </tr>
 
       <tr v-for="user in users" :key="user.id">
-        <td>{{user.id}}</td>
-        <td>{{user.name}}</td>
-        <td>{{user.surname}}</td>
-        <td>{{user.username}}</td>
-        <td>{{user.email}}</td>
+        <td class="custom-table-h">{{user.id}}</td>
+        <td class="custom-table-h">{{user.name}}</td>
+        <td class="custom-table-h">{{user.surname}}</td>
+        <td class="custom-table-h">{{user.username}}</td>
+        <td class="custom-table-h">{{user.email}}</td>
       </tr>
       </tbody>
     </table>

@@ -4,7 +4,7 @@ public class BankAccount
 {
     public int Id { get; set; }
     public decimal Balance { get; set; }
-
+    public string AccountType { get; set; } = null!;
     public int UserId { get; set; }
     public User User { get; set; } = null!;
 }

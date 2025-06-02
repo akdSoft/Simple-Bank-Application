@@ -1,5 +1,5 @@
 <script setup>
-import Card from "./ModalsAndComponents/Card.vue";
+import Card from "../Card.vue";
 import {onMounted, ref} from "vue";
 import axios from "axios";
 import CreateDebitCardModal from "./ModalsAndComponents/CreateDebitCardModal.vue";
