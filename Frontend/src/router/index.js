@@ -16,6 +16,7 @@ import DepositWithdrawPage from "../components/customer/DepositWithdrawPage.vue"
 import TransactionHistoryPage from "../components/customer/TransactionHistoryPage.vue";
 import CardsPage from "../components/customer/CardsPage.vue";
 import ListAllCardsPage from "../components/admin/ListAllCardsPage.vue";
+import CurrencyDashboardPage from "../components/admin/CurrencyDashboardPage.vue";
 
 const routes = [
     {path: '/', component: HomePage},
@@ -28,6 +29,7 @@ const routes = [
     {path: '/admin/list-all-cards', component: ListAllCardsPage},
     {path: '/admin/list-all-transactions', component: ListAllTransactionsPage},
     {path: '/admin/list-all-users', component: ListAllUsersPage},
+    {path: '/admin/currency-dashboard', component: CurrencyDashboardPage},
     {path: '/customer/dashboard', component: CustomerDashboardPage},
     {path: '/customer/profile', component: ProfilePage},
     {path: '/customer/cards', component: CardsPage},

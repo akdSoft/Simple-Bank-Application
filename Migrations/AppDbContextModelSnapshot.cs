@@ -42,6 +42,24 @@ namespace Simple_Bank_Application.Migrations
                     b.ToTable("BankAccounts");
                 });
 
+            modelBuilder.Entity("Simple_Bank_Application.Models.Currency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("TryIndexedValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Currencies");
+                });
+
             modelBuilder.Entity("Simple_Bank_Application.Models.DebitCard", b =>
                 {
                     b.Property<int>("Id")

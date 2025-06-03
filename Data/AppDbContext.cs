@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<DebitCard> DebitCards { get; set; }
     public DbSet<VirtualCard> VirtualCards { get; set; }
+    public DbSet<Currency> Currencies { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
