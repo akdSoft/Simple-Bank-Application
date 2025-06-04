@@ -81,13 +81,13 @@ async function loadAccounts(){
 
       <select class="select" v-model="selectedAccountId">
         <option class="select-items" >--Select an Account--</option>
-        <option class="select-items" v-for="account in accounts" :key="account.id">
-          {{account.id}}
+        <option class="select-items" v-for="account in accounts" :key="account.id" :value="account.id">
+          {{account.id}} - {{account.currencyType}} Account
         </option>
       </select>
 
       <label>Balance</label>
-      <input :value="selectedAccount.balance" readonly>
+      <input :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
 
       <label>Amount</label>
       <input v-model="amount">

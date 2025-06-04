@@ -19,7 +19,8 @@ public class CurrencyRepository : ICurrencyRepository
         var currency = new Currency
         {
             Name = dto.Name,
-            TryIndexedValue = dto.TryIndexedValue
+            TryIndexedValue = dto.TRYIndexedValue,
+            Symbol = dto.Symbol
         };
 
         _context.Currencies.Add(currency);

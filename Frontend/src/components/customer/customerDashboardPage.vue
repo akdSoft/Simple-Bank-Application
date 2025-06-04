@@ -27,7 +27,7 @@ onMounted(async () => {
 
 async function loadAccounts(){
   try{
-    const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true},)
+    const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true})
     accounts.value = response.data
   } catch (err) {
     alert(err.message)
@@ -74,13 +74,13 @@ async function deleteAccount(){
       <select class="select" id="account" v-model="selectedAccountId">
         <option class="select-items" value="">--Choose an Account--</option>
         <option class="select-items" v-for="account in accounts" :key="account.id" :value="account.id">
-          {{account.id}}
+          {{account.id}} - {{account.currencyType}} Account
         </option>
       </select>
 
       <div style="display: flex; flex-direction: column; margin-bottom: 30px">
         <label>Balance of Selected Account</label>
-        <input :value="selectedAccount.balance" readonly>
+        <input :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
 
         <label>Total Balance</label>
         <input :value="totalBalance" readonly>

@@ -17,11 +17,14 @@ public class BankAccountRepository : IBankAccountRepository
         return await _context.BankAccounts
             //Banka hesaplarını, bağlı oldukları User ile çekiyoruz
             .Include(acc => acc.User)
+            .Include(acc => acc.Currency)
             .Select(acc => new BankAccountDto
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
                 AccountType = acc.AccountType,
+                CurrencyType = acc.Currency.Name,
+                CurrencySymbol = acc.Currency.Symbol,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
@@ -32,12 +35,15 @@ public class BankAccountRepository : IBankAccountRepository
     {
         return await _context.BankAccounts
             .Include(acc => acc.User)
+            .Include(acc => acc.Currency)
             .Where(acc => acc.Id == id)
             .Select(acc => new BankAccountDto
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
                 AccountType = acc.AccountType,
+                CurrencyType = acc.Currency.Name,
+                CurrencySymbol = acc.Currency.Symbol,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
@@ -49,7 +55,8 @@ public class BankAccountRepository : IBankAccountRepository
         {
             UserId = userId,
             Balance = 0,
-            AccountType = dto.AccountType
+            AccountType = dto.AccountType,
+            Currency = await _context.Currencies.FindAsync(dto.CurrencyId)
         };
 
         _context.BankAccounts.Add(bankAccount);
@@ -57,12 +64,15 @@ public class BankAccountRepository : IBankAccountRepository
 
         var createdAccount = await _context.BankAccounts
             .Include(acc => acc.User)
+            .Include(acc => acc.Currency)
             .Where(acc => acc.Id == bankAccount.Id)//??
             .Select(acc => new BankAccountDto
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
                 AccountType = acc.AccountType,
+                CurrencyType = acc.Currency.Name,
+                CurrencySymbol = acc.Currency.Symbol,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
@@ -89,12 +99,15 @@ public class BankAccountRepository : IBankAccountRepository
 
         var accountDto = await _context.BankAccounts
             .Include(acc => acc.User)
+            .Include(acc => acc.Currency)
             .Where(acc => acc.Id == accountId)
             .Select(acc => new BankAccountDto
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
                 AccountType = acc.AccountType,
+                CurrencyType = acc.Currency.Name,
+                CurrencySymbol = acc.Currency.Symbol,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
@@ -106,12 +119,15 @@ public class BankAccountRepository : IBankAccountRepository
     {
         return await _context.BankAccounts
             .Include(acc => acc.User)
+            .Include(acc => acc.Currency)
             .Where(acc => acc.UserId == userId)
             .Select(acc => new BankAccountDto
             {
                 Id = acc.Id,
                 Balance = acc.Balance,
                 AccountType = acc.AccountType,
+                CurrencyType = acc.Currency.Name,
+                CurrencySymbol = acc.Currency.Symbol,
                 UserId = acc.UserId,
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname

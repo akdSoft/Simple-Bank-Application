@@ -29,7 +29,7 @@ onMounted(async () => {
 async function loadAccounts(){
   try{
     const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true},)
-    accounts.value = response.data
+    accounts.value = response.data.filter(account => account.currencyType === 'TRY')
   } catch (err) {
     alert(err.message)
   }
@@ -110,15 +110,16 @@ async function transferFromCardToAccount(){
       <label>Choose an account</label>
 
       <select class="select"  id="account" v-model="selectedAccountId">
-        <option class="select-items" value="">--Choose an Account--</option>
+        <option class="select-items" value="">--Choose a TRY Account--</option>
         <option class="select-items" v-for="account in accounts" :key="account.id" :value="account.id">
-          {{account.id}}
+          {{account.id}} - {{account.currencyType}} Account
         </option>
       </select>
 
       <div>
         <label style="margin-right: 10px">Balance:</label>
-        <input class="input" type="number" :value="selectedAccount.balance" readonly>
+        <input class="input" v-if="selectedAccount" :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
+        <input class="input" v-else readonly>
       </div>
 
       <label>Choose a virtual card</label>
@@ -132,7 +133,7 @@ async function transferFromCardToAccount(){
 
       <div>
         <label style="margin-right: 10px">Available Limit:</label>
-        <input class="input" type="number" :value="selectedCard.availableLimit" readonly>
+        <input class="input" :value="selectedCard.availableLimit" readonly>
       </div>
 
       <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 100px">

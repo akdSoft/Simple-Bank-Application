@@ -14,7 +14,7 @@ onMounted(async () => {
 async function loadAccounts(){
   try{
     const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true},)
-    accounts.value = response.data
+    accounts.value = response.data.filter(account => account.currencyType === 'TRY')
   } catch (err) {
     alert(err.message)
   }
@@ -43,12 +43,12 @@ async function createCard(){
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
       <h2 class="dashboard-title">Create Debit Card</h2>
-      <label>Choose an account to add a card</label>
+      <label>Choose a TRY account to add a card</label>
 
       <select class="select"  id="account" v-model="selectedAccountId">
         <option class="select-items" value="">--Choose an Account--</option>
         <option class="select-items" v-for="account in accounts" :key="account.id" :value="account.id">
-          {{account.id}}
+          {{account.id}} - {{account.currencyType}} Account
         </option>
       </select>
 

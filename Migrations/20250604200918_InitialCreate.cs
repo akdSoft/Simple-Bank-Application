@@ -21,8 +21,9 @@ namespace Simple_Bank_Application.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    TryIndexedValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false),
+                    TryIndexedValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Symbol = table.Column<string>(type: "varchar(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,11 +99,18 @@ namespace Simple_Bank_Application.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     AccountType = table.Column<string>(type: "longtext", nullable: false),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BankAccounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BankAccounts_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BankAccounts_Users_UserId",
                         column: x => x.UserId,
@@ -141,9 +149,20 @@ namespace Simple_Bank_Application.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BankAccounts_CurrencyId",
+                table: "BankAccounts",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BankAccounts_UserId",
                 table: "BankAccounts",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Currencies_Name",
+                table: "Currencies",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DebitCards_LinkedAccountId",
@@ -167,9 +186,6 @@ namespace Simple_Bank_Application.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Currencies");
-
-            migrationBuilder.DropTable(
                 name: "DebitCards");
 
             migrationBuilder.DropTable(
@@ -180,6 +196,9 @@ namespace Simple_Bank_Application.Migrations
 
             migrationBuilder.DropTable(
                 name: "BankAccounts");
+
+            migrationBuilder.DropTable(
+                name: "Currencies");
 
             migrationBuilder.DropTable(
                 name: "Users");

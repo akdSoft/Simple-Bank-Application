@@ -34,7 +34,7 @@ async function loadCards(){
 <template>
     <div class="dashboard-wrapper">
       <div class="dashboard-card">
-        <h2 class="dashboard-title">Cards</h2>
+        <h2 class="dashboard-title" style="text-transform: none">CARDS (only TRY for now)</h2>
 
         <h3 v-if="debitCards.length > 0">Debit Cards</h3>
         <div style="display: flex; overflow-x: auto; gap: 1rem;">

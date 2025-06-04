@@ -40,5 +40,13 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey("LinkedAccountId")
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Currency>()
+            .HasIndex(u => u.Name)
+            .IsUnique();
+
+        modelBuilder.Entity<BankAccount>()
+            .HasOne(b => b.Currency)
+            .WithMany();
     }
 }
