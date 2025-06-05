@@ -63,7 +63,8 @@ async function loadAccounts(){
         </select>
 
         <label>Balance</label>
-        <input class="input" :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
+        <input class="input" v-if="selectedAccount" :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
+        <input class="input" v-else readonly>
 
         <label>Target Account ID:</label>
         <input class="input" v-model="targetAccountId">

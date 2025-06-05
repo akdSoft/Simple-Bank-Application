@@ -5,8 +5,10 @@ public class Transaction
     public int Id { get; set; }
     public string? SourceType { get; set; }
     public int? SourceId { get; set; }
+    public string SourceCurrency { get; set; } = null!;
     public string? TargetType { get; set; }
     public int? TargetId { get; set; }
+    public string TargetCurrency { get; set; } = null!;
     public decimal Amount { get; set; }
     public int UserId { get; set; }
     public string Type { get; set; } = null!;

@@ -11,12 +11,17 @@ public class TransactionService : ITransactionService
     private readonly ITransactionRepository _transactionRepo;
     private readonly IBankAccountRepository _bankAccountRepo;
     private readonly ICardRepository _cardRepo;
+    private readonly ICurrencyService _currencyService;
 
-    public TransactionService(ITransactionRepository transactionRepo, IBankAccountRepository bankAccountRepo, ICardRepository cardRepo)
+    public TransactionService(ITransactionRepository transactionRepo, 
+                              IBankAccountRepository bankAccountRepo, 
+                              ICardRepository cardRepo,
+                              ICurrencyService currencyService)
     {
         _transactionRepo = transactionRepo;
         _bankAccountRepo = bankAccountRepo;
         _cardRepo = cardRepo;
+        _currencyService = currencyService;
     }
     public async Task<Transaction?> DepositAsync(DepositWithdrawDto dto)
     {
@@ -31,8 +36,10 @@ public class TransactionService : ITransactionService
         {
             SourceType = TransactionEntityType.Account.ToString(),
             SourceId = dto.AccountId,
+            SourceCurrency = acc.CurrencyType,
             TargetType = null,
             TargetId = null,
+            TargetCurrency = acc.CurrencyType,
             Amount = dto.Amount,
             UserId = acc.UserId,
             Type = "Deposit",
@@ -56,8 +63,10 @@ public class TransactionService : ITransactionService
         {
             SourceType = TransactionEntityType.Account.ToString(),
             SourceId = dto.AccountId,
+            SourceCurrency = acc.CurrencyType,
             TargetType = null,
             TargetId = null,
+            TargetCurrency = acc.CurrencyType,
             Amount = dto.Amount,
             UserId = acc.UserId,
             Type = "Withdraw",
@@ -71,26 +80,32 @@ public class TransactionService : ITransactionService
 
     public async Task<Transaction?> AccountToAccountTransferAsync(TransferMoneyDto dto)
     {
-        var acc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.FromAccountId);
+        var sourceAcc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.FromAccountId);
+        var targetAcc = await _bankAccountRepo.GetBankAccountByIdAsync(dto.TargetAccountId);
 
-        if (acc == null || dto.Amount <= 0 || dto.Amount > acc.Balance || dto.FromAccountId == dto.TargetAccountId)
+        if (sourceAcc == null || targetAcc == null || dto.Amount <= 0 || dto.Amount > sourceAcc.Balance || dto.FromAccountId == dto.TargetAccountId)
             return null;
+
+        var convertedAmount = await _currencyService.ConvertCurrencyAsync(dto.Amount, sourceAcc.CurrencyType, targetAcc.CurrencyType);
+        
 
         var transaction = new Transaction
         {
             SourceType = TransactionEntityType.Account.ToString(),
             SourceId = dto.FromAccountId,
+            SourceCurrency = sourceAcc.CurrencyType,
             TargetType = TransactionEntityType.Account.ToString(),
             TargetId = dto.TargetAccountId,
+            TargetCurrency = targetAcc.CurrencyType,
             Amount = dto.Amount,
-            UserId = acc.UserId,
+            UserId = sourceAcc.UserId,
             Type = "Money Transfer",
             Timestamp = DateTime.Now
         };
 
         await _transactionRepo.CreateTransactionAsync(transaction);
         await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(dto.FromAccountId, -dto.Amount);
-        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(dto.TargetAccountId, dto.Amount);
+        await _bankAccountRepo.IncreaseOrDecreaseBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
         return transaction;
     }
 
@@ -105,8 +120,10 @@ public class TransactionService : ITransactionService
         {
             SourceType = TransactionEntityType.Account.ToString(),
             SourceId = dto.FromAccountOrCardId,
+            SourceCurrency = account.CurrencyType,
             TargetType = TransactionEntityType.VirtualCard.ToString(),
             TargetId = dto.TargetAccountOrCardId,
+            TargetCurrency = account.CurrencyType,
             Amount = dto.Amount,
             UserId = account.UserId,
             Type = "virtual card money transfer",
@@ -121,16 +138,19 @@ public class TransactionService : ITransactionService
     public async Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
     {
         var card = await _cardRepo.GetVirtualCardByIdAsync(dto.FromAccountOrCardId);
+        var account = await _bankAccountRepo.GetBankAccountByIdAsync(dto.FromAccountOrCardId);
 
-        if (card == null || dto.Amount <= 0 || dto.Amount > card.AvailableLimit)
+        if (card == null || account == null || dto.Amount <= 0 || dto.Amount > card.AvailableLimit)
             return false;
 
         var transaction = new Transaction
         {
             SourceType = TransactionEntityType.Account.ToString(),
             SourceId = dto.FromAccountOrCardId,
+            SourceCurrency = account.CurrencyType,
             TargetType = TransactionEntityType.VirtualCard.ToString(),
             TargetId = dto.TargetAccountOrCardId,
+            TargetCurrency = account.CurrencyType,
             Amount = dto.Amount,
             UserId = card.UserId,
             Type = "virtual card money transfer",

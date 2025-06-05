@@ -12,6 +12,23 @@ public class CurrencyService : ICurrencyService
     public CurrencyService(ICurrencyRepository repo) => _repo = repo;
 
     public async Task<IEnumerable<Currency>> GetAllCurrenciesAsync() => await _repo.GetAllCurrenciesAsync();
+
     public async Task<Currency> CreateCurrencyAsync(CreateCurrencyDto dto) =>
         await _repo.CreateCurrencyAsync(dto);
+
+    public async Task<Currency?> GetCurrencyByNameAsync(string currencyName) => 
+        await _repo.GetCurrencyByNameAsync(currencyName);
+
+    public async Task<decimal?> ConvertCurrencyAsync(decimal amount, string sourceCurrencyName, string targetCurrencyName)
+    {
+        if (sourceCurrencyName == targetCurrencyName) return amount;
+
+        var sourceCurrency = await _repo.GetCurrencyByNameAsync(sourceCurrencyName);
+        var targetCurrency = await _repo.GetCurrencyByNameAsync(targetCurrencyName);
+
+        if (sourceCurrency == null || targetCurrency == null) return null;
+
+        var convertedAmount = amount / targetCurrency.TryIndexedValue * sourceCurrency.TryIndexedValue;
+        return convertedAmount;
+    }
 }

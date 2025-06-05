@@ -11,7 +11,7 @@ using Simple_Bank_Application.Data;
 namespace Simple_Bank_Application.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250604200918_InitialCreate")]
+    [Migration("20250605203834_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -129,10 +129,18 @@ namespace Simple_Bank_Application.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("SourceCurrency")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int?>("SourceId")
                         .HasColumnType("int");
 
                     b.Property<string>("SourceType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TargetCurrency")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int?>("TargetId")

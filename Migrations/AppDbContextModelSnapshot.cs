@@ -126,10 +126,18 @@ namespace Simple_Bank_Application.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("SourceCurrency")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int?>("SourceId")
                         .HasColumnType("int");
 
                     b.Property<string>("SourceType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TargetCurrency")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int?>("TargetId")
