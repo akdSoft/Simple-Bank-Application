@@ -1,8 +1,6 @@
 <script setup>
-
 import {ref} from "vue";
-import axios from "axios";
-import CreateDebitCardModal from "../customer/ModalsAndComponents/CreateDebitCardModal.vue";
+import api from '../../api/axiosInstance.js'
 import CreateCurrencyModal from "./ModalsAndComponents/CreateCurrencyModal.vue";
 
 const currencies = ref([])
@@ -10,7 +8,7 @@ const showCreateCurrencyModal = ref(false)
 
 async function showCurrencyList(){
   try {
-    const response = await axios.get('http://localhost:5280/api/Currency', {withCredentials: true})
+    const response = await api.get('/Currency')
     currencies.value = response.data
   } catch (err) {
     alert(err.message)
@@ -23,7 +21,7 @@ async function createCurrency(){
 
   }
   try {
-    const response = await axios.post('http://localhost:5280/api/Currency', {withCredentials: true})
+    const response = await api.post('/Currency')
     currencies.value = response.data
   } catch (err) {
     alert(err.message)

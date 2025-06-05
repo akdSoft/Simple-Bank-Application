@@ -1,6 +1,6 @@
 <script setup>
-import axios from "axios";
 import {onMounted, ref} from "vue";
+import api from '../../api/axiosInstance.js'
 
 const selectedAccountType = ref('')
 const currencies = ref([])
@@ -15,7 +15,7 @@ async function createAccount(){
   }
 
   try{
-    const response = await axios.post('http://localhost:5280/api/BankAccount', payload, {withCredentials: true})
+    const response = await api.post('/BankAccount', payload)
     if (response.status === 200){
       alert("account created")
     }
@@ -34,7 +34,7 @@ onMounted(async () => {
 
 async function loadCurrencies(){
   try{
-    const response = await axios.get('http://localhost:5280/api/Currency', {withCredentials: true})
+    const response = await api.get('/Currency')
     currencies.value = response.data
   } catch (err) {
     alert(err.message)

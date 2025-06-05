@@ -1,13 +1,12 @@
 <script setup>
-
 import {ref} from "vue";
-import axios from "axios";
+import api from '../../api/axiosInstance.js'
 
 const accounts = ref([])
 
 async function showAccountList(){
   try {
-    const response = await axios.get('http://localhost:5280/api/BankAccount', {withCredentials: true})
+    const response = await api.get('/BankAccount')
     accounts.value = response.data
   } catch (err) {
     alert(err.message)

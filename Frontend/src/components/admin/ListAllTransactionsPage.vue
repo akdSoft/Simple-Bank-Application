@@ -1,13 +1,12 @@
 <script setup>
-
 import {ref} from "vue";
-import axios from "axios";
+import api from '../../api/axiosInstance.js'
 
 const transactions = ref([])
 
 async function showTransactionList(){
   try {
-    const response = await axios.get('http://localhost:5280/api/Transaction', {withCredentials: true})
+    const response = await api.get('/Transaction')
     transactions.value = response.data
   } catch (err) {
     alert(err.message)

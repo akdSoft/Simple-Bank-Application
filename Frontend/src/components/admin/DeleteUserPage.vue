@@ -1,12 +1,12 @@
 <script setup>
 import {ref} from "vue";
-import axios from "axios";
+import api from '../../api/axiosInstance.js'
 
 const userId = ref('')
 
 async function deleteUser(){
   try {
-    const response = await  axios.delete(`http://localhost:5280/api/User/${userId.value}`, {withCredentials: true})
+    const response = await  api.delete(`/api/User/${userId.value}`)
     if(response.status === 204 || response.status === 404){
       alert('user deleted')
     }
@@ -26,7 +26,7 @@ async function deleteUser(){
 
       <div style="display: flex; flex-direction: column">
         <label>User Id</label>
-        <input v-model="userId">
+        <input class="input" v-model="userId">
       </div>
 
       <button class="dashboard-button" @click="deleteUser">Delete</button>

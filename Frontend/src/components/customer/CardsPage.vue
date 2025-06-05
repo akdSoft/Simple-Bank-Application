@@ -1,7 +1,7 @@
 <script setup>
 import Card from "../Card.vue";
 import {onMounted, ref} from "vue";
-import axios from "axios";
+import api from '../../api/axiosInstance.js'
 import CreateDebitCardModal from "./ModalsAndComponents/CreateDebitCardModal.vue";
 import CreateVirtualCardModal from "./ModalsAndComponents/CreateVirtualCardModal.vue";
 import VirtualCardMoneyTransferModal from "./ModalsAndComponents/VirtualCardMoneyTransferModal.vue";
@@ -19,10 +19,10 @@ onMounted(async () => {
 
 async function loadCards(){
   try{
-    const response = await axios.get('http://localhost:5280/api/Card/debit-cards/user', {withCredentials: true},)
+    const response = await api.get('/Card/debit-cards/user')
     debitCards.value = response.data
 
-    const response2 = await axios.get('http://localhost:5280/api/Card/virtual-cards/user', {withCredentials: true},)
+    const response2 = await api.get('/Card/virtual-cards/user')
     virtualCards.value = response2.data
 
   } catch (err) {

@@ -1,8 +1,8 @@
 <script setup>
-import axios from 'axios';
 import '../../assets/dashboard.css'
 import {ref, onMounted, computed} from "vue";
 import {useRouter} from "vue-router";
+import api from '../../api/axiosInstance.js'
 
 const router = useRouter()
 const accounts = ref([])
@@ -27,7 +27,7 @@ onMounted(async () => {
 
 async function loadAccounts(){
   try{
-    const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true})
+    const response = await api.get('/BankAccount/user')
     accounts.value = response.data
   } catch (err) {
     alert(err.message)
@@ -36,7 +36,7 @@ async function loadAccounts(){
 
 async function logOut(){
   try{
-    const response = await axios.post('http://localhost:5280/api/Auth/logout', {},{withCredentials: true})
+    const response = await api.post('/Auth/logout')
     if(response.data === 'logged out'){
       router.push('/')
     }
@@ -50,7 +50,7 @@ async function logOut(){
 
 async function deleteAccount(){
   try {
-    const response = await axios.delete(`http://localhost:5280/api/BankAccount/${selectedAccountId.value}`, {withCredentials: true})
+    const response = await api.delete(`/BankAccount/${selectedAccountId.value}`)
     if (response.status === 204) {
       alert('successfully deleted')
     }
@@ -80,10 +80,11 @@ async function deleteAccount(){
 
       <div style="display: flex; flex-direction: column; margin-bottom: 30px">
         <label>Balance of Selected Account</label>
-        <input :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
+        <input class="input" v-if="selectedAccount" :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
+        <input class="input" v-else  readonly>
 
         <label>Total Balance</label>
-        <input :value="totalBalance" readonly>
+        <input class="input" :value="totalBalance" readonly>
 
         <button class="dashboard-button" @click="deleteAccount">Delete Selected Account</button>
       </div>
@@ -114,8 +115,6 @@ async function deleteAccount(){
       </router-link>
 
       <button class="dashboard-button" @click="logOut">Log Out</button>
-
-<!--      <Card card-number=""></Card>-->
 
     </div>
   </div>

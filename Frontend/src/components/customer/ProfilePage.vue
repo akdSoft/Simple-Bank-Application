@@ -1,6 +1,6 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
-import axios from "axios";
+import api from '../../api/axiosInstance.js'
 import {useRouter} from "vue-router";
 
 const router = useRouter()
@@ -23,7 +23,7 @@ async function updateUser(){
     email: user.value.email
   }
   try{
-    const response = await axios.put('http://localhost:5280/api/User', payload, {withCredentials: true})
+    const response = await api.put('/User', payload)
     if(response.status === 200){
       alert('user updated')
     }
@@ -37,7 +37,7 @@ async function updateUser(){
 
 async function deleteUser(){
   try{
-    const response = await axios.delete('http://localhost:5280/api/User', {withCredentials: true})
+    const response = await api.delete('/User')
     if(response.status === 204){
       alert('user deleted')
       router.push('/')
@@ -52,7 +52,7 @@ async function deleteUser(){
 
 onMounted(async () => {
   try{
-    const response = await axios.get('http://localhost:5280/api/User/me', {withCredentials: true})
+    const response = await api.get('/User/me')
     user.value = response.data
   } catch (err) {
     alert(err.message)
@@ -67,22 +67,22 @@ onMounted(async () => {
 
     <div style="display: flex; flex-direction: column">
       <label>Name:</label>
-      <input v-model="user.name">
+      <input class="input" v-model="user.name">
 
       <label>Surname:</label>
-      <input v-model="user.surname">
+      <input class="input" v-model="user.surname">
 
       <label>Username:</label>
-      <input v-model="user.username">
+      <input class="input" v-model="user.username">
 
       <label>Password:</label>
-      <input v-model="user.password">
+      <input class="input" v-model="user.password">
 
       <label>Email:</label>
-      <input v-model="user.email">
+      <input class="input" v-model="user.email">
 
       <label>User ID:</label>
-      <input :value="user.id" readonly>
+      <input class="input" :value="user.id" readonly>
     </div>
 
     <button class="dashboard-button" @click="updateUser">Update</button>

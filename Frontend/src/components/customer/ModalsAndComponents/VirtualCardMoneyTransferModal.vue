@@ -1,6 +1,6 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
-import axios from "axios";
+import api from '../../../api/axiosInstance.js';
 
 const amount = ref('')
 const accounts = ref([])
@@ -28,7 +28,7 @@ onMounted(async () => {
 
 async function loadAccounts(){
   try{
-    const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true},)
+    const response = await api.get('/BankAccount/user')
     accounts.value = response.data.filter(account => account.currencyType === 'TRY')
   } catch (err) {
     alert(err.message)
@@ -37,7 +37,7 @@ async function loadAccounts(){
 
 async function loadCards(){
   try{
-    const response = await axios.get('http://localhost:5280/api/Card/virtual-cards/user', {withCredentials: true},)
+    const response = await api.get('/Card/virtual-cards/user')
     virtualCards.value = response.data
 
   } catch (err) {
@@ -52,7 +52,7 @@ async function transferFromAccountToCard(){
     amount: amount.value
   }
   try{
-    const response = await axios.post('http://localhost:5280/api/transaction/transfer/account-to-virtualcard', payload, {withCredentials: true})
+    const response = await api.post('/transaction/transfer/account-to-virtualcard', payload)
 
     selectedAccountId.value = '';
     selectedCardId.value = '';
@@ -75,7 +75,7 @@ async function transferFromCardToAccount(){
     amount: amount.value
   }
   try{
-    const response2 = await axios.post('http://localhost:5280/api/transaction/transfer/virtualcard-to-account', payload2, {withCredentials: true})
+    const response2 = await api.post('/transaction/transfer/virtualcard-to-account', payload2)
 
     selectedAccountId.value = '';
     selectedCardId.value = '';

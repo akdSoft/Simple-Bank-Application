@@ -1,6 +1,6 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
-import axios from "axios";
+import api from '../../api/axiosInstance.js'
 
 const amount = ref('')
 const accounts = ref([])
@@ -18,7 +18,7 @@ async function deposit(){
   }
 
   try {
-    const response = await axios.post('http://localhost:5280/api/Transaction/deposit', payload, {withCredentials: true})
+    const response = await api.post('/Transaction/deposit', payload)
     if (response.status === 200){
       await loadAccounts()
       alert("successfully deposited")
@@ -41,7 +41,7 @@ async function withdraw(){
     amount: amount.value,
   }
   try {
-    const response = await axios.post('http://localhost:5280/api/Transaction/withdraw', payload, {withCredentials: true})
+    const response = await api.post('/Transaction/withdraw', payload)
     if (response.status === 200){
       await loadAccounts()
       alert("successfully withdrew")
@@ -63,7 +63,7 @@ onMounted(async () => {
 
 async function loadAccounts(){
   try{
-    const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true},)
+    const response = await api.get('/BankAccount/user')
     accounts.value = response.data
   } catch (err) {
     alert(err.message)
@@ -87,10 +87,11 @@ async function loadAccounts(){
       </select>
 
       <label>Balance</label>
-      <input :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
+      <input class="input" v-if="selectedAccount" :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
+      <input class="input" v-else readonly>
 
       <label>Amount</label>
-      <input v-model="amount">
+      <input class="input" v-model="amount">
     </div>
 
     <button class="dashboard-button" @click="deposit">Deposit</button>

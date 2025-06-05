@@ -1,12 +1,12 @@
 <script setup>
 import {ref} from "vue";
-import axios from "axios";
+import api from '../../api/axiosInstance.js'
 
 const accountId = ref('')
 
 async function deleteAccount(){
   try {
-    const response = await  axios.delete(`http://localhost:5280/api/BankAccount/${accountId.value}`, {withCredentials: true})
+    const response = await  api.delete(`/BankAccount/${accountId.value}`)
     if(response.status === 204 || response.status === 404){
       alert('account deleted')
     }
@@ -26,7 +26,7 @@ async function deleteAccount(){
 
       <div style="display: flex; flex-direction: column">
         <label>Account Id</label>
-        <input v-model="accountId">
+        <input class="input" v-model="accountId">
       </div>
 
       <button class="dashboard-button" @click="deleteAccount">Delete</button>

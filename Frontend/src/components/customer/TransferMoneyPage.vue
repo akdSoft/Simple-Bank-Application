@@ -1,7 +1,6 @@
 <script setup>
-
 import {computed, onMounted, ref} from "vue";
-import axios from "axios";
+import api from '../../api/axiosInstance.js'
 
 const amount = ref('')
 const targetAccountId = ref('')
@@ -20,7 +19,7 @@ async function transfer(){
     amount: amount.value
   }
   try {
-    const response = await axios.post('http://localhost:5280/api/Transaction/transfer/account-to-account', payload, {withCredentials: true})
+    const response = await api.post('/Transaction/transfer/account-to-account', payload)
     if (response.status === 200){
       alert('successfully transferred')
       await loadAccounts()
@@ -39,7 +38,7 @@ onMounted(async () => {
 
 async function loadAccounts(){
   try{
-    const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true},)
+    const response = await api.get('/BankAccount/user')
     accounts.value = response.data
   } catch (err) {
     alert(err.message)
@@ -64,13 +63,13 @@ async function loadAccounts(){
         </select>
 
         <label>Balance</label>
-        <input :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
+        <input class="input" :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
 
         <label>Target Account ID:</label>
-        <input v-model="targetAccountId">
+        <input class="input" v-model="targetAccountId">
 
         <label>Amount</label>
-        <input v-model="amount">
+        <input class="input" v-model="amount">
       </div>
 
       <button class="dashboard-button" @click="transfer">Transfer</button>

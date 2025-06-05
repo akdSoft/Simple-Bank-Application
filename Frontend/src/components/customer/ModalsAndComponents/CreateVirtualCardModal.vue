@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import axios from "axios";
+import api from '../../../api/axiosInstance.js';
 
 const onlineShoppingEnabled = ref(false)
 
@@ -9,7 +9,7 @@ async function createCard(){
     onlineShopping: onlineShoppingEnabled.value,
   }
   try{
-    const response = await axios.post('http://localhost:5280/api/Card/virtual-card', payload, {withCredentials: true},)
+    const response = await api.post('/Card/virtual-card', payload)
     alert('virtual card created')
   } catch (err) {
     alert(err.message)

@@ -1,11 +1,11 @@
 <script>
-import axios from 'axios';
 import '../../assets/dashboard.css'
+import api from '../../api/axiosInstance.js'
 export default {
   methods: {
     async logOut(){
       try{
-        const response = await axios.post('http://localhost:5280/api/Auth/logout', {},{withCredentials: true})
+        const response = await api.post('/Auth/logout')
         if(response.data === 'logged out'){
           this.$router.push('/')
         }

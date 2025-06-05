@@ -1,6 +1,6 @@
 <script setup>
 import {ref, onMounted, computed} from "vue";
-import axios from "axios";
+import api from '../../api/axiosInstance.js'
 import '../../assets/dashboard.css'
 
 const transactions = ref([])
@@ -14,7 +14,7 @@ const selectedAccount = computed(() => {
 
 async function showTransactionList(){
   try {
-    const response = await axios.get(`http://localhost:5280/api/Transaction/account/${selectedAccountId.value}`, {withCredentials: true})
+    const response = await api.get(`/Transaction/account/${selectedAccountId.value}`)
     transactions.value = response.data
   } catch (err) {
     alert(err.message)
@@ -27,7 +27,7 @@ onMounted(async () => {
 
 async function loadAccounts(){
   try{
-    const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true},)
+    const response = await api.get('/BankAccount/user')
     accounts.value = response.data
   } catch (err) {
     alert(err.message)

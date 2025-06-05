@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios';
+import api from '../api/axiosInstance.js';
 export default{
   computed: {
     register() {
@@ -20,7 +21,7 @@ export default{
           password: this.password
         }
 
-        const response = await axios.post('http://localhost:5280/api/Auth/login', payload, {withCredentials: true})
+        const response = await api.post('/Auth/login', payload)
         if(response.status === 200){
           if(response.data === 'logged in as admin'){
             this.$router.push('/admin/dashboard')

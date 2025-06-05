@@ -1,6 +1,6 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
-import axios from "axios";
+import api from '../../../api/axiosInstance.js';
 
 const name = ref('')
 const tryIndexedValue = ref('')
@@ -15,7 +15,7 @@ async function createCurrency(){
   }
 
   try{
-    const response = await axios.post('http://localhost:5280/api/Currency', payload, {withCredentials: true})
+    const response = await api.post('/Currency', payload)
 
     if (response.status === 200){
       alert('currency created')

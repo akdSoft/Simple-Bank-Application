@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios';
+import api from '../api/axiosInstance.js';
 
 export default {
   data(){
@@ -22,7 +23,7 @@ export default {
           email: this.email
         }
 
-        const response = await axios.post('http://localhost:5280/api/Auth/register', payload, {withCredentials: true})
+        const response = await api.post('/Auth/register', payload)
         alert ('kullanıcı eklendi')
         console.log(response.data)
 

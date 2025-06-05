@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import axios from "axios";
+import api from '../../../api/axiosInstance.js';
 
 const onlineShoppingEnabled = ref(false)
 const cardPassword = ref('')
@@ -13,7 +13,7 @@ onMounted(async () => {
 
 async function loadAccounts(){
   try{
-    const response = await axios.get('http://localhost:5280/api/BankAccount/user', {withCredentials: true},)
+    const response = await api.get('/BankAccount/user')
     accounts.value = response.data.filter(account => account.currencyType === 'TRY')
   } catch (err) {
     alert(err.message)
@@ -27,7 +27,7 @@ async function createCard(){
     linkedAccountId: selectedAccountId.value
   }
   try{
-    const response = await axios.post('http://localhost:5280/api/Card/debit-card', payload, {withCredentials: true},)
+    const response = await api.post('/Card/debit-card', payload)
 
     cardPassword.value = '';
     selectedAccountId.value = '';
