@@ -8,21 +8,21 @@ namespace Simple_Bank_Application.Services;
 public class CardService : ICardService
 {
     private readonly ICardRepository _cardRepo;
-    private readonly IUserRepository _userRepo;
-    private readonly IBankAccountRepository _bankAccountRepo;
+    private readonly IUserService _userService;
+    private readonly IBankAccountService _bankAccountService;
 
-    public CardService(ICardRepository cardRepo, IUserRepository userRepo, IBankAccountRepository bankAccountRepo)
+    public CardService(ICardRepository cardRepo, IUserService userService, IBankAccountService bankAccountService)
     {
         _cardRepo = cardRepo;
-        _userRepo = userRepo;
-        _bankAccountRepo = bankAccountRepo;
+        _userService = userService;
+        _bankAccountService = bankAccountService;
     }
     public async Task<DebitCard?> CreateDebitCardAsync(CreateDebitCardDto dto, int userId)
     {
         var (cardNumber, cvv) = GenerateCardNumberAndCvv();
 
         //Banka kartınu oluşturuyoruz
-        var user = await _userRepo.GetUserWithPasswordByIdAsync(userId);
+        var user = await _userService.GetUserWithPasswordByIdAsync(userId);
 
         if (user == null)
             return null;
@@ -49,7 +49,7 @@ public class CardService : ICardService
         var (cardNumber, cvv) = GenerateCardNumberAndCvv();
 
         //Sanal kartı oluşturuyoruz
-        var user = await _userRepo.GetUserWithPasswordByIdAsync(userId);
+        var user = await _userService.GetUserWithPasswordByIdAsync(userId);
 
         if (user == null)
             return null;
@@ -101,5 +101,44 @@ public class CardService : ICardService
         string cvv = Convert.ToString(rnd.Next(100, 1000));
 
         return (cardNumber, cvv);
+    }
+
+    public async Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
+    {
+        var virtualCard = await _cardRepo.GetVirtualCardByIdAsync(dto.FromAccountOrCardId);
+        var account = await _bankAccountService.GetBankAccountByIdAsync(dto.TargetAccountOrCardId);
+
+        if (virtualCard == null || account == null) return false;
+
+        account.Balance += dto.Amount;
+        virtualCard.AvailableLimit -= dto.Amount;
+
+        await _cardRepo.UpdateVirtualCardAsync(virtualCard);
+        await _bankAccountService.UpdateBankAccountAsync(account);
+
+        return true;    
+    }
+    public async Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto)
+    {
+        var account = await _bankAccountService.GetBankAccountByIdAsync(dto.TargetAccountOrCardId);
+        var virtualCard = await _cardRepo.GetVirtualCardByIdAsync(dto.FromAccountOrCardId);
+
+        if (account == null || virtualCard == null) return false;
+
+        account.Balance -= dto.Amount;
+        virtualCard.AvailableLimit += dto.Amount;
+
+        await _bankAccountService.UpdateBankAccountAsync(account);
+        await _cardRepo.UpdateVirtualCardAsync(virtualCard);
+
+        return true;
+    }
+
+    public async Task<VirtualCard?> GetVirtualCardByIdAsync(int virtualCardId)
+    {
+        var card = await _cardRepo.GetVirtualCardByIdAsync(virtualCardId);
+        if (card == null) return null;
+
+        return card;
     }
 }

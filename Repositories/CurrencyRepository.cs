@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Simple_Bank_Application.Data;
 using Simple_Bank_Application.Models;
-using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Repositories.Interfaces;
 
 namespace Simple_Bank_Application.Repositories;
@@ -12,21 +11,13 @@ public class CurrencyRepository : ICurrencyRepository
 
     public CurrencyRepository(AppDbContext context) => _context = context;
 
-    public async Task<IEnumerable<Currency>> GetAllCurrenciesAsync() => await _context.Currencies.ToListAsync();
+    public async Task<IEnumerable<Currency>> GetAllCurrenciesAsync() => 
+        await _context.Currencies.ToListAsync();
 
-    public async Task<Currency> CreateCurrencyAsync(CreateCurrencyDto dto)
+    public async Task CreateCurrencyAsync(Currency currency)
     {
-        var currency = new Currency
-        {
-            Name = dto.Name,
-            TryIndexedValue = dto.TRYIndexedValue,
-            Symbol = dto.Symbol
-        };
-
         _context.Currencies.Add(currency);
         await _context.SaveChangesAsync();
-
-        return currency;
     }
 
     public async Task<Currency?> GetCurrencyByNameAsync(string currencyName) =>

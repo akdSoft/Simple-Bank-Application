@@ -58,25 +58,9 @@ public class BankAccountRepository : IBankAccountRepository
             .ToListAsync();
     }
 
-    public async Task<BankAccountDto?> UpdateBankAccountAsync(BankAccount account)
+    public async Task UpdateBankAccountAsync(BankAccount account)
     {
         _context.BankAccounts.Update(account);
         await _context.SaveChangesAsync();
-
-        return await _context.BankAccounts
-            .Include(acc => acc.User)
-            .Include(acc => acc.Currency)
-            .Where(acc => acc.Id == account.Id)
-            .Select(acc => new BankAccountDto
-            {
-                Id = acc.Id,
-                Balance = acc.Balance,
-                AccountType = acc.AccountType,
-                CurrencyType = acc.Currency.Name,
-                CurrencySymbol = acc.Currency.Symbol,
-                UserId = acc.UserId,
-                UserName = acc.User.Name,
-                UserSurname = acc.User.Surname
-            }).FirstOrDefaultAsync();
     }
 }

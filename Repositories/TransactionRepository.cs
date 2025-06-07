@@ -21,21 +21,15 @@ public class TransactionRepository : ITransactionRepository
     public async Task<IEnumerable<Transaction>> GetAllTransactionsAsync() => 
         await _context.Transactions.ToListAsync();
 
-    public async Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int accountId, int userId)
-    {
-        return await _context.Transactions
+    public async Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int accountId, int userId) =>
+        await _context.Transactions
             .Where(t => t.SourceType == TransactionEntityType.Account.ToString() &&
                         t.SourceId == accountId &&
                         _context.BankAccounts.Any(acc => acc.Id == accountId && acc.UserId == userId))
             .ToListAsync();
-    }
 
-    public async Task<IEnumerable<Transaction>> GetTransactionsByUserAsync(int userId)
-    {
-        var transactions = await _context.Transactions
+    public async Task<IEnumerable<Transaction>> GetTransactionsByUserAsync(int userId) =>
+        await _context.Transactions
             .Where(t => t.UserId == userId)
             .ToListAsync();
-
-        return transactions;
-    }
 }

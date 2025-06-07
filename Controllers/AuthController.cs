@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Repositories.Interfaces;
+using Simple_Bank_Application.Services.Interfaces;
 
 namespace Simple_Bank_Application.Controllers;
 
@@ -8,14 +9,14 @@ namespace Simple_Bank_Application.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IUserRepository _repo;
+    private readonly IUserService _userService;
 
-    public AuthController(IUserRepository repo) => _repo = repo;
+    public AuthController(IUserService userService) => _userService = userService;
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(CreateUserDto dto)
     {
-        var user = await _repo.RegisterUserAsync(dto);
+        var user = await _userService.CreateUserAsync(dto);
         return (user == null) ? BadRequest() : Ok(new { user.Id, user.Username });
     }
 
@@ -37,7 +38,7 @@ public class AuthController : ControllerBase
         }
 
         //Username ve Password doğrulaması yapıyoruz
-        var user = await _repo.GetUserByUsernameAsync(dto.Username);
+        var user = await _userService.GetUserByUsernameAsync(dto.Username);
         if (user == null || dto.Password != user.Password)
             return Unauthorized("Invalid credentials");
 

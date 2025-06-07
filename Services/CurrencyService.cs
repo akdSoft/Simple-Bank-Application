@@ -12,8 +12,18 @@ public class CurrencyService : ICurrencyService
 
     public async Task<IEnumerable<Currency>> GetAllCurrenciesAsync() => await _repo.GetAllCurrenciesAsync();
 
-    public async Task<Currency> CreateCurrencyAsync(CreateCurrencyDto dto) =>
-        await _repo.CreateCurrencyAsync(dto);
+    public async Task<Currency> CreateCurrencyAsync(CreateCurrencyDto dto)
+    {
+        var currency = new Currency
+        {
+            Name = dto.Name,
+            TryIndexedValue = dto.TRYIndexedValue,
+            Symbol = dto.Symbol
+        };
+
+        await _repo.CreateCurrencyAsync(currency);
+        return currency;
+    }
 
     public async Task<Currency?> GetCurrencyByNameAsync(string currencyName) => 
         await _repo.GetCurrencyByNameAsync(currencyName);
