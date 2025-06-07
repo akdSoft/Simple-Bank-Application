@@ -2,7 +2,6 @@
 using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Repositories.Interfaces;
 using Simple_Bank_Application.Services.Interfaces;
-
 namespace Simple_Bank_Application.Services;
 
 public class CurrencyService : ICurrencyService
@@ -18,6 +17,9 @@ public class CurrencyService : ICurrencyService
 
     public async Task<Currency?> GetCurrencyByNameAsync(string currencyName) => 
         await _repo.GetCurrencyByNameAsync(currencyName);
+
+    public async Task<Currency?> GetCurrencyByIdAsync(int id) =>
+        await _repo.GetCurrencyByIdAsync(id);
 
     public async Task<decimal?> ConvertCurrencyAsync(decimal amount, string sourceCurrencyName, string targetCurrencyName)
     {

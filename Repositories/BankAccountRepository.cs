@@ -12,73 +12,33 @@ public class BankAccountRepository : IBankAccountRepository
 
     public BankAccountRepository(AppDbContext context) => _context = context;
 
-    public async Task<IEnumerable<BankAccountDto>> GetAllBankAccountsAsync()
+    public async Task<IEnumerable<BankAccount>> GetAllBankAccountsAsync()
     {
         return await _context.BankAccounts
-            //Banka hesaplarını, bağlı oldukları User ile çekiyoruz
+            //Banka hesaplarını, bağlı oldukları User ve Currency ile çekiyoruz
             .Include(acc => acc.User)
             .Include(acc => acc.Currency)
-            .Select(acc => new BankAccountDto
-            {
-                Id = acc.Id,
-                Balance = acc.Balance,
-                AccountType = acc.AccountType,
-                CurrencyType = acc.Currency.Name,
-                CurrencySymbol = acc.Currency.Symbol,
-                UserId = acc.UserId,
-                UserName = acc.User.Name,
-                UserSurname = acc.User.Surname
-            }).ToListAsync();
-
+            .ToListAsync();
     }
-    public async Task<BankAccountDto?> GetBankAccountByIdAsync(int id)
+    public async Task<BankAccount?> GetBankAccountByIdAsync(int id)
     {
         return await _context.BankAccounts
             .Include(acc => acc.User)
             .Include(acc => acc.Currency)
             .Where(acc => acc.Id == id)
-            .Select(acc => new BankAccountDto
-            {
-                Id = acc.Id,
-                Balance = acc.Balance,
-                AccountType = acc.AccountType,
-                CurrencyType = acc.Currency.Name,
-                CurrencySymbol = acc.Currency.Symbol,
-                UserId = acc.UserId,
-                UserName = acc.User.Name,
-                UserSurname = acc.User.Surname
-            }).FirstOrDefaultAsync();
+            .FirstOrDefaultAsync();
     }
-    public async Task<BankAccountDto?> CreateBankAccountAsync(int userId, CreateBankAccountDto dto)
+    
+    public async Task<BankAccount> CreateBankAccountAsync(BankAccount account)
     {
-        var bankAccount = new BankAccount
-        {
-            UserId = userId,
-            Balance = 0,
-            AccountType = dto.AccountType,
-            Currency = await _context.Currencies.FindAsync(dto.CurrencyId)
-        };
-
-        _context.BankAccounts.Add(bankAccount);
+        _context.BankAccounts.Add(account);
         await _context.SaveChangesAsync();
 
-        var createdAccount = await _context.BankAccounts
+        return await _context.BankAccounts
             .Include(acc => acc.User)
             .Include(acc => acc.Currency)
-            .Where(acc => acc.Id == bankAccount.Id)//??
-            .Select(acc => new BankAccountDto
-            {
-                Id = acc.Id,
-                Balance = acc.Balance,
-                AccountType = acc.AccountType,
-                CurrencyType = acc.Currency.Name,
-                CurrencySymbol = acc.Currency.Symbol,
-                UserId = acc.UserId,
-                UserName = acc.User.Name,
-                UserSurname = acc.User.Surname
-            }).FirstOrDefaultAsync();
-
-        return createdAccount;
+            .Where(acc => acc.Id == account.Id)
+            .FirstOrDefaultAsync();
     }
     public async Task<bool> DeleteBankAccountAsync(int id)
     {
@@ -89,18 +49,24 @@ public class BankAccountRepository : IBankAccountRepository
         await _context.SaveChangesAsync();
         return true;
     }
-    public async Task<BankAccountDto?> IncreaseOrDecreaseBalanceAsync(int accountId, decimal amount)
+    public async Task<IEnumerable<BankAccount>> GetBankAccountsByUserId(int userId)
     {
-        var account = await _context.BankAccounts.FindAsync(accountId);
-        if (account == null) return null;
-
-        account.Balance += amount;
-        await _context.SaveChangesAsync();
-
-        var accountDto = await _context.BankAccounts
+        return await _context.BankAccounts
             .Include(acc => acc.User)
             .Include(acc => acc.Currency)
-            .Where(acc => acc.Id == accountId)
+            .Where(acc => acc.UserId == userId)
+            .ToListAsync();
+    }
+
+    public async Task<BankAccountDto?> UpdateBankAccountAsync(BankAccount account)
+    {
+        _context.BankAccounts.Update(account);
+        await _context.SaveChangesAsync();
+
+        return await _context.BankAccounts
+            .Include(acc => acc.User)
+            .Include(acc => acc.Currency)
+            .Where(acc => acc.Id == account.Id)
             .Select(acc => new BankAccountDto
             {
                 Id = acc.Id,
@@ -112,25 +78,5 @@ public class BankAccountRepository : IBankAccountRepository
                 UserName = acc.User.Name,
                 UserSurname = acc.User.Surname
             }).FirstOrDefaultAsync();
-
-        return accountDto;
-    }
-    public async Task<IEnumerable<BankAccountDto?>> GetBankAccountsByUserId(int userId)
-    {
-        return await _context.BankAccounts
-            .Include(acc => acc.User)
-            .Include(acc => acc.Currency)
-            .Where(acc => acc.UserId == userId)
-            .Select(acc => new BankAccountDto
-            {
-                Id = acc.Id,
-                Balance = acc.Balance,
-                AccountType = acc.AccountType,
-                CurrencyType = acc.Currency.Name,
-                CurrencySymbol = acc.Currency.Symbol,
-                UserId = acc.UserId,
-                UserName = acc.User.Name,
-                UserSurname = acc.User.Surname
-            }).ToListAsync();
     }
 }

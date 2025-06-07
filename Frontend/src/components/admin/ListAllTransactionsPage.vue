@@ -26,8 +26,10 @@ async function showTransactionList(){
           <th class="custom-table-h">Id</th>
           <th class="custom-table-h">Source Type</th>
           <th class="custom-table-h">Source Id</th>
+          <th class="custom-table-h">Source Currency</th>
           <th class="custom-table-h">Target Type</th>
           <th class="custom-table-h">Target Id</th>
+          <th class="custom-table-h">Target Currency</th>
           <th class="custom-table-h">Amount</th>
           <th class="custom-table-h">User Id</th>
           <th class="custom-table-h">Type</th>
@@ -38,12 +40,14 @@ async function showTransactionList(){
           <td class="custom-table-h">{{transaction.id}}</td>
           <td class="custom-table-h">{{transaction.sourceType}}</td>
           <td class="custom-table-h">{{transaction.sourceId}}</td>
+          <td class="custom-table-h">{{transaction.sourceCurrency}}</td>
           <td class="custom-table-h">{{transaction.targetType}}</td>
           <td class="custom-table-h">{{transaction.targetId}}</td>
+          <td class="custom-table-h">{{transaction.targetCurrency}}</td>
           <td class="custom-table-h">{{transaction.amount}}</td>
           <td class="custom-table-h">{{transaction.userId}}</td>
           <td class="custom-table-h">{{transaction.type}}</td>
-          <td class="custom-table-h">{{transaction.timestamp}}</td>
+          <td class="custom-table-h">{{transaction.timestamp.toString().split('T')[0]}}</td>
         </tr>
         </tbody>
       </table>

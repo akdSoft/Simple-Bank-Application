@@ -31,4 +31,7 @@ public class CurrencyRepository : ICurrencyRepository
 
     public async Task<Currency?> GetCurrencyByNameAsync(string currencyName) =>
         await _context.Currencies.FirstOrDefaultAsync(currency => currency.Name == currencyName);
+
+    public async Task<Currency?> GetCurrencyByIdAsync(int id) =>
+        await _context.Currencies.FindAsync(id);
 }

@@ -7,5 +7,6 @@ public interface ICurrencyRepository
 {
     Task<IEnumerable<Currency>> GetAllCurrenciesAsync();
     Task<Currency?> GetCurrencyByNameAsync(string currencyName);
+    Task<Currency?> GetCurrencyByIdAsync(int id);
     Task<Currency> CreateCurrencyAsync(CreateCurrencyDto dto);
 }

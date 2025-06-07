@@ -83,7 +83,7 @@ async function deleteAccount(){
         <input class="input" v-if="selectedAccount" :value="selectedAccount.balance + ' ' + selectedAccount.currencySymbol" readonly>
         <input class="input" v-else  readonly>
 
-        <label>Total Balance</label>
+        <label>Total Balance (in TRY)</label>
         <input class="input" :value="totalBalance + ' ₺'" readonly>
 
         <button class="dashboard-button" @click="deleteAccount">Delete Selected Account</button>
