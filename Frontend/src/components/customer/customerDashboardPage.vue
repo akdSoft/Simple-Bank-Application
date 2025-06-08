@@ -13,22 +13,26 @@ const selectedAccount = computed(() => {
   return accounts.value.find(acc => acc.id === parseInt(selectedAccountId.value))
 })
 
-const totalBalance = computed(() => {
-  let total = 0
-  accounts.value.forEach(acc => {
-    total += acc.balance
-  })
-  return total
-})
+const totalBalance = ref('')
 
 onMounted(async () => {
   await  loadAccounts();
+  await loadTotalBalance();
 })
 
 async function loadAccounts(){
   try{
     const response = await api.get('/BankAccount/user')
     accounts.value = response.data
+  } catch (err) {
+    alert(err.message)
+  }
+}
+
+async function loadTotalBalance(){
+  try{
+    const response = await api.get('/user/me')
+    totalBalance.value = response.data.totalBalanceInTRY;
   } catch (err) {
     alert(err.message)
   }

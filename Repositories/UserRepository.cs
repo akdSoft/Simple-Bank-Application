@@ -15,6 +15,7 @@ public class UserRepository : IUserRepository
     public async Task<IEnumerable<User>> GetAllUsersAsync()=>
         await _context.Users
             .Include(user => user.BankAccounts)
+                .ThenInclude(b => b.Currency)
             .ToListAsync();
 
     public async Task CreateUserAsync(User user)

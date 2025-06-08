@@ -8,19 +8,26 @@ namespace Simple_Bank_Application.Services;
 
 public class UserService : IUserService
 {
-    private readonly IUserRepository _repo;
+    private readonly IUserRepository _userRepo;
+    private readonly ICurrencyService _currencyService;
+    private readonly IBankAccountService _bankAccountService;
 
-    public UserService(IUserRepository repo) => _repo = repo;
+    public UserService(IUserRepository repo, ICurrencyService currencyService, IBankAccountService bankAccountService)
+    {
+        _userRepo = repo;
+        _currencyService = currencyService;
+        _bankAccountService = bankAccountService;
+    }
 
     public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
-        var users = await _repo.GetAllUsersAsync();
+        var users = await _userRepo.GetAllUsersAsync();
         return DtoMapper.ToDtoList(users);
     }
 
     public async Task<UserDto?> UpdateUserAsync(CreateUserDto dto, int id)
     {
-        var updatedUser = await _repo.GetUserWithPasswordByIdAsync(id);
+        var updatedUser = await _userRepo.GetUserWithPasswordByIdAsync(id);
 
         if (updatedUser == null) return null;
 
@@ -30,22 +37,22 @@ public class UserService : IUserService
         updatedUser.Password = dto.Password;
         updatedUser.Email = dto.Email;
 
-        await _repo.UpdateUserAsync(updatedUser);
+        await _userRepo.UpdateUserAsync(updatedUser);
         return DtoMapper.ToDto(updatedUser);
     }
 
     public async Task<bool> DeleteUserAsync(int id)
     {
-        var userToDelete = await _repo.GetUserWithPasswordByIdAsync(id);
+        var userToDelete = await _userRepo.GetUserWithPasswordByIdAsync(id);
         if (userToDelete == null) return false;
 
-        await _repo.DeleteUserAsync(userToDelete);
+        await _userRepo.DeleteUserAsync(userToDelete);
         return true;
     }
 
-    public async Task<User?> GetUserByUsernameAsync(string username) => await _repo.GetUserByUsernameAsync(username);
+    public async Task<User?> GetUserByUsernameAsync(string username) => await _userRepo.GetUserByUsernameAsync(username);
 
-    public async Task<User?> GetUserWithPasswordByIdAsync(int id) => await _repo.GetUserWithPasswordByIdAsync(id);
+    public async Task<User?> GetUserWithPasswordByIdAsync(int id) => await _userRepo.GetUserWithPasswordByIdAsync(id);
 
     public async Task<UserDto?> CreateUserAsync(CreateUserDto dto)
     {
@@ -58,7 +65,23 @@ public class UserService : IUserService
             Email = dto.Email,
         };
 
-        await _repo.CreateUserAsync(user);
+        await _userRepo.CreateUserAsync(user);
+        return DtoMapper.ToDto(user);
+    }
+
+    public async Task<UserDto?> IncreaseOrDecreaseTotalBalanceAsync(int accountId, decimal amount)
+    {
+        var account = await _bankAccountService.GetBankAccountByIdAsync(accountId);
+        if (account == null) return null;
+
+        var _amount = await _currencyService.ConvertCurrencyAsync(amount, account.Currency.Name, "TRY");
+
+        var user = await _userRepo.GetUserWithPasswordByIdAsync(account.UserId);
+        if (user == null) return null;
+
+        user.TotalBalanceInTRY += _amount.Value;
+        await _userRepo.UpdateUserAsync(user);
+
         return DtoMapper.ToDto(user);
     }
 }

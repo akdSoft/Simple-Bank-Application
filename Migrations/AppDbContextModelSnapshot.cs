@@ -183,6 +183,9 @@ namespace Simple_Bank_Application.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<decimal>("TotalBalanceInTRY")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("varchar(255)");

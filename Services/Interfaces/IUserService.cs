@@ -11,4 +11,5 @@ public interface IUserService
     Task<UserDto?> UpdateUserAsync(CreateUserDto dto, int id);
     Task<bool> DeleteUserAsync(int id);
     Task<User?> GetUserByUsernameAsync(string username);
+    Task<UserDto?> IncreaseOrDecreaseTotalBalanceAsync(int accountId, decimal amount);
 }

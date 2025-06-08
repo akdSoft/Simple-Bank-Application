@@ -11,16 +11,19 @@ public class TransactionService : ITransactionService
     private readonly IBankAccountService _bankAccountService;
     private readonly ICardService _cardService;
     private readonly ICurrencyService _currencyService;
+    private readonly IUserService _userService;
 
     public TransactionService(ITransactionRepository transactionRepo,
                               IBankAccountService bankAccountService,
                               ICardService cardService,
-                              ICurrencyService currencyService)
+                              ICurrencyService currencyService,
+                              IUserService userService)
     {
         _transactionRepo = transactionRepo;
         _bankAccountService = bankAccountService;
         _cardService = cardService;
         _currencyService = currencyService;
+        _userService = userService;
     }
     public async Task<Transaction?> DepositAsync(DepositWithdrawDto dto)
     {
@@ -46,6 +49,7 @@ public class TransactionService : ITransactionService
         };
 
         await _transactionRepo.CreateTransactionAsync(transaction);
+        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, dto.Amount);
         await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.AccountId, dto.Amount);
         return transaction;
     }
@@ -73,6 +77,7 @@ public class TransactionService : ITransactionService
         };
 
         await _transactionRepo.CreateTransactionAsync(transaction);
+        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, -dto.Amount);
         await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.AccountId, -dto.Amount);
         return transaction;
     }
@@ -105,6 +110,8 @@ public class TransactionService : ITransactionService
         };
 
         await _transactionRepo.CreateTransactionAsync(transaction);
+        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.FromAccountId, -dto.Amount);
+        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
         await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.FromAccountId, -dto.Amount);
         await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
         return transaction;
@@ -139,7 +146,7 @@ public class TransactionService : ITransactionService
     public async Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
     {
         var card = await _cardService.GetVirtualCardByIdAsync(dto.FromAccountOrCardId);
-        var account = await _bankAccountService.GetBankAccountDtoByIdAsync(dto.FromAccountOrCardId);
+        var account = await _bankAccountService.GetBankAccountDtoByIdAsync(dto.TargetAccountOrCardId);
 
         if (card == null || account == null || dto.Amount <= 0 || dto.Amount > card.AvailableLimit)
             return false;

@@ -120,8 +120,8 @@ public class CardService : ICardService
     }
     public async Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto)
     {
-        var account = await _bankAccountService.GetBankAccountByIdAsync(dto.TargetAccountOrCardId);
-        var virtualCard = await _cardRepo.GetVirtualCardByIdAsync(dto.FromAccountOrCardId);
+        var account = await _bankAccountService.GetBankAccountByIdAsync(dto.FromAccountOrCardId);
+        var virtualCard = await _cardRepo.GetVirtualCardByIdAsync(dto.TargetAccountOrCardId);
 
         if (account == null || virtualCard == null) return false;
 

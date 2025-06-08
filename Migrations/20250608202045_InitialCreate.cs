@@ -64,7 +64,8 @@ namespace Simple_Bank_Application.Migrations
                     Surname = table.Column<string>(type: "longtext", nullable: false),
                     Username = table.Column<string>(type: "varchar(255)", nullable: false),
                     Password = table.Column<string>(type: "longtext", nullable: false),
-                    Email = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Email = table.Column<string>(type: "varchar(255)", nullable: false),
+                    TotalBalanceInTRY = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {

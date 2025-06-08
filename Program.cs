@@ -57,5 +57,6 @@ app.UseSwaggerUI();
 
 app.MapControllers();
 
+await DataSeeder.SeedAsync(app.Services);
 
 app.Run();
