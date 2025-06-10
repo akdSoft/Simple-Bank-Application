@@ -34,6 +34,12 @@ public class TransactionService : ITransactionService
             return null;
         }
 
+        var user = await _userService.GetUserWithPasswordByIdAsync(acc.UserId);
+        if (user == null) return null;
+        
+        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, dto.Amount);
+        await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.AccountId, dto.Amount);
+
         var transaction = new Transaction
         {
             SourceType = TransactionEntityType.Account.ToString(),
@@ -45,12 +51,11 @@ public class TransactionService : ITransactionService
             Amount = dto.Amount,
             UserId = acc.UserId,
             Type = "Deposit",
+            CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
         };
 
         await _transactionRepo.CreateTransactionAsync(transaction);
-        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, dto.Amount);
-        await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.AccountId, dto.Amount);
         return transaction;
     }
     public async Task<Transaction?> WithdrawAsync(DepositWithdrawDto dto)
@@ -61,6 +66,12 @@ public class TransactionService : ITransactionService
         {
             return null;
         }
+
+        var user = await _userService.GetUserWithPasswordByIdAsync(acc.UserId);
+        if (user == null) return null;
+
+        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, -dto.Amount);
+        await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.AccountId, -dto.Amount);
 
         var transaction = new Transaction
         {
@@ -73,12 +84,11 @@ public class TransactionService : ITransactionService
             Amount = dto.Amount,
             UserId = acc.UserId,
             Type = "Withdraw",
+            CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
         };
 
         await _transactionRepo.CreateTransactionAsync(transaction);
-        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, -dto.Amount);
-        await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.AccountId, -dto.Amount);
         return transaction;
     }
 
@@ -91,9 +101,16 @@ public class TransactionService : ITransactionService
         if (sourceAcc == null || targetAcc == null || dto.Amount <= 0 || dto.Amount > sourceAcc.Balance || dto.FromAccountId == dto.TargetAccountId)
             return null;
 
+        var user = await _userService.GetUserWithPasswordByIdAsync(sourceAcc.UserId);
+        if (user == null) return null;
+
         //Kur dönüşümü yapıyoruz
         var convertedAmount = await _currencyService.ConvertCurrencyAsync(dto.Amount, sourceAcc.CurrencyType, targetAcc.CurrencyType);
         
+        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.FromAccountId, -dto.Amount);
+        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
+        await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.FromAccountId, -dto.Amount);
+        await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
 
         var transaction = new Transaction
         {
@@ -106,14 +123,11 @@ public class TransactionService : ITransactionService
             Amount = dto.Amount,
             UserId = sourceAcc.UserId,
             Type = "Money Transfer",
+            CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
         };
 
         await _transactionRepo.CreateTransactionAsync(transaction);
-        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.FromAccountId, -dto.Amount);
-        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
-        await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.FromAccountId, -dto.Amount);
-        await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
         return transaction;
     }
 
@@ -123,6 +137,11 @@ public class TransactionService : ITransactionService
 
         if (account == null || dto.Amount <= 0 || dto.Amount > account.Balance)
             return false;
+
+        var user = await _userService.GetUserWithPasswordByIdAsync(account.UserId);
+        if (user == null) return false;
+        
+        var transferred = await _cardService.TransferFromAccountToVirtualCardAsync(dto);
 
         var transaction = new Transaction
         {
@@ -135,12 +154,12 @@ public class TransactionService : ITransactionService
             Amount = dto.Amount,
             UserId = account.UserId,
             Type = "virtual card money transfer",
+            CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
         };
 
         await _transactionRepo.CreateTransactionAsync(transaction);
-
-        return await _cardService.TransferFromAccountToVirtualCardAsync(dto);
+        return transferred;
     }
 
     public async Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
@@ -150,6 +169,11 @@ public class TransactionService : ITransactionService
 
         if (card == null || account == null || dto.Amount <= 0 || dto.Amount > card.AvailableLimit)
             return false;
+
+        var user = await _userService.GetUserWithPasswordByIdAsync(account.UserId);
+        if (user == null) return false;
+
+        var transferred = await _cardService.TransferFromVirtualCardToAccountAsync(dto);
 
         var transaction = new Transaction
         {
@@ -162,12 +186,12 @@ public class TransactionService : ITransactionService
             Amount = dto.Amount,
             UserId = card.UserId,
             Type = "virtual card money transfer",
+            CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
         };
 
         await _transactionRepo.CreateTransactionAsync(transaction);
-
-        return await _cardService.TransferFromVirtualCardToAccountAsync(dto);
+        return transferred;
     }
 
     public async Task<IEnumerable<Transaction>> GetAllTransactionsAsync() => 

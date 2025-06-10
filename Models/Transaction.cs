@@ -12,6 +12,7 @@ public class Transaction
     public decimal Amount { get; set; }
     public int UserId { get; set; }
     public string Type { get; set; } = null!;
+    public decimal CurrentBalance { get; set; }
     public DateTime Timestamp { get; set; }
 }
 

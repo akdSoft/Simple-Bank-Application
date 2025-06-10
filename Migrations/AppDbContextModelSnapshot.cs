@@ -126,6 +126,9 @@ namespace Simple_Bank_Application.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("CurrentBalance")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("SourceCurrency")
                         .IsRequired()
                         .HasColumnType("longtext");

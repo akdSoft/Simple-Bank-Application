@@ -3,6 +3,7 @@ import '../../assets/dashboard.css'
 import {ref, onMounted, computed} from "vue";
 import {useRouter} from "vue-router";
 import api from '../../api/axiosInstance.js'
+import BalanceLineChart from "./ModalsAndComponents/BalanceLineChart.vue";
 
 const router = useRouter()
 const accounts = ref([])
@@ -91,6 +92,10 @@ async function deleteAccount(){
         <input class="input" :value="totalBalance + ' ₺'" readonly>
 
         <button class="dashboard-button" @click="deleteAccount">Delete Selected Account</button>
+      </div>
+
+      <div style="height: 400px">
+        <BalanceLineChart />
       </div>
 
 
