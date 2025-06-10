@@ -12,6 +12,10 @@ const selectedAccount = computed(() => {
 })
 
 async function deposit(){
+  if(!selectedAccount.value || !amount.value) {
+    alert("All fields must be selected and completed correctly")
+    return
+  }
   const payload = {
     accountId: selectedAccountId.value,
     amount: amount.value,
@@ -19,36 +23,34 @@ async function deposit(){
 
   try {
     const response = await api.post('/Transaction/deposit', payload)
-    if (response.status === 200){
-      await loadAccounts()
-      alert("successfully deposited")
-    }
-
+    alert("Money has been deposited")
+    await loadAccounts()
   } catch (err) {
     if (err.status === 400){
-      alert("invalid amount");
+      alert("All fields must be selected and completed correctly")
     }
     else{
       alert(err.message)
-
     }
   }
 }
 
 async function withdraw(){
+  if(!selectedAccount.value || !amount.value) {
+    alert("All fields must be selected and completed correctly")
+    return
+  }
   const payload = {
     accountId: selectedAccountId.value,
     amount: amount.value,
   }
   try {
     const response = await api.post('/Transaction/withdraw', payload)
-    if (response.status === 200){
-      await loadAccounts()
-      alert("successfully withdrew")
-    }
+    alert("Money has been withdrawn")
+    await loadAccounts()
   } catch (err) {
     if (err.status === 400){
-      alert("invalid amount");
+      alert("All fields must be selected and completed correctly")
     }
     else{
       alert(err.message)

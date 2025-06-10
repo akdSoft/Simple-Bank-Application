@@ -10,7 +10,7 @@ async function createCard(){
   }
   try{
     const response = await api.post('/Card/virtual-card', payload)
-    alert('virtual card created')
+    alert('Virtual card has been created')
   } catch (err) {
     alert(err.message)
   }

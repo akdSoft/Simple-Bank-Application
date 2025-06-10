@@ -57,20 +57,20 @@ public class TransactionController : ControllerBase
     public async Task<IActionResult> AccountToAccountTransferAsync(TransferMoneyDto dto)
     {
         var transaction = await _service.AccountToAccountTransferAsync(dto);
-        return (transaction == null) ? BadRequest() : Ok(dto);
+        return (transaction == null) ? BadRequest() : Ok(transaction);
     }
 
     [HttpPost("transfer/account-to-virtualcard")]
     public async Task<IActionResult> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto)
     {
         var transaction = await _service.TransferFromAccountToVirtualCardAsync(dto);
-        return Ok(transaction);
+        return (transaction == false) ? BadRequest() : Ok(transaction);
     }
 
     [HttpPost("transfer/virtualcard-to-account")]
     public async Task<IActionResult> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto)
     {
         var transaction = await _service.TransferFromVirtualCardToAccountAsync(dto);
-        return Ok(transaction);
+        return (transaction == false) ? BadRequest() : Ok(transaction);
     }
 }

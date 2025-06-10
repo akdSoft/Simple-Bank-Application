@@ -5,16 +5,20 @@ import api from '../../api/axiosInstance.js'
 const userId = ref('')
 
 async function deleteUser(){
+  if(!userId.value){
+    alert("All fields must be selected and completed correctly")
+    return
+  }
+
   try {
     const response = await  api.delete(`/api/User/${userId.value}`)
-    if(response.status === 204 || response.status === 404){
-      alert('user deleted')
-    }
-    else{
-      alert('unexpected situation')
-    }
+    alert('User has been deleted')
   } catch (err) {
-    alert(err.message)
+    if(err.status === 404){
+      alert('Make sure user exists')
+    } else {
+      alert(err.message)
+    }
   }
 }
 </script>

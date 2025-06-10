@@ -46,6 +46,11 @@ async function loadCards(){
 }
 
 async function transferFromAccountToCard(){
+  if(!selectedAccount.value || !selectedCard.value || !amount.value){
+    alert("All fields must be selected and completed correctly")
+    return
+  }
+
   const payload = {
     fromAccountOrCardId: selectedAccountId.value,
     targetAccountOrCardId: selectedCardId.value,
@@ -58,17 +63,20 @@ async function transferFromAccountToCard(){
     selectedCardId.value = '';
     amount.value = '';
 
-    if (response.status === 200 && response.data === true){
-      alert('money transferred')
-    } else {
-      alert('unexpected response: ' + response.status)
-    }
+    alert('Money has been transferred')
   } catch (err) {
-    alert(err.message)
+    if(err.status === 400){
+      alert("All fields must be selected and completed correctly")
+    }
   }
 }
 
 async function transferFromCardToAccount(){
+  if(!selectedAccount.value || !selectedCard.value || !amount.value){
+    alert("All fields must be selected and completed correctly")
+    return
+  }
+
   const payload2 = {
     fromAccountOrCardId: selectedCardId.value,
     targetAccountOrCardId: selectedAccountId.value,
@@ -81,13 +89,21 @@ async function transferFromCardToAccount(){
     selectedCardId.value = '';
     amount.value = '';
 
-    if (response2.status === 200 && response2.data === true){
-      alert('money transferred')
-    } else {
-      alert('unexpected response: ' + response2.status)
-    }
+    alert('Money has been transferred')
   } catch (err) {
-    alert(err.message)
+    if(err.status === 400){
+      alert("All fields must be selected and completed correctly")
+    }
+  }
+}
+
+function handleTransfer(){
+  if(transferType.value === 'fromAccount') {
+    transferFromAccountToCard()
+  } else if (transferType.value === 'fromCard') {
+    transferFromCardToAccount()
+  } else {
+    alert("All fields must be selected and completed correctly")
   }
 }
 </script>
@@ -142,9 +158,7 @@ async function transferFromCardToAccount(){
       </div>
 
       <div style="margin: 10px">
-        <button v-if="transferType === 'fromAccount'" @click="transferFromAccountToCard">Transfer</button>
-        <button v-else-if="transferType === 'fromCard'" @click="transferFromCardToAccount">Transfer</button>
-        <button v-else @click="alert('Choose transfer type')">Transfer</button>
+        <button @click="handleTransfer">Transfer</button>
       </div>
 
       <button @click="$emit('close')">Close</button>

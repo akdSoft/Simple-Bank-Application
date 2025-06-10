@@ -7,7 +7,10 @@ const currencies = ref([])
 const selectedCurrencyId = ref('')
 
 async function createAccount(){
-  if(!selectedAccountType.value || !selectedCurrencyId.value) return;
+  if(!selectedAccountType.value || !selectedCurrencyId.value){
+    alert('All fields must be selected and completed correctly')
+    return
+  }
 
   const payload = {
     accountType: selectedAccountType.value,
@@ -16,15 +19,14 @@ async function createAccount(){
 
   try{
     const response = await api.post('/BankAccount', payload)
-    if (response.status === 200){
-      alert("account created")
-    }
-    else{
-      alert("unexpected situation")
-    }
+    alert("Account has been created")
   }
   catch (err) {
-    alert(err.message)
+    if(err.status === 400){
+      alert("All fields must be selected and completed correctly")
+    } else {
+      alert(err.message)
+    }
   }
 }
 

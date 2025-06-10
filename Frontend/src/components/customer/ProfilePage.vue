@@ -24,12 +24,7 @@ async function updateUser(){
   }
   try{
     const response = await api.put('/User', payload)
-    if(response.status === 200){
-      alert('user updated')
-    }
-    else{
-      alert('unexpected situation')
-    }
+    alert('User has been updated')
   } catch (err) {
     alert(err.message)
   }
@@ -38,13 +33,8 @@ async function updateUser(){
 async function deleteUser(){
   try{
     const response = await api.delete('/User')
-    if(response.status === 204){
-      alert('user deleted')
+      alert('User has been deleted')
       router.push('/')
-    }
-    else{
-      alert('unexpected situation')
-    }
   } catch (err) {
     alert(err.message)
   }

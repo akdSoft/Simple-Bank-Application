@@ -1,27 +1,12 @@
 <script setup>
 import {ref} from "vue";
 import api from '../../api/axiosInstance.js'
-import CreateCurrencyModal from "./ModalsAndComponents/CreateCurrencyModal.vue";
 
 const currencies = ref([])
-const showCreateCurrencyModal = ref(false)
 
 async function showCurrencyList(){
   try {
     const response = await api.get('/Currency')
-    currencies.value = response.data
-  } catch (err) {
-    alert(err.message)
-  }
-}
-
-async function createCurrency(){
-  const payload = {
-
-
-  }
-  try {
-    const response = await api.post('/Currency')
     currencies.value = response.data
   } catch (err) {
     alert(err.message)
@@ -52,9 +37,6 @@ async function createCurrency(){
       </table>
 
       <button class="dashboard-button" @click="showCurrencyList">Show Currency List</button>
-
-      <button class="dashboard-button" @click="showCreateCurrencyModal = true">Create Currency</button>
-      <CreateCurrencyModal v-if="showCreateCurrencyModal" @close="showCreateCurrencyModal = false"></CreateCurrencyModal>
 
       <router-link to="/admin/dashboard">
         <button class="dashboard-button">Return</button>

@@ -32,7 +32,6 @@ const chartData = ref({
     backgroundColor: 'rgba(34, 197, 94, 0.1)',
     borderWidth: 3,
     tension: 0.3,
-    fill: true
   }]
 })
 

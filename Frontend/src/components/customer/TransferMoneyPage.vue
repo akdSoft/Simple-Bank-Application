@@ -13,6 +13,11 @@ const selectedAccount = computed(() => {
 })
 
 async function transfer(){
+  if(!selectedAccount.value || !targetAccountId.value || !amount.value) {
+    alert("stop")
+    return
+  }
+
   const payload = {
     fromAccountId: selectedAccountId.value,
     targetAccountId: targetAccountId.value,
@@ -20,15 +25,16 @@ async function transfer(){
   }
   try {
     const response = await api.post('/Transaction/transfer/account-to-account', payload)
-    if (response.status === 200){
-      alert('successfully transferred')
+      alert('Money has been transferred')
       await loadAccounts()
-    }
-    else{
-      alert('unexpected situation')
-    }
   } catch (err) {
-    alert(err.message)
+    if(err.status === 400){
+      alert("All fields must be selected and completed correctly")
+    } else if (err.status === 500){
+      alert("Make sure target account exists")
+    } else {
+      alert(err.message)
+    }
   }
 }
 

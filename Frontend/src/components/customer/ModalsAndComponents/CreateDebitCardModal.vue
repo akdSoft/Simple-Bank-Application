@@ -8,7 +8,7 @@ const accounts = ref([])
 const selectedAccountId = ref('')
 
 onMounted(async () => {
-  await  loadAccounts();
+  await loadAccounts();
 })
 
 async function loadAccounts(){
@@ -21,6 +21,11 @@ async function loadAccounts(){
 }
 
 async function createCard(){
+  if(!selectedAccountId.value || cardPassword.value.length !== 4){
+    alert("All fields must be selected and completed correctly")
+    return
+  }
+
   const payload = {
     onlineShopping: onlineShoppingEnabled.value,
     password: cardPassword.value,
@@ -32,9 +37,14 @@ async function createCard(){
     cardPassword.value = '';
     selectedAccountId.value = '';
 
-    alert('debit card created')
+    alert('Debit card has been created')
   } catch (err) {
-    alert(err.message)
+    if(err.status === 400){
+      alert("All fields must be selected and completed correctly")
+    }
+    else{
+      alert(err.message)
+    }
   }
 }
 </script>

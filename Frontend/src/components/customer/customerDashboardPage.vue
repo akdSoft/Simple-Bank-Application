@@ -46,7 +46,7 @@ async function logOut(){
       router.push('/')
     }
     else{
-      alert('unexpected situation')
+      alert('Unexpected situation')
     }
   } catch (err) {
     alert(err.message)
@@ -54,19 +54,23 @@ async function logOut(){
 }
 
 async function deleteAccount(){
+  if(!selectedAccount.value){
+    alert('Choose a Valid Account')
+    return
+  }
+
   try {
     const response = await api.delete(`/BankAccount/${selectedAccountId.value}`)
     if (response.status === 204) {
-      alert('successfully deleted')
-    }
-    else if (response.status === 404) {
-      alert('select a valid account')
-    }
-    else {
-      alert('unexpected situation')
+      alert('Account has been deleted')
     }
   } catch (err) {
-  alert(err.message)
+    if(err.status === 404 || err.status === 405){
+      alert('Choose a Valid Account')
+    }
+    else{
+      alert(err.message)
+    }
   }
 }
 </script>

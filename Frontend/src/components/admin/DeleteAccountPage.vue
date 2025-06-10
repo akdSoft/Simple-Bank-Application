@@ -5,16 +5,19 @@ import api from '../../api/axiosInstance.js'
 const accountId = ref('')
 
 async function deleteAccount(){
+  if(!accountId.value){
+    alert("All fields must be selected and completed correctly")
+    return
+  }
   try {
     const response = await  api.delete(`/BankAccount/${accountId.value}`)
-    if(response.status === 204 || response.status === 404){
-      alert('account deleted')
-    }
-    else{
-      alert('unexpected situation')
-    }
+    alert('Account has been deleted')
   } catch (err) {
-    alert(err.message)
+    if(err.status === 404) {
+      alert('Make sure user exists')
+    } else if (err.status === 405) {
+      alert("All fields must be selected and completed correctly")
+    }
   }
 }
 </script>
