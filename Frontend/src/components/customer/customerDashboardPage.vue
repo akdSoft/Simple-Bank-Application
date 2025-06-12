@@ -26,7 +26,11 @@ async function loadAccounts(){
     const response = await api.get('/BankAccount/user')
     accounts.value = response.data
   } catch (err) {
-    alert(err.message)
+    if(err.status === 401){
+      alert("Unauthorized")
+    } else {
+      alert(err.message)
+    }
   }
 }
 
@@ -40,17 +44,8 @@ async function loadTotalBalance(){
 }
 
 async function logOut(){
-  try{
-    const response = await api.post('/Auth/logout')
-    if(response.data === 'logged out'){
-      router.push('/')
-    }
-    else{
-      alert('Unexpected situation')
-    }
-  } catch (err) {
-    alert(err.message)
-  }
+  localStorage.removeItem('token')
+  router.push('/')
 }
 
 async function deleteAccount(){

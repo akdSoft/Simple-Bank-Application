@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios';
 import api from '../api/axiosInstance.js';
 
 export default {
@@ -14,6 +13,10 @@ export default {
   },
   methods: {
     async register() {
+      if(!this.name || !this.surname || !this.username || !this.password || !this.email){
+        alert('All fields must be selected and completed correctly')
+        return
+      }
       try {
         const payload = {
           name: this.name,
@@ -24,8 +27,7 @@ export default {
         }
 
         const response = await api.post('/Auth/register', payload)
-        alert ('kullanıcı eklendi')
-        console.log(response.data)
+        alert ('User has been created')
 
         this.name = ''
         this.surname = ''
@@ -33,7 +35,17 @@ export default {
         this.password = ''
         this.email = ''
       } catch (err){
-        alert(err.message)
+        if(err.status === 400){
+          const errors = err.response.data.errors;
+
+          let message = ''
+          for(const field in errors){
+            message += `${field}: ${errors[field]}\n}`
+          }
+          alert(message)
+        } else {
+          alert(err.message)
+        }
       }
     }
   }

@@ -2,6 +2,7 @@
 using Simple_Bank_Application.Models;
 using Microsoft.AspNetCore.Mvc;
 using Simple_Bank_Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Simple_Bank_Application.Controllers;
 
@@ -18,22 +19,25 @@ public class BankAccountController : ControllerBase
         _userService = userService;
     }
 
+    [Authorize(Roles = "admin")]
     [HttpGet]
     public async Task<IActionResult> GetAllBankAccountsAsync() => Ok(await _bankAccountService.GetAllBankAccountsAsync());
 
     //Mevcut kullanıcının banka hesaplarını çekiyoruz
+    [Authorize(Roles = "customer")]
     [HttpGet("user")]
     public async Task<IActionResult> GetBankAccountsByCurrentUser()
     {
-        var userId = HttpContext.Session.GetInt32("Id");
-        return (userId != null) ? Ok(await _bankAccountService.GetBankAccountsByUserId(userId.Value)) : BadRequest();
+        var userId = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+        return (userId != null) ? Ok(await _bankAccountService.GetBankAccountsByUserId(int.Parse(userId))) : BadRequest();
     }
 
     //Mevcut kullanıcıya ait banka hesabı oluşturuyoruz
+    [Authorize(Roles = "customer")]
     [HttpPost]
     public async Task<IActionResult> CreateBankAccountAsync(CreateBankAccountDto dto)
     {
-        var currentUsername = HttpContext.Session.GetString("username");
+        var currentUsername = User.Claims.FirstOrDefault(c => c.Type == "username")?.Value;
         if (currentUsername == null) return BadRequest();
 
         var currentUser = await _userService.GetUserByUsernameAsync(currentUsername);
@@ -44,6 +48,7 @@ public class BankAccountController : ControllerBase
     }
 
     //Belirtilen Id'ye sahip banka hesabını siliyoruz
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBankAccountAsync(int id)
     {

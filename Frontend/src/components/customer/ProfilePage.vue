@@ -26,13 +26,23 @@ async function updateUser(){
     const response = await api.put('/User', payload)
     alert('User has been updated')
   } catch (err) {
-    alert(err.message)
+    if(err.status === 400){
+      const errors = err.response.data.errors;
+
+      let message = ''
+      for(const field in errors){
+        message += `${field}: ${errors[field]}\n`
+      }
+      alert(message)
+    } else {
+      alert(err.message)
+    }
   }
 }
 
 async function deleteUser(){
   try{
-    const response = await api.delete('/User')
+    const response = await api.delete('/User/current')
       alert('User has been deleted')
       router.push('/')
   } catch (err) {

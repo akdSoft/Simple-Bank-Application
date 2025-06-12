@@ -17,31 +17,65 @@ import TransactionHistoryPage from "../components/customer/TransactionHistoryPag
 import CardsPage from "../components/customer/CardsPage.vue";
 import ListAllCardsPage from "../components/admin/ListAllCardsPage.vue";
 import CurrencyDashboardPage from "../components/admin/CurrencyDashboardPage.vue";
+import Test from "../components/test.vue";
+import {jwtDecode} from "jwt-decode";
 
 const routes = [
     {path: '/', component: HomePage},
     {path: '/login', component: LoginPage},
     {path: '/register', component: RegisterPage},
-    {path: '/admin/dashboard', component: AdminDashboardPage},
-    {path: '/admin/delete-account', component: DeleteAccountPage},
-    {path: '/admin/delete-user', component: DeleteUserPage},
-    {path: '/admin/list-all-accounts', component: ListAllAccountsPage},
-    {path: '/admin/list-all-cards', component: ListAllCardsPage},
-    {path: '/admin/list-all-transactions', component: ListAllTransactionsPage},
-    {path: '/admin/list-all-users', component: ListAllUsersPage},
-    {path: '/admin/currency-dashboard', component: CurrencyDashboardPage},
-    {path: '/customer/dashboard', component: CustomerDashboardPage},
-    {path: '/customer/profile', component: ProfilePage},
-    {path: '/customer/cards', component: CardsPage},
-    {path: '/customer/create-account', component: CreateAccountPage},
-    {path: '/customer/transfer-money', component: TransferMoneyPage},
-    {path: '/customer/deposit-withdraw', component: DepositWithdrawPage},
-    {path: '/customer/transaction-history', component: TransactionHistoryPage}
+    {path: '/admin/dashboard', component: AdminDashboardPage, meta: { requiresAuth: true}},
+    {path: '/admin/delete-account', component: DeleteAccountPage, meta: { requiresAuth: true }},
+    {path: '/admin/delete-user', component: DeleteUserPage, meta: { requiresAuth: true }},
+    {path: '/admin/list-all-accounts', component: ListAllAccountsPage, meta: { requiresAuth: true }},
+    {path: '/admin/list-all-cards', component: ListAllCardsPage, meta: { requiresAuth: true }},
+    {path: '/admin/list-all-transactions', component: ListAllTransactionsPage, meta: { requiresAuth: true }},
+    {path: '/admin/list-all-users', component: ListAllUsersPage, meta: { requiresAuth: true }},
+    {path: '/admin/currency-dashboard', component: CurrencyDashboardPage, meta: { requiresAuth: true }},
+    {path: '/customer/dashboard', component: CustomerDashboardPage, meta: { requiresAuth: true }},
+    {path: '/customer/profile', component: ProfilePage, meta: { requiresAuth: true }},
+    {path: '/customer/cards', component: CardsPage, meta: { requiresAuth: true }},
+    {path: '/customer/create-account', component: CreateAccountPage, meta: { requiresAuth: true }},
+    {path: '/customer/transfer-money', component: TransferMoneyPage, meta: { requiresAuth: true }},
+    {path: '/customer/deposit-withdraw', component: DepositWithdrawPage, meta: { requiresAuth: true }},
+    {path: '/customer/transaction-history', component: TransactionHistoryPage, meta: { requiresAuth: true }},
+    {path: '/test', component: Test}
 ]
 
 const router = createRouter({
     history: createWebHistory(),
     routes
+})
+
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('token')
+
+    if (to.meta.requiresAuth) {
+        if (!token) {
+            return next('/login')
+        }
+
+        try {
+            const decodedToken = jwtDecode(token)
+
+            const role = decodedToken.role
+            const isAdminRoute = to.path.startsWith('/admin')
+            const isCustomerRoute = to.path.startsWith('/customer')
+
+            if(isAdminRoute && role !== 'admin') {
+                return next('/login')
+            }
+
+            if(isCustomerRoute && role !== 'customer') {
+                return next('login')
+            }
+
+            return next()
+        } catch (err) {
+            alert('Invalid token: ' + err)
+        }
+    }
+    return next()
 })
 
 export default router

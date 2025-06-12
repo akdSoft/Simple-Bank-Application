@@ -18,6 +18,15 @@ public class UserService : IUserService
         _currencyService = currencyService;
         _bankAccountService = bankAccountService;
     }
+    public async Task<User?> Authenticate(string username, string password)
+    {
+        if (username == "admin" && password == "admin")
+            return new User { Username = "admin", Password = "admin" };
+
+        var user = await _userRepo.GetUserByUsernameAsync(username);
+        if (user == null || password != user.Password) return null;
+        return user;
+    }
 
     public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {

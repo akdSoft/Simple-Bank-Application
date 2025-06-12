@@ -11,7 +11,7 @@ using Simple_Bank_Application.Data;
 namespace Simple_Bank_Application.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250610193044_InitialCreate")]
+    [Migration("20250611212858_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

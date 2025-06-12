@@ -28,9 +28,9 @@ public class DataSeeder
         {
             var users = new List<User>
             {
-                new User { Id = 1, Name = "Ahmet", Surname = "Yılmaz", Username = "ahmetyilmaz", Password = "123", Email = "ahmet.yilmaz@example.com", TotalBalanceInTRY = 675.00m},
-                new User { Id = 2, Name = "Ayşe", Surname = "Demir", Username = "aysedemir", Password = "123", Email = "ayse.demir@example.com", TotalBalanceInTRY = 1400.00m},
-                new User { Id = 3, Name = "John", Surname = "Doe", Username = "johndoe", Password = "123", Email = "john.doe@example.com", TotalBalanceInTRY = 960.00m},
+                new User { Id = 1, Name = "Ahmet", Surname = "Yılmaz", Username = "ahmetyilmaz", Password = "12345678", Email = "ahmet.yilmaz@example.com", TotalBalanceInTRY = 675.00m},
+                new User { Id = 2, Name = "Ayşe", Surname = "Demir", Username = "aysedemir", Password = "12345678", Email = "ayse.demir@example.com", TotalBalanceInTRY = 1400.00m},
+                new User { Id = 3, Name = "John", Surname = "Doe", Username = "johndoe", Password = "12345678", Email = "john.doe@example.com", TotalBalanceInTRY = 960.00m},
             };
 
             await context.Users.AddRangeAsync(users);

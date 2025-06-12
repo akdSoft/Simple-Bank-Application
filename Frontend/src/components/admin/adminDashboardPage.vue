@@ -1,20 +1,10 @@
 <script>
 import '../../assets/dashboard.css'
-import api from '../../api/axiosInstance.js'
 export default {
   methods: {
     async logOut(){
-      try{
-        const response = await api.post('/Auth/logout')
-        if(response.data === 'logged out'){
-          this.$router.push('/')
-        }
-        else{
-          alert('unexpected situation')
-        }
-      } catch (err){
-        alert(err.message);
-      }
+      localStorage.removeItem('token')
+      router.push('/')
     }
   }
 }

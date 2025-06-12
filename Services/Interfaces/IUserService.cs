@@ -5,6 +5,7 @@ namespace Simple_Bank_Application.Services.Interfaces;
 
 public interface IUserService
 {
+    Task<User?> Authenticate(string username, string password);
     Task<IEnumerable<UserDto>> GetAllUsersAsync();
     Task<User?> GetUserWithPasswordByIdAsync(int id);
     Task<UserDto?> CreateUserAsync(CreateUserDto dto);

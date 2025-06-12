@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios';
 import api from '../api/axiosInstance.js';
 export default{
   computed: {
@@ -15,6 +14,10 @@ export default{
   },
   methods: {
     async login(){
+      if(!this.username || !this.password){
+        alert('All fields must be selected and completed correctly')
+        return
+      }
       try{
         const payload = {
           username: this.username,
@@ -22,6 +25,11 @@ export default{
         }
 
         const response = await api.post('/Auth/login', payload)
+
+        const token = response.data.token
+        localStorage.setItem('token', token)
+
+
         if(response.status === 200){
           if(response.data === 'logged in as admin'){
             this.$router.push('/admin/dashboard')
@@ -30,12 +38,21 @@ export default{
             this.$router.push('/customer/dashboard')
           }
         }
-        else{
-          alert('unexpected situation')
-        }
       } catch (err){
-        alert('error')
-        console.log(err.message);
+        if(err.status === 400){
+          const errors = err.response.data.errors;
+
+          let message = ''
+          for(const field in errors){
+            message += `${field}: ${errors[field]}\n`
+          }
+          alert(message)
+
+        } else if (err.status === 401){
+          alert('Incorrect username or password')
+        } else {
+          alert(err.message)
+        }
       }
     }
   }
@@ -49,10 +66,10 @@ export default{
 
       <form @submit.prevent="login" style="display: flex; flex-direction: column">
         <label>Username:</label>
-        <input class="input" type="text" v-model="username" required>
+        <input class="input" type="text" v-model="username" >
 
         <label>Password:</label>
-        <input  class="input" type="text" v-model="password" required>
+        <input  class="input" type="text" v-model="password" >
 
         <button class="dashboard-button" type="submit">Login</button>
 

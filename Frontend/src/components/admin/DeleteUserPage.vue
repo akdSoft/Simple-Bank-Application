@@ -11,7 +11,7 @@ async function deleteUser(){
   }
 
   try {
-    const response = await  api.delete(`/api/User/${userId.value}`)
+    const response = await api.delete(`/User/${userId.value}`)
     alert('User has been deleted')
   } catch (err) {
     if(err.status === 404){

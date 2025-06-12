@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Simple_Bank_Application.Models;
 using Simple_Bank_Application.Models.DTOs;
-using Simple_Bank_Application.Repositories.Interfaces;
 using Simple_Bank_Application.Services.Interfaces;
 
 namespace Simple_Bank_Application.Controllers;
@@ -10,8 +14,13 @@ namespace Simple_Bank_Application.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IConfiguration _configuration;
 
-    public AuthController(IUserService userService) => _userService = userService;
+    public AuthController(IUserService userService, IConfiguration configuration)
+    {
+        _userService = userService;
+        _configuration = configuration;
+    }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(CreateUserDto dto)
@@ -21,39 +30,26 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginDto dto)
+    public async Task<ActionResult> LoginUserAsync(UserLoginRequest request)
     {
-        if(HttpContext.Session.GetString("username") != null)
-        {
-            return BadRequest("You are already logged in, log out first.");
-        }
+        var user = await _userService.Authenticate(request.Username, request.Password);
+        if (user == null) return Unauthorized();
 
-        //Admin bilgileri girildiyse mevcut kullanıcı tipini admin'e eşitliyoruz.
-        if(dto.Username == "admin" && dto.Password == "admin")
-        {
-            HttpContext.Session.SetString("username", dto.Username);
-            HttpContext.Session.SetString("role", "admin");
-            HttpContext.Session.SetInt32("Id", 0);
-            return Ok("logged in as admin");
-        }
+        SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JwtSettings:Key"]));
 
-        //Username ve Password doğrulaması yapıyoruz
-        var user = await _userService.GetUserByUsernameAsync(dto.Username);
-        if (user == null || dto.Password != user.Password)
-            return Unauthorized("Invalid credentials");
+        var token = new JwtSecurityToken(
+            issuer: _configuration["JwtSettings:Issuer"],
+            audience: _configuration["JwtSettings:Audience"],
+            claims: new List<Claim>
+            {
+                new Claim("username", request.Username),
+                new Claim("userId", user.Id.ToString()),
+                new Claim("role", user.Username == "admin" ? "admin" : "customer")
+            },
+            expires: DateTime.Now.AddMinutes(60),
+            signingCredentials: new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256)
+            );
 
-        //Tüm şartlar sağlandıysa customer olarak giriş yapıyoruz
-        HttpContext.Session.SetString("username", user.Username);
-        HttpContext.Session.SetString("role", "customer");
-        HttpContext.Session.SetInt32("Id", user.Id);
-
-        return Ok("Succesfully logged in");
-    }
-
-    [HttpPost("logout")]
-    public IActionResult Logout()
-    {
-        HttpContext.Session.Clear();
-        return Ok("logged out");
+        return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
     }
 }

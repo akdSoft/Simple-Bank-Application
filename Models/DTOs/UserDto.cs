@@ -24,20 +24,15 @@ public class CreateUserDto
     public string Surname { get; set; } = null!;
 
     [Required]
-    [StringLength(50)]
+    [StringLength(50, MinimumLength = 4)]
     public string Username { get; set; } = null!;
 
     [Required]
-    [StringLength(50)]
+    [StringLength(50, MinimumLength = 8)]
+    [DataType(DataType.Password)]
     public string Password { get; set; } = null!;
 
     [Required]
-    [StringLength(50)]
+    [EmailAddress]
     public string Email { get; set; } = null!;
-}
-
-public class LoginDto
-{
-    public string Username { get; set; } = null!;
-    public string Password { get; set; } = null!;
 }
