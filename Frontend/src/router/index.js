@@ -17,7 +17,6 @@ import TransactionHistoryPage from "../components/customer/TransactionHistoryPag
 import CardsPage from "../components/customer/CardsPage.vue";
 import ListAllCardsPage from "../components/admin/ListAllCardsPage.vue";
 import CurrencyDashboardPage from "../components/admin/CurrencyDashboardPage.vue";
-import Test from "../components/test.vue";
 import {jwtDecode} from "jwt-decode";
 
 const routes = [
@@ -38,8 +37,7 @@ const routes = [
     {path: '/customer/create-account', component: CreateAccountPage, meta: { requiresAuth: true }},
     {path: '/customer/transfer-money', component: TransferMoneyPage, meta: { requiresAuth: true }},
     {path: '/customer/deposit-withdraw', component: DepositWithdrawPage, meta: { requiresAuth: true }},
-    {path: '/customer/transaction-history', component: TransactionHistoryPage, meta: { requiresAuth: true }},
-    {path: '/test', component: Test}
+    {path: '/customer/transaction-history', component: TransactionHistoryPage, meta: { requiresAuth: true }}
 ]
 
 const router = createRouter({
