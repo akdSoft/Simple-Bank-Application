@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Simple_Bank_Application.Data;
-using Simple_Bank_Application.Models;
-using Simple_Bank_Application.Models.DTOs;
+﻿using Simple_Bank_Application.Models;
 
 namespace Simple_Bank_Application.Repositories.Interfaces;
 
@@ -15,4 +12,6 @@ public interface ICardRepository
     Task<IEnumerable<DebitCard>> GetAllDebitCardsAsync(int userId);
     Task<VirtualCard?> GetVirtualCardByIdAsync(int virtualCardId);
     Task UpdateVirtualCardAsync(VirtualCard virtualCard);
+    Task<DebitCard?> GetDebitCardByCardNumberAsync(string cardNumber);
+    Task<VirtualCard?> GetVirtualCardByCardNumberAsync(string cardNumber);
 }

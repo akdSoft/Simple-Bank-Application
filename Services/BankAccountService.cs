@@ -9,10 +9,12 @@ namespace Simple_Bank_Application.Services;
 public class BankAccountService : IBankAccountService
 {
     private readonly IBankAccountRepository _bankAccountRepo;
+    private readonly ICurrencyService _currencyService;
 
-    public BankAccountService(IBankAccountRepository bankAccountRepo)
+    public BankAccountService(IBankAccountRepository bankAccountRepo, ICurrencyService currencyService)
     {
         _bankAccountRepo = bankAccountRepo;
+        _currencyService = currencyService;
     }
 
     public async Task<IEnumerable<BankAccountDto>> GetAllBankAccountsAsync()
@@ -32,8 +34,12 @@ public class BankAccountService : IBankAccountService
 
     public async Task<BankAccountDto?> CreateBankAccountAsync(int UserId, CreateBankAccountDto dto)
     {
+        var currency = await _currencyService.GetCurrencyByIdAsync(dto.CurrencyId);
+        if (currency == null) return null;
+
         var account = new BankAccount
         {
+            Id = await generateAccountId(currency),
             UserId = UserId,
             AccountType = dto.AccountType,
             Balance = 0,
@@ -65,5 +71,19 @@ public class BankAccountService : IBankAccountService
         await _bankAccountRepo.UpdateBankAccountAsync(account);
 
         return DtoMapper.ToDto(account);
+    }
+
+    //Benzersiz banka hesabı ID'sini oluşturuyoruz
+    //ID mantığı: {hesabın para biriminin iso 4217 standartlarındaki kodu} + {rastgele 4 haneli sayı}
+    async Task<int> generateAccountId(Currency currency)
+    {
+        Random rnd = new Random();
+        var random4Digits = rnd.Next(1000, 10000);
+
+        int generatedId = int.Parse(currency.ISO4217Code.ToString() + random4Digits.ToString());
+
+        var accountWithSameId = await _bankAccountRepo.GetBankAccountByIdAsync(generatedId);
+        if (accountWithSameId != null) return await generateAccountId(currency);
+        else return generatedId;
     }
 }

@@ -45,7 +45,7 @@ async function loadTotalBalance(){
 
 async function logOut(){
   localStorage.removeItem('token')
-  router.push('/')
+  await router.push('/')
 }
 
 async function deleteAccount(){
@@ -116,6 +116,10 @@ async function deleteAccount(){
 
       <router-link to="/customer/deposit-withdraw">
         <button class="dashboard-button">Deposit/Withdraw</button>
+      </router-link>
+
+      <router-link to="/customer/currency-dashboard">
+        <button class="dashboard-button">Currency Dashboard</button>
       </router-link>
 
       <router-link to="/customer/transaction-history">

@@ -6,4 +6,5 @@ public class Currency
     public string Name { get; set; } = null!;
     public decimal TryIndexedValue { get; set; }
     public char Symbol { get; set; }
+    public int ISO4217Code { get; set; }
 }

@@ -17,7 +17,7 @@ async function showCurrencyList(){
 <template>
   <div class="dashboard-wrapper">
     <div class="dashboard-card">
-      <h2 class="dashboard-title">List All Accounts</h2>
+      <h2 class="dashboard-title">List All Currencies</h2>
 
       <table class="custom-table" v-if="currencies.length > 0">
         <tbody>
@@ -37,6 +37,7 @@ async function showCurrencyList(){
       </table>
 
       <button class="dashboard-button" @click="showCurrencyList">Show Currency List</button>
+
 
       <router-link to="/admin/dashboard">
         <button class="dashboard-button">Return</button>

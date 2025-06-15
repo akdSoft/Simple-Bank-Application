@@ -23,7 +23,8 @@ namespace Simple_Bank_Application.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false),
                     TryIndexedValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Symbol = table.Column<string>(type: "varchar(1)", nullable: false)
+                    Symbol = table.Column<string>(type: "varchar(1)", nullable: false),
+                    ISO4217Code = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

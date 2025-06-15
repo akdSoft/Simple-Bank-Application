@@ -1,12 +1,12 @@
-<script>
+<script setup>
 import '../../assets/dashboard.css'
-export default {
-  methods: {
-    async logOut(){
-      localStorage.removeItem('token')
-      router.push('/')
-    }
-  }
+import {useRouter} from "vue-router";
+
+const router = useRouter()
+
+async function logOut(){
+  localStorage.removeItem('token')
+  await router.push('/')
 }
 </script>
 
@@ -45,7 +45,6 @@ export default {
 
 
       <button class="dashboard-button" @click="logOut">Log Out</button>
-
     </div>
   </div>
 </template>

@@ -19,7 +19,7 @@ public class CardService : ICardService
     }
     public async Task<DebitCard?> CreateDebitCardAsync(CreateDebitCardDto dto, int userId)
     {
-        var (cardNumber, cvv) = GenerateCardNumberAndCvv();
+        var (cardNumber, cvv) = await GenerateCardNumberAndCvv();
 
         //Banka kartınu oluşturuyoruz
         var user = await _userService.GetUserWithPasswordByIdAsync(userId);
@@ -46,7 +46,7 @@ public class CardService : ICardService
 
     public async Task<VirtualCard?> CreateVirtualCardAsync(CreateVirtualCardDto dto, int userId)
     {
-        var (cardNumber, cvv) = GenerateCardNumberAndCvv();
+        var (cardNumber, cvv) = await GenerateCardNumberAndCvv();
 
         //Sanal kartı oluşturuyoruz
         var user = await _userService.GetUserWithPasswordByIdAsync(userId);
@@ -82,7 +82,7 @@ public class CardService : ICardService
         await _cardRepo.GetAllVirtualCardsAsync(userId);
 
     //Çift değer döndürmek için Tuple data tipini kullandık
-    static (string CardNumber, string Cvv) GenerateCardNumberAndCvv()
+    async Task<(string CardNumber, string Cvv)> GenerateCardNumberAndCvv()
     {
         //16 haneli kart numarasını oluşturuyoruz
         string cardNumber = "";
@@ -90,12 +90,15 @@ public class CardService : ICardService
 
         for (int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < 4; j++)
-            {
-                cardNumber += Convert.ToString(rnd.Next(0, 10));
-            }
+            cardNumber += Convert.ToString(rnd.Next(1000, 10000));
             cardNumber += " ";
         }
+        cardNumber.Remove(cardNumber.Length - 1);
+
+        //Aynı kart numarasına sahip kart var mı diye bakıyoruz
+        var debitCardWithSameNumber = await _cardRepo.GetDebitCardByCardNumberAsync(cardNumber);
+        var virtualCardWithSameNumber = await _cardRepo.GetVirtualCardByCardNumberAsync(cardNumber);
+        if (debitCardWithSameNumber != null || virtualCardWithSameNumber != null) return await GenerateCardNumberAndCvv();
 
         //CVV kodunu oluşturuyoruz
         string cvv = Convert.ToString(rnd.Next(100, 1000));

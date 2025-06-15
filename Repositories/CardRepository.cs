@@ -40,6 +40,12 @@ public class CardRepository : ICardRepository
     public async Task<VirtualCard?> GetVirtualCardByIdAsync(int virtualCardId) =>
         await _context.VirtualCards.FindAsync(virtualCardId);
 
+    public async Task<VirtualCard?> GetVirtualCardByCardNumberAsync(string cardNumber) =>
+        await _context.VirtualCards.FirstOrDefaultAsync(card => card.CardNumber == cardNumber);
+
+    public async Task<DebitCard?> GetDebitCardByCardNumberAsync(string cardNumber) =>
+        await _context.DebitCards.FirstOrDefaultAsync(card => card.CardNumber == cardNumber);
+
     public async Task UpdateVirtualCardAsync(VirtualCard virtualCard)
     {
         _context.VirtualCards.Update(virtualCard);

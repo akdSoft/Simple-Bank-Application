@@ -14,12 +14,6 @@ public class CurrencyRepository : ICurrencyRepository
     public async Task<IEnumerable<Currency>> GetAllCurrenciesAsync() => 
         await _context.Currencies.ToListAsync();
 
-    public async Task CreateCurrencyAsync(Currency currency)
-    {
-        _context.Currencies.Add(currency);
-        await _context.SaveChangesAsync();
-    }
-
     public async Task<Currency?> GetCurrencyByNameAsync(string currencyName) =>
         await _context.Currencies.FirstOrDefaultAsync(currency => currency.Name == currencyName);
 

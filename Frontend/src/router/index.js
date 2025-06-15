@@ -16,7 +16,8 @@ import DepositWithdrawPage from "../components/customer/DepositWithdrawPage.vue"
 import TransactionHistoryPage from "../components/customer/TransactionHistoryPage.vue";
 import CardsPage from "../components/customer/CardsPage.vue";
 import ListAllCardsPage from "../components/admin/ListAllCardsPage.vue";
-import CurrencyDashboardPage from "../components/admin/CurrencyDashboardPage.vue";
+import AdminCurrencyDashboardPage from "../components/admin/adminCurrencyDashboardPage.vue";
+import CustomerCurrencyDashboardPage from "../components/customer/customerCurrencyDashboardPage.vue";
 import {jwtDecode} from "jwt-decode";
 
 const routes = [
@@ -30,14 +31,15 @@ const routes = [
     {path: '/admin/list-all-cards', component: ListAllCardsPage, meta: { requiresAuth: true }},
     {path: '/admin/list-all-transactions', component: ListAllTransactionsPage, meta: { requiresAuth: true }},
     {path: '/admin/list-all-users', component: ListAllUsersPage, meta: { requiresAuth: true }},
-    {path: '/admin/currency-dashboard', component: CurrencyDashboardPage, meta: { requiresAuth: true }},
+    {path: '/admin/currency-dashboard', component: AdminCurrencyDashboardPage, meta: { requiresAuth: true }},
     {path: '/customer/dashboard', component: CustomerDashboardPage, meta: { requiresAuth: true }},
     {path: '/customer/profile', component: ProfilePage, meta: { requiresAuth: true }},
     {path: '/customer/cards', component: CardsPage, meta: { requiresAuth: true }},
     {path: '/customer/create-account', component: CreateAccountPage, meta: { requiresAuth: true }},
     {path: '/customer/transfer-money', component: TransferMoneyPage, meta: { requiresAuth: true }},
     {path: '/customer/deposit-withdraw', component: DepositWithdrawPage, meta: { requiresAuth: true }},
-    {path: '/customer/transaction-history', component: TransactionHistoryPage, meta: { requiresAuth: true }}
+    {path: '/customer/transaction-history', component: TransactionHistoryPage, meta: { requiresAuth: true }},
+    {path: '/customer/currency-dashboard', component: CustomerCurrencyDashboardPage, meta: { requiresAuth: true }},
 ]
 
 const router = createRouter({

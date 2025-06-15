@@ -1,5 +1,6 @@
 <script>
 import api from '../api/axiosInstance.js';
+import {jwtDecode} from "jwt-decode";
 export default{
   computed: {
     register() {
@@ -31,11 +32,21 @@ export default{
 
 
         if(response.status === 200){
-          if(response.data === 'logged in as admin'){
-            this.$router.push('/admin/dashboard')
-          }
-          else{
-            this.$router.push('/customer/dashboard')
+
+          try {
+            const decodedToken = jwtDecode(token)
+
+            const role = decodedToken.role
+
+            if(role === 'admin') {
+              this.$router.push('/admin/dashboard')
+            } else if (role === 'customer') {
+              this.$router.push('/customer/dashboard')
+            } else {
+              alert('Invalid token: ' + err)
+            }
+          } catch (err) {
+            alert('Invalid token: ' + err)
           }
         }
       } catch (err){
