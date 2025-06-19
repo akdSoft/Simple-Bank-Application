@@ -15,4 +15,14 @@ public class CurrencyController : ControllerBase
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllCurrenciesAsync() => Ok(await _service.GetAllCurrenciesAsync());
+
+    [Authorize(Roles = "customer")]
+    [HttpGet("user/currency-balance/{currencyId}")]
+    public async Task<IActionResult> GetCurrentUserCurrencyBalanceAsync(int currencyId)
+    {
+        var userId = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+        if (userId == null) return Unauthorized();
+
+        return Ok(await _service.GetUserCurrencyBalanceAsync(currencyId, Convert.ToInt32(userId)));
+    }
 }

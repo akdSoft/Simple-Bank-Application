@@ -40,7 +40,7 @@ public class UserController : ControllerBase
 
         if (userId == null) return Unauthorized();
 
-        var updatedUser = await _service.UpdateUserAsync(dto, int.Parse(userId));
+        var updatedUser = await _service.UpdateUserByDtoAsync(dto, int.Parse(userId));
         return (updatedUser is null) ? NotFound() : Ok(updatedUser);
     }
 

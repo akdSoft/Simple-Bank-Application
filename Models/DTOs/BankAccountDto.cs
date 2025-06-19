@@ -12,6 +12,8 @@ public class BankAccountDto
     public int UserId { get; set; }
     public string UserName { get; set; } = null!;
     public string UserSurname { get; set; } = null!;
+
+    public List<DebitCard> DebitCards { get; set; } = new List<DebitCard>();
 }
 
 public class CreateBankAccountDto

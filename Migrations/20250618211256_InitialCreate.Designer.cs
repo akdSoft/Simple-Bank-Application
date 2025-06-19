@@ -11,7 +11,7 @@ using Simple_Bank_Application.Data;
 namespace Simple_Bank_Application.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250614234106_InitialCreate")]
+    [Migration("20250618211256_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -139,6 +139,10 @@ namespace Simple_Bank_Application.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("SourceCurrencySymbol")
+                        .IsRequired()
+                        .HasColumnType("varchar(1)");
+
                     b.Property<int?>("SourceId")
                         .HasColumnType("int");
 
@@ -148,6 +152,10 @@ namespace Simple_Bank_Application.Migrations
                     b.Property<string>("TargetCurrency")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<string>("TargetCurrencySymbol")
+                        .IsRequired()
+                        .HasColumnType("varchar(1)");
 
                     b.Property<int?>("TargetId")
                         .HasColumnType("int");
@@ -270,11 +278,18 @@ namespace Simple_Bank_Application.Migrations
 
             modelBuilder.Entity("Simple_Bank_Application.Models.DebitCard", b =>
                 {
-                    b.HasOne("Simple_Bank_Application.Models.BankAccount", null)
-                        .WithMany()
+                    b.HasOne("Simple_Bank_Application.Models.BankAccount", "BankAccount")
+                        .WithMany("DebitCards")
                         .HasForeignKey("LinkedAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BankAccount");
+                });
+
+            modelBuilder.Entity("Simple_Bank_Application.Models.BankAccount", b =>
+                {
+                    b.Navigation("DebitCards");
                 });
 
             modelBuilder.Entity("Simple_Bank_Application.Models.User", b =>

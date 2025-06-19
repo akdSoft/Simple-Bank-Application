@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Simple_Bank_Application.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,14 +38,21 @@ builder.Services.AddAuthentication(options =>
 //Repository'leri ve Servis'leri kaydediyoruz
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
 builder.Services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 builder.Services.AddScoped<IBankAccountService, BankAccountService>();
+
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+
 builder.Services.AddScoped<ICardRepository, CardRepository>();
 builder.Services.AddScoped<ICardService, CardService>();
+
+builder.Services.AddScoped(typeof(Lazy<>), typeof(LazyResolver<>));
+
 
 
 builder.Services.AddCors(options =>
@@ -87,6 +95,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 var app = builder.Build();
 
 app.UseRouting();
@@ -100,5 +111,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 await DataSeeder.SeedAsync(app.Services);
+
+
 
 app.Run();

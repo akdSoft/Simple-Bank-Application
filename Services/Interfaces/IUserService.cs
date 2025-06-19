@@ -9,8 +9,8 @@ public interface IUserService
     Task<IEnumerable<UserDto>> GetAllUsersAsync();
     Task<User?> GetUserWithPasswordByIdAsync(int id);
     Task<UserDto?> CreateUserAsync(CreateUserDto dto);
-    Task<UserDto?> UpdateUserAsync(CreateUserDto dto, int id);
+    Task<UserDto?> UpdateUserByDtoAsync(CreateUserDto dto, int id);
+    Task<UserDto?> UpdateUserAsync(User user);
     Task<bool> DeleteUserAsync(int id);
     Task<User?> GetUserByUsernameAsync(string username);
-    Task<UserDto?> IncreaseOrDecreaseTotalBalanceAsync(int accountId, decimal amount);
 }

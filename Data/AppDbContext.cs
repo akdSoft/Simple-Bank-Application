@@ -36,9 +36,9 @@ public class AppDbContext : DbContext
             .HasIndex(b => b.UserId);
 
         modelBuilder.Entity<DebitCard>()
-            .HasOne<BankAccount>()
-            .WithMany()
-            .HasForeignKey("LinkedAccountId")
+            .HasOne(d => d.BankAccount)
+            .WithMany(b => b.DebitCards)
+            .HasForeignKey(d => d.LinkedAccountId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Currency>()

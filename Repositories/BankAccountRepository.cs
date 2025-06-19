@@ -18,6 +18,7 @@ public class BankAccountRepository : IBankAccountRepository
             //Banka hesaplarını, bağlı oldukları User ve Currency ile çekiyoruz
             .Include(acc => acc.User)
             .Include(acc => acc.Currency)
+            .Include(acc => acc.DebitCards)
             .ToListAsync();
     }
     public async Task<BankAccount?> GetBankAccountByIdAsync(int id)
@@ -25,6 +26,7 @@ public class BankAccountRepository : IBankAccountRepository
         return await _context.BankAccounts
             .Include(acc => acc.User)
             .Include(acc => acc.Currency)
+            .Include(acc => acc.DebitCards)
             .Where(acc => acc.Id == id)
             .FirstOrDefaultAsync();
     }
@@ -37,6 +39,7 @@ public class BankAccountRepository : IBankAccountRepository
         return await _context.BankAccounts
             .Include(acc => acc.User)
             .Include(acc => acc.Currency)
+            .Include(acc => acc.DebitCards)
             .Where(acc => acc.Id == account.Id)
             .FirstOrDefaultAsync();
     }
@@ -54,6 +57,7 @@ public class BankAccountRepository : IBankAccountRepository
         return await _context.BankAccounts
             .Include(acc => acc.User)
             .Include(acc => acc.Currency)
+            .Include(acc => acc.DebitCards)
             .Where(acc => acc.UserId == userId)
             .ToListAsync();
     }

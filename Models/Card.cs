@@ -1,4 +1,6 @@
-﻿namespace Simple_Bank_Application.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace Simple_Bank_Application.Models;
 
 public class Card
 {
@@ -16,6 +18,9 @@ public class DebitCard : Card
 {
     public string Password { get; set; } = null!;
     public int LinkedAccountId { get; set; }
+
+    [JsonIgnore]
+    public BankAccount BankAccount { get; set; } = null!;
 }
 
 public class VirtualCard : Card

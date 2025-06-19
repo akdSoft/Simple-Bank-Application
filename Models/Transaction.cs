@@ -6,9 +6,11 @@ public class Transaction
     public string? SourceType { get; set; }
     public int? SourceId { get; set; }
     public string SourceCurrency { get; set; } = null!;
+    public char SourceCurrencySymbol { get; set; }
     public string? TargetType { get; set; }
     public int? TargetId { get; set; }
     public string TargetCurrency { get; set; } = null!;
+    public char TargetCurrencySymbol { get; set; }
     public decimal Amount { get; set; }
     public int UserId { get; set; }
     public string Type { get; set; } = null!;

@@ -1,5 +1,4 @@
 ﻿using Simple_Bank_Application.Models;
-using Simple_Bank_Application.Models.DTOs;
 
 namespace Simple_Bank_Application.Services.Interfaces;
 
@@ -9,4 +8,5 @@ public interface ICurrencyService
     Task<Currency?> GetCurrencyByNameAsync(string currencyName);
     Task<Currency?> GetCurrencyByIdAsync(int id);
     Task<decimal?> ConvertCurrencyAsync(decimal amount, string sourceCurrency, string targetCurrency);
+    Task<decimal?>GetUserCurrencyBalanceAsync(int currencyId, int userId);
 }

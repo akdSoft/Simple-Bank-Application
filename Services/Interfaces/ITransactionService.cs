@@ -13,4 +13,5 @@ public interface ITransactionService
     public Task<Transaction?> AccountToAccountTransferAsync(TransferMoneyDto dto);
     Task<bool> TransferFromAccountToVirtualCardAsync(VirtualCardTransferMoneyDto dto);
     Task<bool> TransferFromVirtualCardToAccountAsync(VirtualCardTransferMoneyDto dto);
+    Task<UserDto?> IncreaseOrDecreaseTotalBalanceAsync(int accountId, decimal amount);
 }

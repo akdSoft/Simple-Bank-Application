@@ -16,4 +16,5 @@ public class User
     //Geçici olarak BankAccounts'a JsonIgnore ekledik
     [JsonIgnore]
     public ICollection<BankAccount> BankAccounts { get; } = new List<BankAccount>();
+
 }

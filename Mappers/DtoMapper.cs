@@ -16,7 +16,8 @@ public static class DtoMapper
             CurrencySymbol = account.Currency.Symbol,
             UserId = account.UserId,
             UserName = account.User.Name,
-            UserSurname = account.User.Surname
+            UserSurname = account.User.Surname,
+            DebitCards = account.DebitCards.ToList()
         };
     }
     public static List<BankAccountDto> ToDtoList(IEnumerable<BankAccount> accounts)

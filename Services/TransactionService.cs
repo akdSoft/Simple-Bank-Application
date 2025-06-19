@@ -1,4 +1,5 @@
-﻿using Simple_Bank_Application.Models;
+﻿using Simple_Bank_Application.Mappers;
+using Simple_Bank_Application.Models;
 using Simple_Bank_Application.Models.DTOs;
 using Simple_Bank_Application.Repositories.Interfaces;
 using Simple_Bank_Application.Services.Interfaces;
@@ -37,7 +38,7 @@ public class TransactionService : ITransactionService
         var user = await _userService.GetUserWithPasswordByIdAsync(acc.UserId);
         if (user == null) return null;
         
-        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, dto.Amount);
+        await IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, dto.Amount);
         await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.AccountId, dto.Amount);
 
         var transaction = new Transaction
@@ -45,9 +46,11 @@ public class TransactionService : ITransactionService
             SourceType = TransactionEntityType.Account.ToString(),
             SourceId = dto.AccountId,
             SourceCurrency = acc.CurrencyType,
+            SourceCurrencySymbol = acc.CurrencySymbol,
             TargetType = null,
             TargetId = null,
             TargetCurrency = acc.CurrencyType,
+            TargetCurrencySymbol = acc.CurrencySymbol,
             Amount = dto.Amount,
             UserId = acc.UserId,
             Type = "Deposit",
@@ -70,7 +73,7 @@ public class TransactionService : ITransactionService
         var user = await _userService.GetUserWithPasswordByIdAsync(acc.UserId);
         if (user == null) return null;
 
-        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, -dto.Amount);
+        await IncreaseOrDecreaseTotalBalanceAsync(dto.AccountId, -dto.Amount);
         await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.AccountId, -dto.Amount);
 
         var transaction = new Transaction
@@ -78,9 +81,11 @@ public class TransactionService : ITransactionService
             SourceType = TransactionEntityType.Account.ToString(),
             SourceId = dto.AccountId,
             SourceCurrency = acc.CurrencyType,
+            SourceCurrencySymbol = acc.CurrencySymbol,
             TargetType = null,
             TargetId = null,
             TargetCurrency = acc.CurrencyType,
+            TargetCurrencySymbol = acc.CurrencySymbol,
             Amount = dto.Amount,
             UserId = acc.UserId,
             Type = "Withdraw",
@@ -107,8 +112,8 @@ public class TransactionService : ITransactionService
         //Kur dönüşümü yapıyoruz
         var convertedAmount = await _currencyService.ConvertCurrencyAsync(dto.Amount, sourceAcc.CurrencyType, targetAcc.CurrencyType);
         
-        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.FromAccountId, -dto.Amount);
-        await _userService.IncreaseOrDecreaseTotalBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
+        await IncreaseOrDecreaseTotalBalanceAsync(dto.FromAccountId, -dto.Amount);
+        await IncreaseOrDecreaseTotalBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
         await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.FromAccountId, -dto.Amount);
         await _bankAccountService.IncreaseOrDecreaseBalanceAsync(dto.TargetAccountId, convertedAmount.Value);
 
@@ -117,9 +122,11 @@ public class TransactionService : ITransactionService
             SourceType = TransactionEntityType.Account.ToString(),
             SourceId = dto.FromAccountId,
             SourceCurrency = sourceAcc.CurrencyType,
+            SourceCurrencySymbol = sourceAcc.CurrencySymbol,
             TargetType = TransactionEntityType.Account.ToString(),
             TargetId = dto.TargetAccountId,
             TargetCurrency = targetAcc.CurrencyType,
+            TargetCurrencySymbol = targetAcc.CurrencySymbol,
             Amount = dto.Amount,
             UserId = sourceAcc.UserId,
             Type = "Money Transfer",
@@ -148,12 +155,14 @@ public class TransactionService : ITransactionService
             SourceType = TransactionEntityType.Account.ToString(),
             SourceId = dto.FromAccountOrCardId,
             SourceCurrency = account.CurrencyType,
+            SourceCurrencySymbol = account.CurrencySymbol,
             TargetType = TransactionEntityType.VirtualCard.ToString(),
             TargetId = dto.TargetAccountOrCardId,
             TargetCurrency = account.CurrencyType,
+            TargetCurrencySymbol = account.CurrencySymbol,
             Amount = dto.Amount,
             UserId = account.UserId,
-            Type = "virtual card money transfer",
+            Type = "Virtual Card Money Transfer",
             CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
         };
@@ -177,15 +186,17 @@ public class TransactionService : ITransactionService
 
         var transaction = new Transaction
         {
-            SourceType = TransactionEntityType.Account.ToString(),
+            SourceType = TransactionEntityType.VirtualCard.ToString(),
             SourceId = dto.FromAccountOrCardId,
             SourceCurrency = account.CurrencyType,
-            TargetType = TransactionEntityType.VirtualCard.ToString(),
+            SourceCurrencySymbol = account.CurrencySymbol,
+            TargetType = TransactionEntityType.Account.ToString(),
             TargetId = dto.TargetAccountOrCardId,
             TargetCurrency = account.CurrencyType,
+            TargetCurrencySymbol = account.CurrencySymbol,
             Amount = dto.Amount,
             UserId = card.UserId,
-            Type = "virtual card money transfer",
+            Type = "Virtual Card Money Transfer",
             CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
         };
@@ -202,4 +213,20 @@ public class TransactionService : ITransactionService
 
     public async Task<IEnumerable<Transaction>> GetTransactionsByBankAccountAsync(int accountId, int userId) =>
         await _transactionRepo.GetTransactionsByBankAccountAsync(accountId, userId);
+
+    public async Task<UserDto?> IncreaseOrDecreaseTotalBalanceAsync(int accountId, decimal amount)
+    {
+        var account = await _bankAccountService.GetBankAccountByIdAsync(accountId);
+        if (account == null) return null;
+
+        var _amount = await _currencyService.ConvertCurrencyAsync(amount, account.Currency.Name, "TRY");
+
+        var user = await _userService.GetUserWithPasswordByIdAsync(account.UserId);
+        if (user == null) return null;
+
+        user.TotalBalanceInTRY += _amount.Value;
+        await _userService.UpdateUserAsync(user);
+
+        return DtoMapper.ToDto(user);
+    }
 }

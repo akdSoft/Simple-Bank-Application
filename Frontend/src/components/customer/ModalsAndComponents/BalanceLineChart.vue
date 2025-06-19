@@ -63,7 +63,6 @@ const loadData = async () => {
       return date.toLocaleString('tr-TR', {
         day: '2-digit',
         month: '2-digit',
-        year: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
       });
@@ -93,6 +92,8 @@ onMounted(() => {
 <style scoped>
 .balance-chart {
   width: 100%;
-  height: 400px;
+  height: 100%;
+  display: block;
+  margin: 0 auto;
 }
 </style>
