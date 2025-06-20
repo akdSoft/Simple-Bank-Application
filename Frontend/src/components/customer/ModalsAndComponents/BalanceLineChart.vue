@@ -52,23 +52,44 @@ const chartOptions = ref({
   }
 })
 
+const groupByDay = (transactions) => {
+  const dailyData = [];
+
+  const addedDates = [];
+
+  transactions.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+  for (let i = transactions.length - 1; i >= 0; i--) {
+    const t = transactions[i];
+    const date = new Date(t.timestamp);
+    const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
+
+    if (!addedDates.includes(dateKey)) {
+      addedDates.push(dateKey);
+      dailyData.unshift({
+        label: date.toLocaleString('tr-TR', {
+               day: '2-digit',
+               month: '2-digit',
+               hour: '2-digit',
+               minute: '2-digit'
+             }),
+        balance: t.currentBalance
+      });
+    }
+  }
+
+  return dailyData;
+};
+
 const loadData = async () => {
   try {
     const response = await api.get(`/Transaction/account/${0}`)
-
     const data = response.data;
 
-    chartData.value.labels = data.map(t => {
-      const date = new Date(t.timestamp);
-      return date.toLocaleString('tr-TR', {
-        day: '2-digit',
-        month: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    });
-    chartData.value.datasets[0].data = data.map(t => t.currentBalance);
+    const dailyData = groupByDay(data);
 
+    chartData.value.labels = dailyData.map(t => t.label);
+    chartData.value.datasets[0].data = dailyData.map(t => t.balance);
   } catch (err) {
     alert(err.message)
   }

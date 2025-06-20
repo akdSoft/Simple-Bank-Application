@@ -1,5 +1,4 @@
 <script setup>
-import '../../assets/dashboard.css'
 import {ref, onMounted, computed} from "vue";
 import {useRouter} from "vue-router";
 import api from '../../api/axiosInstance.js'
@@ -32,7 +31,7 @@ const selectedAccount = computed(() => {
 const totalBalance = ref('')
 
 onMounted(async () => {
-  await  loadAccounts();
+  await loadAccounts();
   await loadTotalBalance();
   await loadTotalCurrenciesBalance();
   await showTransactionList();
@@ -90,6 +89,7 @@ async function deleteAccount(){
     const response = await api.delete(`/BankAccount/${selectedAccountId.value}`)
     if (response.status === 204) {
       alert('Account has been deleted')
+      await loadAccounts()
     }
   } catch (err) {
     if(err.status === 404 || err.status === 405){
@@ -100,6 +100,78 @@ async function deleteAccount(){
     }
   }
 }
+
+async function quickaction_deposit() {
+  if(!selectedAccount.value) {
+    alert("An account must be selected")
+    return
+  }
+  const payload = {
+    accountId: selectedAccountId.value,
+    amount: 1000,
+  }
+
+  try {
+    await api.post('/Transaction/deposit', payload)
+    alert("Money has been deposited")
+    await loadAccounts();
+    await loadTotalBalance();
+    await loadTotalCurrenciesBalance();
+    await showTransactionList();
+
+  } catch (err) {
+      alert(err.message)
+  }
+}
+
+async function quickaction_withdraw() {
+  if(!selectedAccount.value) {
+    alert("An account must be selecteds")
+    return
+  }
+  const payload = {
+    accountId: selectedAccountId.value,
+    amount: 500,
+  }
+
+  try {
+    await api.post('/Transaction/withdraw', payload)
+    alert("Money has been withdrawn")
+    await loadAccounts();
+    await loadTotalBalance();
+    await loadTotalCurrenciesBalance();
+    await showTransactionList();
+
+  } catch (err) {
+    if (err.status === 400) {
+      alert("You do not have enough funds")
+    } else {
+      alert(err.message)
+
+    }
+  }
+}
+
+async function quickaction_createcard() {
+  if(!selectedAccount || selectedAccount.value.currencyType !== 'TRY'){
+    alert("A TRY account must be selected")
+    return
+  }
+  const password = Math.floor(1000 + Math.random() * 9000).toString()
+
+  const payload = {
+    onlineShopping: false,
+    password: password,
+    linkedAccountId: selectedAccountId.value
+  }
+  try{
+    await api.post('/Card/debit-card', payload)
+    await loadAccounts();
+    alert('Debit card has been created')
+  } catch (err) {
+      alert(err.message)
+  }
+}
 </script>
 
 <template>
@@ -107,11 +179,15 @@ async function deleteAccount(){
     <ul>
       <li>
         <a style="color: black">
-          <button @click="logOut">Log Out</button>
+          <button @click="logOut">
+            <img style="width: 2.5vw; height: auto" src="../../assets/img/logout.png">
+          </button>
         </a>
       </li>
       <li>
-        <a href="/customer/profile" style="color: black">PROFILE</a>
+        <a href="/customer/profile" style="color: black">
+          <img style="width: 2.5vw; height: auto" src="../../assets/img/profile.png">
+        </a>
       </li>
     </ul>
   </div>
@@ -129,9 +205,15 @@ async function deleteAccount(){
           <div class="account">
             <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-between; padding-left: 50px; padding-right: 50px">
               <a class="title" style="margin-top: 10px">Accounts</a>
-              <a href="/customer/create-account">
-                <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/plus.png">
-              </a>
+              <div style="display: flex; flex-direction: row">
+                <button :disabled="!selectedAccount" @click="deleteAccount">
+                  <img  style="height: 35px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/trash.png">
+                </button>
+
+                <a href="/customer/create-account">
+                  <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/plus.png">
+                </a>
+              </div>
             </div>
 
             <ul>
@@ -140,7 +222,9 @@ async function deleteAccount(){
                   @click="selectedAccountId = account.id.toString()">
                 <a style="font-size: 20px">{{account.currencySymbol + account.balance}}</a>
                 <a style="font-weight: normal">{{account.currencyType}} Account - {{account.id}}</a>
-                <a class="bankcard-preview" v-for="card in account.debitCards" :key="card.id">{{card.cardNumber.slice(-4)}}</a>
+                <div class="bankcard-preview-wrapper bankcard-preview-scroll">
+                  <a class="bankcard-preview" v-for="card in account.debitCards" :key="card.id">{{card.cardNumber.slice(-5)}}</a>
+                </div>
               </li>
             </ul>
           </div>
@@ -173,19 +257,19 @@ async function deleteAccount(){
           <div class="quick-actions">
             <div class="quick-action-item" title="quick action 1">
               <div class="quick-action-image-wrapper">
-                <img class="quick-action-image" src="../../assets/img/deposit-quickaction.jpg">
+                <img @click="quickaction_deposit" class="quick-action-image" src="../../assets/img/deposit-quickaction.jpg">
               </div>
               <a class="quick-action-text">Deposit 1000</a>
             </div>
             <div class="quick-action-item" title="quick action 2">
               <div class="quick-action-image-wrapper">
-                <img class="quick-action-image" src="../../assets/img/withdraw-quickaction.png">
+                <img @click="quickaction_withdraw" class="quick-action-image" src="../../assets/img/withdraw-quickaction.png">
               </div>
               <a class="quick-action-text">Withdraw 500</a>
             </div>
             <div class="quick-action-item" title="quick action 3">
               <div class="quick-action-image-wrapper">
-                <img class="quick-action-image" src="../../assets/img/createcard-quickaction.png">
+                <img @click="quickaction_createcard" class="quick-action-image" src="../../assets/img/createcard-quickaction.png">
               </div>
               <a class="quick-action-text">Create Debit Card</a>
             </div>
@@ -217,33 +301,48 @@ async function deleteAccount(){
 
 
         </div>
-        <div class="card blank">Blank</div>
-        <div class="card" style="height: 620px; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto" title="Transaction Summary">
-          <div style="margin-bottom: 20px">
-            <a class="title">Transaction Summary</a>
+        <div class="card " style="height: 130px">
+          <div style="display: flex; justify-content: space-between">
+            <label class="title" style="color: dimgray">USD ($)</label>
+            <label class="title" style="font-weight: bold; color: dimgray">35₺</label>
           </div>
-          <div class="transaction-summary-item" v-for="transaction in transactions.slice(0, 5)" :key="transaction.id">
-            <div style="display: flex; flex-direction: row; gap: 10px">
-              <img v-if="transaction.type === 'Deposit'" class="image" src="../../assets/img/deposit.png">
-              <img v-else-if="transaction.type === 'Withdraw'" class="image" src="../../assets/img/withdraw.png">
-              <img v-else-if="transaction.type === 'Money Transfer'" class="image" src="../../assets/img/transfer-money.png">
-              <img v-else-if="transaction.type === 'Virtual Card Money Transfer'" class="image" src="../../assets/img/card-money-transfer.png">
-              <img v-else class="image" src="../../assets/img/question-sign.png">
+          <div style="display: flex; justify-content: space-between">
+            <label class="title" style="color: dimgray">EUR (€)</label>
+            <label class="title" style="font-weight: bold; color: dimgray">40₺</label>
+          </div>
+          <div style="display: flex; justify-content: space-between">
+            <label class="title" style="color: dimgray">GBP (£)</label>
+            <label class="title" style="font-weight: bold; color: dimgray">(To be added)</label>
+          </div>
+        </div>
+        <div class="card" style="height: 550px; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto" title="Transaction Summary">
+          <div>
+            <div style="margin-bottom: 20px">
+              <a class="title">Transaction Summary</a>
+            </div>
+            <div class="transaction-summary-item" v-for="transaction in transactions.slice(-4).reverse()" :key="transaction.id">
+              <div style="display: flex; flex-direction: row; gap: 10px">
+                <img v-if="transaction.type === 'Deposit'" class="image" src="../../assets/img/deposit.png">
+                <img v-else-if="transaction.type === 'Withdraw'" class="image" src="../../assets/img/withdraw.png">
+                <img v-else-if="transaction.type === 'Money Transfer'" class="image" src="../../assets/img/transfer-money.png">
+                <img v-else-if="transaction.type === 'Virtual Card Money Transfer'" class="image" src="../../assets/img/card-money-transfer.png">
+                <img v-else class="image" src="../../assets/img/question-sign.png">
 
 
-              <div style="display: flex; flex-direction: column">
-                <a style="font-weight: bold;">{{transaction.type}}</a>
-                <a style="color: gray" v-if="transaction.type === 'Virtual Card Money Transfer'">to {{transaction.targetType}} - {{transaction.targetId}}</a>
-                <a style="color: gray" v-else-if="transaction.type === 'Deposit' || transaction.type === 'Withdraw'">{{transaction.sourceType}} - {{transaction.sourceId}}</a>
-                <a style="color: gray" v-else-if="transaction.type === 'Money Transfer'">to {{transaction.targetType}} - {{transaction.targetId}}</a>
+                <div style="display: flex; flex-direction: column">
+                  <a style="font-weight: bold;">{{transaction.type}}</a>
+                  <a style="color: gray" v-if="transaction.type === 'Virtual Card Money Transfer'">to {{transaction.targetType}} - {{transaction.targetId}}</a>
+                  <a style="color: gray" v-else-if="transaction.type === 'Deposit' || transaction.type === 'Withdraw'">{{transaction.sourceType}} - {{transaction.sourceId}}</a>
+                  <a style="color: gray" v-else-if="transaction.type === 'Money Transfer'">to {{transaction.targetType}} - {{transaction.targetId}}</a>
+                </div>
               </div>
-            </div>
 
-            <div style="display: flex; flex-direction: column; align-items: flex-end">
-              <a style="font-weight: bold">{{transaction.targetCurrencySymbol + transaction.amount}}</a>
-              <a style="color: gray">{{transaction.timestamp.toString().split('T')[0]}}</a>
-            </div>
+              <div style="display: flex; flex-direction: column; align-items: flex-end">
+                <a style="font-weight: bold">{{transaction.targetCurrencySymbol + transaction.amount}}</a>
+                <a style="color: gray">{{transaction.timestamp.toString().split('T')[0]}}</a>
+              </div>
 
+            </div>
           </div>
           <div class="all-transactions-button">
             <a style="font-weight: bold" href="/customer/transaction-history">All Transactions</a>
@@ -386,6 +485,7 @@ async function deleteAccount(){
   object-fit: fill;
   border-radius: 12px;
   filter: brightness(80%);
+  cursor: pointer;
 }
 
 .quick-action-image-wrapper {
@@ -426,6 +526,8 @@ async function deleteAccount(){
 }
 
 .account ul {
+  display: flex;
+  flex-direction: column-reverse;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -451,17 +553,32 @@ async function deleteAccount(){
 .account li.selected-account {
   background-color: lightgray;
 }
+.bankcard-preview-wrapper {
+  overflow-x: auto;
+  padding-bottom: 5px;
+  width: 100%;
+}
 
 .bankcard-preview {
   background-image: linear-gradient(to right top, #0e4daa, #645fbb, #9674ca, #c38bd9, #eba4e8);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
+  align-items: flex-end;
+  padding-left: 3px;
+  padding-bottom: 2px;
+  justify-content: flex-start;
+  min-width: 60px;
   height: 40px;
+  margin-right: 5px;
   color: white;
   font-weight: bold;
   border-radius: 5px;
+}
+
+.bankcard-preview-scroll {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: gray transparent;
 }
 
 .title {
@@ -480,13 +597,15 @@ async function deleteAccount(){
 
 .topbar{
   position: fixed;
+  display: flex;
+  flex-direction: row-reverse;
   top: 0;
   left:0;
   width: 100vw;
   height: 6vh;
   background: white;
   z-index: 0;
-
+  overflow: hidden;
 }
 
 .topbar ul {
@@ -494,14 +613,17 @@ async function deleteAccount(){
   flex-direction: row-reverse;
   list-style: none;
   padding-right: 30px;
+  align-items: center;
 }
 
 .topbar li {
   margin-left: 30px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .topbar a {
   display: flex;
-  flex-direction: column;
+  font-size: 1.2vw; /* Ekran boyutuna göre küçülebilir */
 }
 </style>
