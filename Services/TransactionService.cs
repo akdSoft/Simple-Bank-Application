@@ -53,6 +53,8 @@ public class TransactionService : ITransactionService
             TargetCurrencySymbol = acc.CurrencySymbol,
             Amount = dto.Amount,
             UserId = acc.UserId,
+            UserName = user.Name,
+            UserSurname = user.Surname,
             Type = "Deposit",
             CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
@@ -88,6 +90,8 @@ public class TransactionService : ITransactionService
             TargetCurrencySymbol = acc.CurrencySymbol,
             Amount = dto.Amount,
             UserId = acc.UserId,
+            UserName = user.Name,
+            UserSurname = user.Surname,
             Type = "Withdraw",
             CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
@@ -129,6 +133,8 @@ public class TransactionService : ITransactionService
             TargetCurrencySymbol = targetAcc.CurrencySymbol,
             Amount = dto.Amount,
             UserId = sourceAcc.UserId,
+            UserName = user.Name,
+            UserSurname = user.Surname,
             Type = "Money Transfer",
             CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
@@ -162,6 +168,8 @@ public class TransactionService : ITransactionService
             TargetCurrencySymbol = account.CurrencySymbol,
             Amount = dto.Amount,
             UserId = account.UserId,
+            UserName = user.Name,
+            UserSurname = user.Surname,
             Type = "Virtual Card Money Transfer",
             CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now
@@ -196,6 +204,8 @@ public class TransactionService : ITransactionService
             TargetCurrencySymbol = account.CurrencySymbol,
             Amount = dto.Amount,
             UserId = card.UserId,
+            UserName = user.Name,
+            UserSurname = user.Surname,
             Type = "Virtual Card Money Transfer",
             CurrentBalance = user.TotalBalanceInTRY,
             Timestamp = DateTime.Now

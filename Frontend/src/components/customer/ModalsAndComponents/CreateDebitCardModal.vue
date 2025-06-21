@@ -50,7 +50,7 @@ async function createCard(){
 </script>
 
 <template>
-  <div class="modal-overlay" @click.self="$emit('close')">
+  <div class="modal-overlay" @click.self="$emit('close')" style="z-index: 2">
     <div class="modal-content">
       <h2 class="dashboard-title">Create Debit Card</h2>
       <label>Choose a TRY account to add a card</label>

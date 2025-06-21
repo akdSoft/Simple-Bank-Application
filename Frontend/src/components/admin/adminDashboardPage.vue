@@ -373,7 +373,6 @@ async function logOut(){
   padding-right: 10px;
   border-radius: 15px;
   margin-top: 20px;
-  cursor: pointer;
   transition: background-color 0.2s ease;
   box-shadow: 0 4px 6px rgba(0,0,0,0.08);
   background-color: white;

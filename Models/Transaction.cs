@@ -13,6 +13,8 @@ public class Transaction
     public char TargetCurrencySymbol { get; set; }
     public decimal Amount { get; set; }
     public int UserId { get; set; }
+    public string UserName { get; set; } = null!;
+    public string UserSurname { get; set; } = null!;
     public string Type { get; set; } = null!;
     public decimal CurrentBalance { get; set; }
     public DateTime Timestamp { get; set; }

@@ -13,12 +13,13 @@ import ProfilePage from "../components/customer/ProfilePage.vue";
 import CreateAccountPage from "../components/customer/CreateAccountPage.vue";
 import TransferMoneyPage from "../components/customer/TransferMoneyPage.vue";
 import DepositWithdrawPage from "../components/customer/DepositWithdrawPage.vue";
-import TransactionHistoryPage from "../components/customer/TransactionHistoryPage.vue";
-import CardsPage from "../components/customer/CardsPage.vue";
 import ListAllCardsPage from "../components/admin/ListAllCardsPage.vue";
 import AdminCurrencyDashboardPage from "../components/admin/adminCurrencyDashboardPage.vue";
 import CustomerCurrencyDashboardPage from "../components/customer/customerCurrencyDashboardPage.vue";
 import {jwtDecode} from "jwt-decode";
+import CardsPage from "../components/customer/CardsPage.vue";
+import AccountsPage from "../components/customer/AccountsPage.vue";
+import TransactionsPage from "../components/customer/TransactionsPage.vue";
 
 const routes = [
     {path: '/', component: HomePage},
@@ -34,11 +35,12 @@ const routes = [
     {path: '/admin/currency-dashboard', component: AdminCurrencyDashboardPage, meta: { requiresAuth: true }},
     {path: '/customer/dashboard', component: CustomerDashboardPage, meta: { requiresAuth: true }},
     {path: '/customer/profile', component: ProfilePage, meta: { requiresAuth: true }},
-    {path: '/customer/cards', component: CardsPage, meta: { requiresAuth: true }},
+    {path: '/customer/cards', component: CardsPage, meta: { requiresAuth: true}},
+    {path: '/customer/accounts', component: AccountsPage, meta: { requiresAuth: true}},
     {path: '/customer/create-account', component: CreateAccountPage, meta: { requiresAuth: true }},
     {path: '/customer/transfer-money', component: TransferMoneyPage, meta: { requiresAuth: true }},
     {path: '/customer/deposit-withdraw', component: DepositWithdrawPage, meta: { requiresAuth: true }},
-    {path: '/customer/transaction-history', component: TransactionHistoryPage, meta: { requiresAuth: true }},
+    {path: '/customer/transactions', component: TransactionsPage, meta: { requiresAuth: true }},
     {path: '/customer/currency-dashboard', component: CustomerCurrencyDashboardPage, meta: { requiresAuth: true }},
 ]
 

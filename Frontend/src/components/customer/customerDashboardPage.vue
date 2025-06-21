@@ -126,7 +126,7 @@ async function quickaction_deposit() {
 
 async function quickaction_withdraw() {
   if(!selectedAccount.value) {
-    alert("An account must be selecteds")
+    alert("An account must be selected")
     return
   }
   const payload = {
@@ -200,9 +200,9 @@ async function quickaction_createcard() {
         <div class="card blank" style="height: 100px">Blank</div>
       </div>
 
-      <div class="column flex-2">
-        <div class="card" style="height: 600px; background-color: transparent; overflow-y: auto" title="accounts">
-          <div class="account">
+      <div class="column flex-2" >
+        <div class="card" style="height: 600px; background-color: transparent; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto" title="accounts">
+          <div class="account" >
             <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-between; padding-left: 50px; padding-right: 50px">
               <a class="title" style="margin-top: 10px">Accounts</a>
               <div style="display: flex; flex-direction: row">
@@ -217,16 +217,20 @@ async function quickaction_createcard() {
             </div>
 
             <ul>
-              <li v-for="account in accounts" :key="account.id"
+              <li v-for="account in accounts.slice(0,3)" :key="account.id"
                   :class="selectedAccountId === account.id.toString() ? 'selected-account' : 'unselected-account'"
                   @click="selectedAccountId = account.id.toString()">
                 <a style="font-size: 20px">{{account.currencySymbol + account.balance}}</a>
-                <a style="font-weight: normal">{{account.currencyType}} Account - {{account.id}}</a>
+                <a style="font-weight: normal">{{account.currencyType}} Account - {{account.id.toString().slice(0,3) + '-' + account.id.toString().slice(3)}}</a>
                 <div class="bankcard-preview-wrapper bankcard-preview-scroll">
                   <a class="bankcard-preview" v-for="card in account.debitCards" :key="card.id">{{card.cardNumber.slice(-5)}}</a>
                 </div>
               </li>
             </ul>
+          </div>
+
+          <div class="all-transactions-button">
+            <a style="font-weight: bold" href="/customer/accounts">All Accounts</a>
           </div>
         </div>
         <div class="card" style="height: 240px; padding: 0px; background-color: transparent; " title="actions">
@@ -345,7 +349,7 @@ async function quickaction_createcard() {
             </div>
           </div>
           <div class="all-transactions-button">
-            <a style="font-weight: bold" href="/customer/transaction-history">All Transactions</a>
+            <a style="font-weight: bold" href="/customer/transactions">All Transactions</a>
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ using Simple_Bank_Application.Data;
 namespace Simple_Bank_Application.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250620115253_InitialCreate")]
+    [Migration("20250621195427_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -172,6 +172,14 @@ namespace Simple_Bank_Application.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserSurname")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 

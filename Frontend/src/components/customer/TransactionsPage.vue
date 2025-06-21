@@ -2,34 +2,28 @@
 import {ref, onMounted, computed} from "vue";
 import {useRouter} from "vue-router";
 import api from '../../api/axiosInstance.js'
-import CreateDebitCardModal from "./ModalsAndComponents/CreateDebitCardModal.vue";
 import CreateVirtualCardModal from "./ModalsAndComponents/CreateVirtualCardModal.vue";
 import VirtualCardMoneyTransferModal from "./ModalsAndComponents/VirtualCardMoneyTransferModal.vue";
 
-const debitCards = ref([])
-const virtualCards = ref([])
 
-const showCreateDebitCardModal = ref(false)
-const showCreateVirtualCardModal = ref(false)
-const showVirtualCardMoneyTransferModal = ref(false)
-const router = useRouter()
-
-onMounted(async () => {
-  await  loadCards();
-})
-
-async function loadCards(){
-  try{
-    const response = await api.get('/Card/debit-cards/user')
-    debitCards.value = response.data
-
-    const response2 = await api.get('/Card/virtual-cards/user')
-    virtualCards.value = response2.data
-
+const transactions = ref([])
+async function showTransactionList(){
+  try {
+    const response = await api.get(`/Transaction/account/${0}`)
+    transactions.value = response.data
   } catch (err) {
     alert(err.message)
   }
 }
+
+
+
+const router = useRouter()
+
+onMounted(async () => {
+  await showTransactionList();
+})
+
 
 async function logOut(){
   localStorage.removeItem('token')
@@ -65,76 +59,47 @@ async function logOut(){
       </div>
 
       <div class="column flex-2">
-        <div class="card bankcard-item-wrapper" style="height: 860px; display: flex; flex-direction: column; background-color: transparent; justify-content: space-between; overflow-y: auto" title="Cards">
-          <div class="bankcard-item-container">
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between">
-              <a class="title">Debit Cards</a>
-              <a>
-                <button @click="showCreateDebitCardModal = true">
-                  <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/plus.png">
-                </button>
-                <CreateDebitCardModal v-if="showCreateDebitCardModal" @close="loadCards(); showCreateDebitCardModal = false"></CreateDebitCardModal>
-              </a>
+        <div class="card transaction-item-wrapper" style="height: 860px; background-color: transparent; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto" title="accounts">
+          <div class="transaction-item-container">
+            <div>
+              <a class="title">Transactions</a>
             </div>
-            <div class="bankcard-item" v-for="card in debitCards" :key="card.id">
+
+            <div class="transaction-item" v-for="transaction in transactions.reverse()" :key="transaction.id">
               <div style="display: flex; align-items: center; gap: 10px">
-                <a class="bankcard-preview" style="min-width: 84px; height: 56px">{{card.cardNumber.slice(-5)}}</a>
+                <img v-if="transaction.type === 'Deposit'" class="image" src="../../assets/img/deposit.png">
+                <img v-else-if="transaction.type === 'Withdraw'" class="image" src="../../assets/img/withdraw.png">
+                <img v-else-if="transaction.type === 'Money Transfer'" class="image" src="../../assets/img/transfer-money.png">
+                <img v-else-if="transaction.type === 'Virtual Card Money Transfer'" class="image" src="../../assets/img/card-money-transfer.png">
+                <img v-else class="image" src="../../assets/img/question-sign.png">
+
                 <div style="display: flex; flex-direction: column">
-                  <a style="font-weight: bold">{{card.cardholderNameAndSurname}}</a>
-                  <a style="color: gray">{{ card.cardNumber }}</a>
-                  <a style="color: gray">CVV {{ card.cvv }} / EXP {{card.expirationDate.slice(0,7)}}</a>
+                  <a style="font-weight: bold">{{ transaction.type }}</a>
+                  <a style="color: gray">{{ 'from ' + transaction.sourceType + ' (' + transaction.sourceCurrencySymbol + ') - ' + transaction.sourceId.toString().slice(0, 3) + '-' + transaction.sourceId.toString().slice(3) }}</a>
+                  <a v-if="transaction.targetType === 'Account'" style="color: gray">{{ 'to ' + transaction.targetType + ' (' + transaction.targetCurrencySymbol + ') - ' + transaction.targetId.toString().slice(0, 3) + '-' + transaction.targetId.toString().slice(3) }}</a>
+                  <a v-else-if="transaction.targetType === 'VirtualCard' || transaction.targetType === 'DebitCard'" style="color: gray">{{ 'to ' + transaction.targetType + ' (' + transaction.targetCurrencySymbol + ') - ' + transaction.targetId }}</a>
                 </div>
               </div>
 
+              <div style="display: flex; flex-direction: column; align-items: flex-start">
+                <a style="color: gray">{{ 'Amount: ' + transaction.sourceCurrencySymbol + transaction.amount }}</a>
+                <a style="color: gray">{{ 'Current Total Balance: ' + '₺' + transaction.currentBalance }}</a>
+              </div>
+
               <div style="display: flex; flex-direction: column; align-items: flex-end">
-                <a style="color: gray">Password: {{ card.password }}</a>
-                <a style="color: gray">Online Shopping: {{ card.onlineShopping }}</a>
-                <a style="color: gray">Linked Account: {{ card.linkedAccountId.toString().slice(0, 3) + '-' + card.linkedAccountId.toString().slice(3)}}</a>
+                <a>{{ transaction.userName + ' ' + transaction.userSurname }}</a>
+                <a style="color: gray">{{ transaction.timestamp.split('.')[0].replace('T', ' ') }}</a>
               </div>
             </div>
           </div>
         </div>
+
+
+
 
       </div>
 
       <div class="column flex-3">
-        <div class="card bankcard-item-wrapper" style="height: 860px; display: flex; flex-direction: column; background-color: transparent; justify-content: space-between; overflow-y: auto" title="Cards">
-          <div class="bankcard-item-container">
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between">
-              <a class="title">Virtual Cards</a>
-              <a>
-                <button @click="showVirtualCardMoneyTransferModal = true">
-                  <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/virtualcard-money-transfer.png">
-                </button>
-                <VirtualCardMoneyTransferModal v-if="showVirtualCardMoneyTransferModal" @close="loadCards(); showVirtualCardMoneyTransferModal = false"></VirtualCardMoneyTransferModal>
-
-                <button @click="showCreateVirtualCardModal = true">
-                  <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/plus.png">
-                </button>
-                <CreateVirtualCardModal v-if="showCreateVirtualCardModal" @close="loadCards(); showCreateVirtualCardModal = false"></CreateVirtualCardModal>
-              </a>
-            </div>
-
-            <div class="bankcard-item" v-for="card in virtualCards" :key="card.id">
-              <div style="display: flex; align-items: center; gap: 10px">
-                <a class="bankcard-preview" style="min-width: 84px; height: 56px">{{card.cardNumber.slice(-5)}}</a>
-                <div style="display: flex; flex-direction: column">
-                  <a style="font-weight: bold">{{card.cardholderNameAndSurname}}</a>
-                  <a style="color: gray">{{ card.cardNumber }}</a>
-                  <a style="color: gray">CVV {{ card.cvv }} / EXP {{card.expirationDate.slice(0,7)}}</a>
-                </div>
-              </div>
-
-              <div style="display: flex; flex-direction: column; align-items: flex-end">
-                <a style="color: gray">Limit: ₺{{ card.availableLimit }}</a>
-                <a style="color: gray">Online Shopping: {{ card.onlineShopping }}</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="column flex-4">
         <div class="card" style="height: 80px; display: flex; flex-direction: row; align-items: center; justify-content: space-between" title="Return">
           <a class="title">Return to the homepage</a>
           <a href="/customer/dashboard">
@@ -142,6 +107,7 @@ async function logOut(){
           </a>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -173,20 +139,18 @@ async function logOut(){
     margin-bottom: 20px;
   }
 
-  .flex-1 { flex: 350 1 250px; }
-  .flex-2 { flex: 535 1 250px; }
-  .flex-3 { flex: 535 1 250px; }
-  .flex-4 { flex: 350 1 250px; }
+  .flex-1 { flex: 100 1 250px; }
+  .flex-2 { flex: 310 1 250px; }
+  .flex-3 { flex: 100 1 250px; }
 }
 
 @media (min-width: 1121px) {
   .container {
     flex-wrap: nowrap;
   }
-  .flex-1 { flex: 350; }
-  .flex-2 { flex: 535; }
-  .flex-3 { flex: 535; }
-  .flex-4 { flex: 350; }
+  .flex-1 { flex: 100; }
+  .flex-2 { flex: 310; }
+  .flex-3 { flex: 100; }
 }
 
 .column {
@@ -220,7 +184,7 @@ async function logOut(){
   height: 60px;
 }
 
-.bankcard-item-wrapper {
+.transaction-item-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -228,7 +192,7 @@ async function logOut(){
   width: 100%;
 }
 
-.bankcard-item-container {
+.transaction-item-container {
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -237,7 +201,7 @@ async function logOut(){
   width: 95%;
 }
 
-.bankcard-item {
+.transaction-item {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -252,6 +216,15 @@ async function logOut(){
   background-color: white;
   font-weight: bold;
   font-size: 14px;
+}
+
+.account {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .account ul {
@@ -271,12 +244,24 @@ async function logOut(){
   align-items: center;
   justify-content: space-between;
   height: 120px;
-  width: 100%;
   border-radius: 15px;
   margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
   box-shadow: 0 4px 6px rgba(0,0,0,0.08);
   background-color: white;
   font-weight: bold;
+}
+
+
+.account li.selected-account {
+  background-color: lightgray;
+}
+
+.bankcard-preview-wrapper {
+  overflow-x: auto;
+  padding-bottom: 5px;
+  width: 350px;
 }
 
 .bankcard-preview {
@@ -294,6 +279,22 @@ async function logOut(){
   border-radius: 5px;
 }
 
+.bankcard-preview-scroll {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: gray transparent;
+}
+
+.image {
+  width: 60px;
+  height: 40px;
+  object-fit: contain;
+  aspect-ratio: 1 / 1;
+  background-color: lightgray;
+  padding: 6px;
+  border-radius: 10px;
+}
 
 .title {
   color: black;

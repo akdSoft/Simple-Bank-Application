@@ -48,6 +48,8 @@ namespace Simple_Bank_Application.Migrations
                     TargetCurrencySymbol = table.Column<string>(type: "varchar(1)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "longtext", nullable: false),
+                    UserSurname = table.Column<string>(type: "longtext", nullable: false),
                     Type = table.Column<string>(type: "longtext", nullable: false),
                     CurrentBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false)
