@@ -2,9 +2,6 @@
 import {ref, onMounted, computed} from "vue";
 import {useRouter} from "vue-router";
 import api from '../../api/axiosInstance.js'
-import CreateVirtualCardModal from "./ModalsAndComponents/CreateVirtualCardModal.vue";
-import VirtualCardMoneyTransferModal from "./ModalsAndComponents/VirtualCardMoneyTransferModal.vue";
-
 
 const transactions = ref([])
 async function showTransactionList(){
@@ -16,14 +13,11 @@ async function showTransactionList(){
   }
 }
 
-
-
 const router = useRouter()
 
 onMounted(async () => {
   await showTransactionList();
 })
-
 
 async function logOut(){
   localStorage.removeItem('token')
@@ -36,14 +30,14 @@ async function logOut(){
   <div class="topbar">
     <ul>
       <li>
-        <a style="color: black">
+        <a>
           <button @click="logOut">
             <img style="width: 2.5vw; height: auto" src="../../assets/img/logout.png">
           </button>
         </a>
       </li>
       <li>
-        <a href="/customer/profile" style="color: black">
+        <a href="/customer/profile">
           <img style="width: 2.5vw; height: auto" src="../../assets/img/profile.png">
         </a>
       </li>
@@ -55,15 +49,13 @@ async function logOut(){
       <div class="column flex-1">
         <div class="card ads" style="height: 140px" title="Project Title">Project Title (To be added)</div>
         <div class="card ads" style="height: 530px" title="Project Info">Project Info (To be added)</div>
-        <div class="card blank" style="height: 100px">Blank</div>
+        <div class="card blank" style="height: 100px"></div>
       </div>
 
       <div class="column flex-2">
-        <div class="card transaction-item-wrapper" style="height: 860px; background-color: transparent; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto" title="accounts">
+        <div class="card transactions-wrapper" style="height: 860px;" title="accounts">
           <div class="transaction-item-container">
-            <div>
-              <a class="title">Transactions</a>
-            </div>
+            <a class="title">Transactions</a>
 
             <div class="transaction-item" v-for="transaction in transactions.reverse()" :key="transaction.id">
               <div style="display: flex; align-items: center; gap: 10px">
@@ -93,17 +85,13 @@ async function logOut(){
             </div>
           </div>
         </div>
-
-
-
-
       </div>
 
       <div class="column flex-3">
-        <div class="card" style="height: 80px; display: flex; flex-direction: row; align-items: center; justify-content: space-between" title="Return">
+        <div class="card return" style="height: 80px;" title="Return">
           <a class="title">Return to the homepage</a>
           <a href="/customer/dashboard">
-            <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/return.png">
+            <img class="image" src="../../assets/img/return.png">
           </a>
         </div>
       </div>
@@ -184,12 +172,14 @@ async function logOut(){
   height: 60px;
 }
 
-.transaction-item-wrapper {
+.transactions-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
+  background-color: transparent;
+  overflow-y: auto;
 }
 
 .transaction-item-container {
@@ -216,86 +206,30 @@ async function logOut(){
   background-color: white;
   font-weight: bold;
   font-size: 14px;
+  .image {
+    width: 60px;
+    height: 40px;
+    object-fit: contain;
+    aspect-ratio: 1 / 1;
+    background-color: lightgray;
+    padding: 6px;
+    border-radius: 10px;
+  }
 }
 
-.account {
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.account ul {
-  display: flex;
-  flex-direction: column-reverse;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 85%;
-}
-
-.account li {
+.return {
   display: flex;
   flex-direction: row;
-  padding-left: 10px;
-  padding-right: 10px;
   align-items: center;
   justify-content: space-between;
-  height: 120px;
-  border-radius: 15px;
-  margin-top: 20px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.08);
-  background-color: white;
-  font-weight: bold;
+  .image {
+    height: 50px;
+    width: auto;
+    argin-left: 20px;
+    object-fit: contain;
+    aspect-ratio: 1/1
+  }
 }
-
-
-.account li.selected-account {
-  background-color: lightgray;
-}
-
-.bankcard-preview-wrapper {
-  overflow-x: auto;
-  padding-bottom: 5px;
-  width: 350px;
-}
-
-.bankcard-preview {
-  background-image: linear-gradient(to right top, #0e4daa, #645fbb, #9674ca, #c38bd9, #eba4e8);
-  display: flex;
-  align-items: flex-end;
-  padding-left: 3px;
-  padding-bottom: 2px;
-  justify-content: flex-start;
-  min-width: 60px;
-  height: 40px;
-  margin-right: 5px;
-  color: white;
-  font-weight: bold;
-  border-radius: 5px;
-}
-
-.bankcard-preview-scroll {
-  display: flex;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: gray transparent;
-}
-
-.image {
-  width: 60px;
-  height: 40px;
-  object-fit: contain;
-  aspect-ratio: 1 / 1;
-  background-color: lightgray;
-  padding: 6px;
-  border-radius: 10px;
-}
-
 .title {
   color: black;
   font-size: 20px;

@@ -34,6 +34,7 @@ public static class DtoMapper
             Surname = user.Surname,
             Username = user.Username,
             Email = user.Email,
+            TotalBalanceInTRY = user.TotalBalanceInTRY,
             BankAccounts = user.BankAccounts.Select(acc => ToDto(acc)).ToList()
         };
     }

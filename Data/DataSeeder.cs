@@ -27,9 +27,9 @@ public class DataSeeder
         {
             var users = new List<User>
             {
-                new User { Id = 1, Name = "Ahmet", Surname = "Yılmaz", Username = "ahmetyilmaz", Password = "12345678", Email = "ahmet.yilmaz@example.com", TotalBalanceInTRY = 610.00m},
-                new User { Id = 2, Name = "Ayşe", Surname = "Demir", Username = "aysedemir", Password = "12345678", Email = "ayse.demir@example.com", TotalBalanceInTRY = 1150.00m},
-                new User { Id = 3, Name = "John", Surname = "Doe", Username = "johndoe", Password = "12345678", Email = "john.doe@example.com", TotalBalanceInTRY = 885.00m},
+                new User { Id = 1, Name = "Ahmet", Surname = "Yılmaz", Username = "ahmetyilmaz", Password = "12345678", Email = "ahmet.yilmaz@example.com", TotalBalanceInTRY = 1175.00m},
+                new User { Id = 2, Name = "Ayşe", Surname = "Demir", Username = "aysedemir", Password = "12345678", Email = "ayse.demir@example.com", TotalBalanceInTRY = 800.00m},
+                new User { Id = 3, Name = "John", Surname = "Doe", Username = "johndoe", Password = "12345678", Email = "john.doe@example.com", TotalBalanceInTRY = 1400.00m},
             };
 
             await context.Users.AddRangeAsync(users);
@@ -40,12 +40,12 @@ public class DataSeeder
         {
             var accounts = new List<BankAccount>
             {
-                new BankAccount { Id = 9491020, Balance = 400.00m, AccountType = "CheckingAccount", CurrencyId = 1, UserId = 1},
-                new BankAccount { Id = 8405768, Balance = 6.00m, AccountType = "SavingsAccount", CurrencyId = 2, UserId = 1},
-                new BankAccount { Id = 9494859, Balance = 950.00m, AccountType = "CheckingAccount", CurrencyId = 1, UserId = 2},
-                new BankAccount { Id = 9781526, Balance = 5.00m, AccountType = "CheckingAccount", CurrencyId = 3, UserId = 2},
-                new BankAccount { Id = 9499584, Balance = 675.00m, AccountType = "CheckingAccount", CurrencyId = 1, UserId = 3},
-                new BankAccount { Id = 8403265, Balance = 6.00m, AccountType = "CheckingAccount", CurrencyId = 2, UserId = 3},
+                new BankAccount { Id = 9491020, Balance = 900.00m, AccountType = "CheckingAccount", CurrencyId = 1, UserId = 1},
+                new BankAccount { Id = 8405768, Balance = 3.00m, AccountType = "SavingsAccount", CurrencyId = 2, UserId = 1},
+                new BankAccount { Id = 9494859, Balance = 400.00m, AccountType = "CheckingAccount", CurrencyId = 1, UserId = 2},
+                new BankAccount { Id = 9781526, Balance = 7.00m, AccountType = "CheckingAccount", CurrencyId = 3, UserId = 2},
+                new BankAccount { Id = 9499584, Balance = 450.00m, AccountType = "CheckingAccount", CurrencyId = 1, UserId = 3},
+                new BankAccount { Id = 8403265, Balance = 24.00m, AccountType = "CheckingAccount", CurrencyId = 2, UserId = 3},
             };
 
             await context.BankAccounts.AddRangeAsync(accounts);
@@ -56,28 +56,30 @@ public class DataSeeder
         {
             var transactions = new List<Transaction>
             {
-                new Transaction { Id = 1, SourceType = "Account", SourceId = 9491020, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = null, TargetId = null, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 500.00m, UserId = 1, UserName = "Ahmet", UserSurname = "Yılmaz", Type = "Deposit", CurrentBalance = 500.00m, Timestamp = DateTime.Now.AddDays(-4)},
-                new Transaction { Id = 2, SourceType = "Account", SourceId = 8405768, SourceCurrency = "USD", SourceCurrencySymbol = '$', TargetType = null, TargetId = null, TargetCurrency = "USD", TargetCurrencySymbol = '$', Amount = 5.00m, UserId = 1, UserName = "Ahmet", UserSurname = "Yılmaz", Type = "Deposit", CurrentBalance = 675.00m, Timestamp = DateTime.Now.AddDays(-3)},
-                new Transaction { Id = 3, SourceType = "Account", SourceId = 9491020, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "Account", TargetId = 8405768, TargetCurrency = "USD", TargetCurrencySymbol = '$', Amount = 35.00m, UserId = 1, UserName = "Ahmet", UserSurname = "Yılmaz", Type = "Money Transfer", CurrentBalance = 675.00m, Timestamp = DateTime.Now.AddDays(-2)},
-                new Transaction { Id = 4, SourceType = "Account", SourceId = 9491020, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "VirtualCard", TargetId = 1, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 65.00m, UserId = 1, UserName = "Ahmet", UserSurname = "Yılmaz", Type = "Virtual Card Money Transfer", CurrentBalance = 675.00m, Timestamp = DateTime.Now.AddDays(-1)},
+                new Transaction { Id = 1, SourceType = "Account", SourceId = 9491020, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = null, TargetId = null, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 250.00m, UserId = 1, UserName = "Ahmet", UserSurname = "Yılmaz", Type = "Deposit", CurrentBalance = 250, Timestamp = DateTime.Now.AddDays(-4)},
+                new Transaction { Id = 2, SourceType = "Account", SourceId = 9491020, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = null, TargetId = null, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 750.00m, UserId = 1, UserName = "Ahmet", UserSurname = "Yılmaz", Type = "Deposit", CurrentBalance = 1000.00m, Timestamp = DateTime.Now.AddDays(-3)},
+                new Transaction { Id = 3, SourceType = "Account", SourceId = 8405768, SourceCurrency = "USD", SourceCurrencySymbol = '$', TargetType = null, TargetId = null, TargetCurrency = "USD", TargetCurrencySymbol = '$', Amount = 5.00m, UserId = 1, UserName = "Ahmet", UserSurname = "Yılmaz", Type = "Deposit", CurrentBalance = 1175.00m, Timestamp = DateTime.Now.AddDays(-2)},
+                new Transaction { Id = 4, SourceType = "Account", SourceId = 8405768, SourceCurrency = "USD", SourceCurrencySymbol = '$', TargetType = "Account", TargetId = 9491020, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 2.00m, UserId = 1, UserName = "Ahmet", UserSurname = "Yılmaz", Type = "Money Transfer", CurrentBalance = 1175.00m, Timestamp = DateTime.Now.AddDays(-1)},
+                new Transaction { Id = 5, SourceType = "Account", SourceId = 9491020, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "VirtualCard", TargetId = 1, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 170.00m, UserId = 1, UserName = "Ahmet", UserSurname = "Yılmaz", Type = "Virtual Card Money Transfer", CurrentBalance = 1175.00m, Timestamp = DateTime.Now.AddDays(-1)},
 
-                new Transaction { Id = 5, SourceType = "Account", SourceId = 9494859, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = null, TargetId = null, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 1000.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Deposit", CurrentBalance = 1000.00m, Timestamp = DateTime.Now.AddDays(-5)},
-                new Transaction { Id = 6, SourceType = "Account", SourceId = 9781526, SourceCurrency = "EUR", SourceCurrencySymbol = '€', TargetType = null, TargetId = null, TargetCurrency = "EUR", TargetCurrencySymbol = '€', Amount = 10.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Deposit", CurrentBalance = 1400.00m, Timestamp = DateTime.Now.AddDays(-4)},
-                new Transaction { Id = 7, SourceType = "Account", SourceId = 9781526, SourceCurrency = "EUR", SourceCurrencySymbol = '€', TargetType = "Account", TargetId = 9494859, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 5.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Money Transfer", CurrentBalance = 1400.00m, Timestamp = DateTime.Now.AddDays(-3)},
-                new Transaction { Id = 8, SourceType = "Account", SourceId = 9494859, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "VirtualCard", TargetId = 2, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 100.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Virtual Card Money Transfer", CurrentBalance = 1400.00m, Timestamp = DateTime.Now.AddDays(-2)},
-                new Transaction { Id = 9, SourceType = "Account", SourceId = 9494859, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "VirtualCard", TargetId = 2, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 150.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Virtual Card Money Transfer", CurrentBalance = 1400.00m, Timestamp = DateTime.Now.AddDays(-1)},
+                new Transaction { Id = 6, SourceType = "Account", SourceId = 9494859, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = null, TargetId = null, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 500.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Deposit", CurrentBalance = 500.00m, Timestamp = DateTime.Now.AddDays(-5)},
+                new Transaction { Id = 7, SourceType = "Account", SourceId = 9781526, SourceCurrency = "EUR", SourceCurrencySymbol = '€', TargetType = null, TargetId = null, TargetCurrency = "EUR", TargetCurrencySymbol = '€', Amount = 10.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Deposit", CurrentBalance = 900.00m, Timestamp = DateTime.Now.AddDays(-4)},
+                new Transaction { Id = 8, SourceType = "Account", SourceId = 9781526, SourceCurrency = "EUR", SourceCurrencySymbol = '€', TargetType = "Account", TargetId = 9494859, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 3.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Money Transfer", CurrentBalance = 900.00m, Timestamp = DateTime.Now.AddDays(-3)},
+                new Transaction { Id = 9, SourceType = "Account", SourceId = 9494859, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "VirtualCard", TargetId = 2, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 120.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Virtual Card Money Transfer", CurrentBalance = 900.00m, Timestamp = DateTime.Now.AddDays(-2)},
+                new Transaction { Id = 10, SourceType = "Account", SourceId = 9494859, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = null, TargetId = null, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 100.00m, UserId = 2, UserName = "Ayşe", UserSurname = "Demir", Type = "Withdraw", CurrentBalance = 800.00m, Timestamp = DateTime.Now.AddDays(-1)},
 
-                new Transaction { Id = 10, SourceType = "Account", SourceId = 9499584, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = null, TargetId = null, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 750.00m, UserId = 3, UserName = "John", UserSurname = "Doe", Type = "Deposit", CurrentBalance = 750.00m, Timestamp = DateTime.Now.AddDays(-4)},
-                new Transaction { Id = 11, SourceType = "Account", SourceId = 8403265, SourceCurrency = "USD", SourceCurrencySymbol = '$', TargetType = null, TargetId = null, TargetCurrency = "USD", TargetCurrencySymbol = '$', Amount = 6.00m, UserId = 3, UserName = "John", UserSurname = "Doe", Type = "Deposit", CurrentBalance = 960.00m, Timestamp = DateTime.Now.AddDays(-3)},
-                new Transaction { Id = 12, SourceType = "Account", SourceId = 9499584, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "VirtualCard", TargetId = 3, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 50.00m, UserId = 3, UserName = "John", UserSurname = "Doe", Type = "Virtual Card Money Transfer", CurrentBalance = 960.00m, Timestamp = DateTime.Now.AddDays(-2)},
-                new Transaction { Id = 13, SourceType = "Account", SourceId = 9499584, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "VirtualCard", TargetId = 4, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 25.00m, UserId = 3, UserName = "John", UserSurname = "Doe", Type = "Virtual Card Money Transfer", CurrentBalance = 960.00m, Timestamp = DateTime.Now.AddDays(-1)}
+                new Transaction { Id = 11, SourceType = "Account", SourceId = 9499584, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = null, TargetId = null, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 700.00m, UserId = 3, UserName = "John", UserSurname = "Doe", Type = "Deposit", CurrentBalance = 700.00m, Timestamp = DateTime.Now.AddDays(-4)},
+                new Transaction { Id = 12, SourceType = "Account", SourceId = 8403265, SourceCurrency = "USD", SourceCurrencySymbol = '$', TargetType = null, TargetId = null, TargetCurrency = "USD", TargetCurrencySymbol = '$', Amount = 20.00m, UserId = 3, UserName = "John", UserSurname = "Doe", Type = "Deposit", CurrentBalance = 1400.00m, Timestamp = DateTime.Now.AddDays(-3)},
+                new Transaction { Id = 13, SourceType = "Account", SourceId = 9499584, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "Account", TargetId = 8403265, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 140.00m, UserId = 3, UserName = "John", UserSurname = "Doe", Type = "Money Transfer", CurrentBalance = 1400.00m, Timestamp = DateTime.Now.AddDays(-2)},
+                new Transaction { Id = 14, SourceType = "Account", SourceId = 9499584, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "VirtualCard", TargetId = 4, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 60.00m, UserId = 3, UserName = "John", UserSurname = "Doe", Type = "Virtual Card Money Transfer", CurrentBalance = 1400.00m, Timestamp = DateTime.Now.AddDays(-1)},
+                new Transaction { Id = 15, SourceType = "Account", SourceId = 9499584, SourceCurrency = "TRY", SourceCurrencySymbol = '₺', TargetType = "VirtualCard", TargetId = 4, TargetCurrency = "TRY", TargetCurrencySymbol = '₺', Amount = 50.00m, UserId = 3, UserName = "John", UserSurname = "Doe", Type = "Virtual Card Money Transfer", CurrentBalance = 1400.00m, Timestamp = DateTime.Now.AddDays(-1)}
             };
 
             await context.Transactions.AddRangeAsync(transactions);
             await context.SaveChangesAsync();
         }
 
-        if(!await context.DebitCards.AnyAsync())
+        if (!await context.DebitCards.AnyAsync())
         {
             var debitCards = new List<DebitCard>
             {
@@ -93,10 +95,10 @@ public class DataSeeder
         {
             var virtualCards = new List<VirtualCard>
             {
-                new VirtualCard { Id = 1, UserId = 1, Type = "Virtual Card", CardNumber = "2015 6008 5077 5919", ExpirationDate = DateTime.Now.AddYears(10), CVV = "151", CardholderNameAndSurname = "Ahmet Yılmaz", OnlineShopping = true },
-                new VirtualCard { Id = 2, UserId = 2, Type = "Virtual Card", CardNumber = "2544 8717 0354 9422", ExpirationDate = DateTime.Now.AddYears(10), CVV = "971", CardholderNameAndSurname = "Ayşe Demir", OnlineShopping = true },
-                new VirtualCard { Id = 3, UserId = 3, Type = "Virtual Card", CardNumber = "4735 7138 2671 1004", ExpirationDate = DateTime.Now.AddYears(10), CVV = "430", CardholderNameAndSurname = "John Doe", OnlineShopping = true },
-                new VirtualCard { Id = 4, UserId = 3, Type = "Virtual Card", CardNumber = "2069 8525 7192 6469", ExpirationDate = DateTime.Now.AddYears(10), CVV = "769", CardholderNameAndSurname = "John Doe", OnlineShopping = true }
+                new VirtualCard { Id = 1, UserId = 1, Type = "Virtual Card", CardNumber = "2015 6008 5077 5919", ExpirationDate = DateTime.Now.AddYears(10), CVV = "151", CardholderNameAndSurname = "Ahmet Yılmaz", OnlineShopping = true, AvailableLimit = 170.00m },
+                new VirtualCard { Id = 2, UserId = 2, Type = "Virtual Card", CardNumber = "2544 8717 0354 9422", ExpirationDate = DateTime.Now.AddYears(10), CVV = "971", CardholderNameAndSurname = "Ayşe Demir", OnlineShopping = true, AvailableLimit = 120.00m },
+                new VirtualCard { Id = 3, UserId = 3, Type = "Virtual Card", CardNumber = "4735 7138 2671 1004", ExpirationDate = DateTime.Now.AddYears(10), CVV = "430", CardholderNameAndSurname = "John Doe", OnlineShopping = true, AvailableLimit = 60.00m },
+                new VirtualCard { Id = 4, UserId = 3, Type = "Virtual Card", CardNumber = "2069 8525 7192 6469", ExpirationDate = DateTime.Now.AddYears(10), CVV = "769", CardholderNameAndSurname = "John Doe", OnlineShopping = true, AvailableLimit = 50.00m }
             };
 
             await context.VirtualCards.AddRangeAsync(virtualCards);

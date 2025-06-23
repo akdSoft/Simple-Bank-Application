@@ -28,12 +28,15 @@ const selectedAccount = computed(() => {
   return accounts.value.find(acc => acc.id === parseInt(selectedAccountId.value))
 })
 
+let totalVirtualCardLimits = ref('')
+
 const totalBalance = ref('')
 
 onMounted(async () => {
   await loadAccounts();
   await loadTotalBalance();
   await loadTotalCurrenciesBalance();
+  await loadVirtualCards();
   await showTransactionList();
 })
 
@@ -69,6 +72,16 @@ async function loadTotalCurrenciesBalance(){
 
     const response3 = await api.get(`/currency/user/currency-balance/${3}`)
     totalCurrenciesBalance.EUR = response3.data;
+  } catch (err) {
+    alert(err.message)
+  }
+}
+
+async function loadVirtualCards() {
+  try {
+    const response = await api.get('/card/virtual-cards/user')
+
+    totalVirtualCardLimits = response.data.reduce((totalLimit, card) => totalLimit + card.availableLimit, 0)
   } catch (err) {
     alert(err.message)
   }
@@ -285,34 +298,36 @@ async function quickaction_createcard() {
       </div>
 
       <div class="column flex-4">
-        <div class="card" style="height: 140px; display: flex; flex-direction: column; justify-content: center" title="Total Balance">
+        <div class="card" style="height: 160px; display: flex; flex-direction: column; justify-content: center" title="Total Balance">
           <div style="display: flex; justify-content: space-between">
-            <label class="title">Total Balance (in TRY)</label>
-            <label class="title" style="font-weight: bold">{{totalBalance}}₺</label>
+            <label class="title" style="font-weight: bold">Total Balance (in TRY)</label>
+            <label class="title" style="font-weight: bold">₺{{totalBalance}}</label>
           </div>
           <div style="display: flex; justify-content: space-between">
             <label class="title">Total TRY</label>
-            <label class="title" style="font-weight: bold">{{totalCurrenciesBalance.TRY}}₺</label>
+            <label class="title" style="font-weight: bold">₺{{totalCurrenciesBalance.TRY}}</label>
           </div>
           <div style="display: flex; justify-content: space-between">
             <label class="title">Total USD</label>
-            <label class="title" style="font-weight: bold">{{totalCurrenciesBalance.USD}}$</label>
+            <label class="title" style="font-weight: bold">${{totalCurrenciesBalance.USD}}</label>
           </div>
           <div style="display: flex; justify-content: space-between">
             <label class="title">Total EUR</label>
-            <label class="title" style="font-weight: bold">{{totalCurrenciesBalance.EUR}}€</label>
+            <label class="title" style="font-weight: bold">€{{totalCurrenciesBalance.EUR}}</label>
           </div>
-
-
+          <div style="display: flex; justify-content: space-between">
+            <label class="title">Total Virtual Card Limits</label>
+            <label class="title" style="font-weight: bold">₺{{ totalVirtualCardLimits }}</label>
+          </div>
         </div>
-        <div class="card " style="height: 130px">
+        <div class="card" style="height: 110px;">
           <div style="display: flex; justify-content: space-between">
             <label class="title" style="color: dimgray">USD ($)</label>
-            <label class="title" style="font-weight: bold; color: dimgray">35₺</label>
+            <label class="title" style="font-weight: bold; color: dimgray">₺35</label>
           </div>
           <div style="display: flex; justify-content: space-between">
             <label class="title" style="color: dimgray">EUR (€)</label>
-            <label class="title" style="font-weight: bold; color: dimgray">40₺</label>
+            <label class="title" style="font-weight: bold; color: dimgray">₺40</label>
           </div>
           <div style="display: flex; justify-content: space-between">
             <label class="title" style="color: dimgray">GBP (£)</label>

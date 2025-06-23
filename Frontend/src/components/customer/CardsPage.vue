@@ -42,14 +42,14 @@ async function logOut(){
   <div class="topbar">
     <ul>
       <li>
-        <a style="color: black">
+        <a>
           <button @click="logOut">
             <img style="width: 2.5vw; height: auto" src="../../assets/img/logout.png">
           </button>
         </a>
       </li>
       <li>
-        <a href="/customer/profile" style="color: black">
+        <a href="/customer/profile">
           <img style="width: 2.5vw; height: auto" src="../../assets/img/profile.png">
         </a>
       </li>
@@ -61,24 +61,24 @@ async function logOut(){
       <div class="column flex-1">
         <div class="card ads" style="height: 140px" title="Project Title">Project Title (To be added)</div>
         <div class="card ads" style="height: 530px" title="Project Info">Project Info (To be added)</div>
-        <div class="card blank" style="height: 100px">Blank</div>
+        <div class="card blank" style="height: 100px"></div>
       </div>
 
       <div class="column flex-2">
-        <div class="card bankcard-item-wrapper" style="height: 860px; display: flex; flex-direction: column; background-color: transparent; justify-content: space-between; overflow-y: auto" title="Cards">
+        <div class="card bankcards-wrapper" style="height: 860px;" title="Cards">
           <div class="bankcard-item-container">
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between">
+            <div class="bankcards-header">
               <a class="title">Debit Cards</a>
               <a>
                 <button @click="showCreateDebitCardModal = true">
-                  <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/plus.png">
+                  <img class="image" src="../../assets/img/plus.png">
                 </button>
                 <CreateDebitCardModal v-if="showCreateDebitCardModal" @close="loadCards(); showCreateDebitCardModal = false"></CreateDebitCardModal>
               </a>
             </div>
-            <div class="bankcard-item" v-for="card in debitCards" :key="card.id">
-              <div style="display: flex; align-items: center; gap: 10px">
-                <a class="bankcard-preview" style="min-width: 84px; height: 56px">{{card.cardNumber.slice(-5)}}</a>
+            <div class="bankcard-item" v-for="card in debitCards" :key="card.id" style="gap: 30px">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <a class="bankcard-preview">{{card.cardNumber.slice(-5)}}</a>
                 <div style="display: flex; flex-direction: column">
                   <a style="font-weight: bold">{{card.cardholderNameAndSurname}}</a>
                   <a style="color: gray">{{ card.cardNumber }}</a>
@@ -99,8 +99,8 @@ async function logOut(){
 
       <div class="column flex-3">
         <div class="card bankcard-item-wrapper" style="height: 860px; display: flex; flex-direction: column; background-color: transparent; justify-content: space-between; overflow-y: auto" title="Cards">
-          <div class="bankcard-item-container">
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between">
+          <div class="bankcards-container">
+            <div class="bankcards-header">
               <a class="title">Virtual Cards</a>
               <a>
                 <button @click="showVirtualCardMoneyTransferModal = true">
@@ -109,7 +109,7 @@ async function logOut(){
                 <VirtualCardMoneyTransferModal v-if="showVirtualCardMoneyTransferModal" @close="loadCards(); showVirtualCardMoneyTransferModal = false"></VirtualCardMoneyTransferModal>
 
                 <button @click="showCreateVirtualCardModal = true">
-                  <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/plus.png">
+                  <img class="image" src="../../assets/img/plus.png">
                 </button>
                 <CreateVirtualCardModal v-if="showCreateVirtualCardModal" @close="loadCards(); showCreateVirtualCardModal = false"></CreateVirtualCardModal>
               </a>
@@ -117,7 +117,7 @@ async function logOut(){
 
             <div class="bankcard-item" v-for="card in virtualCards" :key="card.id">
               <div style="display: flex; align-items: center; gap: 10px">
-                <a class="bankcard-preview" style="min-width: 84px; height: 56px">{{card.cardNumber.slice(-5)}}</a>
+                <a class="bankcard-preview">{{card.cardNumber.slice(-5)}}</a>
                 <div style="display: flex; flex-direction: column">
                   <a style="font-weight: bold">{{card.cardholderNameAndSurname}}</a>
                   <a style="color: gray">{{ card.cardNumber }}</a>
@@ -220,21 +220,37 @@ async function logOut(){
   height: 60px;
 }
 
-.bankcard-item-wrapper {
+.bankcards-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
+  background-color: transparent;
+  overflow-y: auto
 }
 
-.bankcard-item-container {
+.bankcards-container {
   display: flex;
   flex-direction: column;
   list-style: none;
   padding: 0;
   margin: 0;
   width: 95%;
+}
+
+.bankcards-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  .image {
+    height: 50px;
+    width: auto;
+    margin-left: 20px;
+    object-fit: contain;
+    aspect-ratio: 1/1
+  }
 }
 
 .bankcard-item {
@@ -286,8 +302,8 @@ async function logOut(){
   padding-left: 3px;
   padding-bottom: 2px;
   justify-content: flex-start;
-  min-width: 60px;
-  height: 40px;
+  min-width: 84px;
+  height: 56px;
   margin-right: 5px;
   color: white;
   font-weight: bold;

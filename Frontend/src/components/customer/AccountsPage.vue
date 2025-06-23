@@ -60,14 +60,14 @@ async function logOut(){
   <div class="topbar">
     <ul>
       <li>
-        <a style="color: black">
+        <a>
           <button @click="logOut">
             <img style="width: 2.5vw; height: auto" src="../../assets/img/logout.png">
           </button>
         </a>
       </li>
       <li>
-        <a href="/customer/profile" style="color: black">
+        <a href="/customer/profile">
           <img style="width: 2.5vw; height: auto" src="../../assets/img/profile.png">
         </a>
       </li>
@@ -79,28 +79,28 @@ async function logOut(){
       <div class="column flex-1">
         <div class="card ads" style="height: 140px" title="Project Title">Project Title (To be added)</div>
         <div class="card ads" style="height: 530px" title="Project Info">Project Info (To be added)</div>
-        <div class="card blank" style="height: 100px">Blank</div>
+        <div class="card blank" style="height: 100px"></div>
       </div>
 
       <div class="column flex-2">
-        <div class="card" style="height: 860px; background-color: transparent; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto" title="accounts">
-          <div class="account" >
-            <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-between; padding-left: 50px; padding-right: 50px">
+        <div class="card accounts-wrapper" title="accounts">
+          <div class="accounts-container">
+            <div class="accounts-header">
               <a class="title" style="margin-top: 10px">Accounts</a>
               <div style="display: flex; flex-direction: row">
                 <button :disabled="!selectedAccount" @click="deleteAccount">
-                  <img  style="height: 35px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/trash.png">
+                  <img class="image" src="../../assets/img/trash.png">
                 </button>
 
                 <a href="/customer/create-account">
-                  <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/plus.png">
+                  <img class="image" src="../../assets/img/plus.png">
                 </a>
               </div>
             </div>
 
             <ul>
               <li v-for="account in accounts" :key="account.id"
-                  :class="selectedAccountId === account.id.toString() ? 'selected-account' : 'unselected-account'"
+                  :class="selectedAccountId === account.id.toString() ? 'selected-account' : ''"
                   @click="selectedAccountId = account.id.toString()">
                 <div style="display: flex; flex-direction: row; align-items: center; gap: 15px">
                   <img v-if="account.accountType === 'SavingsAccount'" style="width: 70px; height: 70px; " src="../../assets/img/savings-account.png">
@@ -123,21 +123,16 @@ async function logOut(){
             </ul>
           </div>
         </div>
-
-
-
-
       </div>
 
       <div class="column flex-3">
-        <div class="card" style="height: 80px; display: flex; flex-direction: row; align-items: center; justify-content: space-between" title="Return">
+        <div class="card return" style="height: 80px" title="Return">
           <a class="title">Return to the homepage</a>
           <a href="/customer/dashboard">
-            <img  style="height: 50px; width: auto; margin-left: 20px; object-fit: contain; aspect-ratio: 1/1" src="../../assets/img/return.png">
+            <img class="image" src="../../assets/img/return.png">
           </a>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -214,7 +209,16 @@ async function logOut(){
   height: 60px;
 }
 
-.account {
+.accounts-wrapper {
+  height: 860px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto
+}
+
+.accounts-container {
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -223,7 +227,23 @@ async function logOut(){
   width: 100%;
 }
 
-.account ul {
+.accounts-header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  padding-left: 50px;
+  padding-right: 50px;
+  .image{
+    height: 35px;
+    width: auto;
+    margin-left: 20px;
+    object-fit: contain;
+    aspect-ratio: 1/1
+  }
+}
+
+.accounts-container ul {
   display: flex;
   flex-direction: column-reverse;
   list-style: none;
@@ -232,7 +252,7 @@ async function logOut(){
   width: 85%;
 }
 
-.account li {
+.accounts-container li {
   display: flex;
   flex-direction: row;
   padding-left: 10px;
@@ -249,8 +269,7 @@ async function logOut(){
   font-weight: bold;
 }
 
-
-.account li.selected-account {
+.accounts-container li.selected-account {
   background-color: lightgray;
 }
 
@@ -280,6 +299,20 @@ async function logOut(){
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: gray transparent;
+}
+
+.return {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  .image {
+    height: 50px;
+    width: auto;
+    margin-left: 20px;
+    object-fit: contain;
+    aspect-ratio: 1/1
+  }
 }
 
 .title {

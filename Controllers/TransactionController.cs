@@ -32,12 +32,12 @@ public class TransactionController : ControllerBase
         if (accountId == 0)
         {
             var transactions = await _service.GetTransactionsByUserAsync(int.Parse(userId));
-            return transactions.Any() ? Ok(transactions) : NotFound();
+            return Ok(transactions);
         }
         else
         {
             var transactions = await _service.GetTransactionsByBankAccountAsync(accountId, int.Parse(userId));
-            return transactions.Any() ? Ok(transactions) : NotFound();
+            return Ok(transactions);
         }
         
     }
